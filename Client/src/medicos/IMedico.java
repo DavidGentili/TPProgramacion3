@@ -12,4 +12,6 @@ public interface IMedico {
 	public abstract Domicilio getDomicilio();
 	public abstract void setDomicilio(Domicilio domicilio);
 	public abstract String getCiudad();
+	
+
 }
