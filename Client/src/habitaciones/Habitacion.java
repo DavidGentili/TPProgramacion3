@@ -1,6 +1,6 @@
 package habitaciones;
 
-import personas.Paciente;
+import pacientes.Paciente;
 
 
 public abstract class Habitacion implements IHabitacion{

@@ -1,6 +1,6 @@
 package habitaciones;
 
-import personas.Paciente;
+import pacientes.Paciente;
 
 public class SalaDeTerapia extends Habitacion {
 
