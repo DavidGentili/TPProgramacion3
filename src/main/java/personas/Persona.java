@@ -1,6 +1,6 @@
 package personas;
 
-public class Personas {
+public class Persona {
 	protected String nombre;
 	protected String apellido;
 	protected int dni;
@@ -8,14 +8,17 @@ public class Personas {
 	protected Domicilio domicilio;
 	protected String ciudad;
 
-	public Personas(String nombre, String apellido, int dni) {
+	public Persona(String nombre, String apellido, int dni) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
+		this.telefono = null;
+		this.domicilio = null;
+		this.ciudad = null;
 	}
 
-	public Personas(String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad) {
+	public Persona(String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -63,8 +66,7 @@ public class Personas {
 
 	@Override
 	public String toString() {
-		return nombre + " " + apellido + " DNI:" + dni + " Telefono: " + telefono + " Domicilio: " + domicilio
-				+ " Ciudad: " + ciudad;
+		return nombre + " " + apellido + " DNI:" + dni;
 	}
 
 }
