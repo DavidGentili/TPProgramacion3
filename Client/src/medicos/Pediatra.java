@@ -6,7 +6,7 @@ public class Pediatra extends DecoratorMedico {
 		super(encapsulado);
 	}
 
-
+	@Override
 	public double getHonorario() {
 		return this.getHonorario() * 1.07;
 	}

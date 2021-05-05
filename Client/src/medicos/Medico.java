@@ -29,7 +29,7 @@ public class Medico extends Persona implements IMedico {
 		this.matricula = matricula;
 	}
 
-	// Este metodo retornara el hornorario basico de los medicos
+	@Override
 	public double getHonorario() {
 		return honorarioBasico;
 	}
