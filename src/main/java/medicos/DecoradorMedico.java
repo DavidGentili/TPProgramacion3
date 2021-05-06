@@ -20,7 +20,7 @@ public abstract class DecoradorMedico implements IMedico {
 
 	@Override
 	public String getApellido() {
-		return encapsulado.getNombre();
+		return encapsulado.getApellido();
 	}
 
 	@Override

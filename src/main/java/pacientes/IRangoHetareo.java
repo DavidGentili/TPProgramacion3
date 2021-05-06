@@ -3,7 +3,7 @@ package pacientes;
 public interface IRangoHetareo {
 	IRangoHetareo comparaIngreso(IRangoHetareo otro);
 
-	IRangoHetareo comparaConNiño(IRangoHetareo otro);
+	IRangoHetareo comparaConNinio(IRangoHetareo otro);
 
 	IRangoHetareo comparaConJoven(IRangoHetareo otro);
 

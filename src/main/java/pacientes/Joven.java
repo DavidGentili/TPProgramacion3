@@ -19,7 +19,7 @@ public class Joven extends Paciente implements IRangoHetareo {
 	}
 
 	@Override
-	public IRangoHetareo comparaConNiño(IRangoHetareo otro) {
+	public IRangoHetareo comparaConNinio(IRangoHetareo otro) {
 		return otro;
 	}
 
