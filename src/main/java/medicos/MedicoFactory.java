@@ -13,31 +13,31 @@ public class MedicoFactory {
 	}
 
 	public static IMedico getInstancia(String nombre, String apellido, int dni, int matricula, String especialidad,
-			String contratacion, String posgrado) throws ContratacionNoIndicadaExceptions,
+			String posgrado, String contratacion) throws ContratacionNoIndicadaExceptions,
 			ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
 		if (contratacion != null) {
 			IMedico respuesta = null;
 			IMedico medicoBase = new Medico(nombre, apellido, dni, matricula);
-			respuesta = MedicoFactory.especializa(medicoBase, especialidad, contratacion, posgrado);
+			respuesta = MedicoFactory.especializa(medicoBase, especialidad, posgrado, contratacion);
 			return respuesta;
 		} else
 			throw new ContratacionNoIndicadaExceptions("No se indico contratacion");
 	}
 
 	public static IMedico getInstancia(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
-			String ciudad, int matricula, String especialidad, String contratacion, String posgrado)
+			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
 			throws ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
 			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
 		if (contratacion != null) {
 			IMedico respuesta = null;
 			IMedico medicoBase = new Medico(nombre, apellido, dni, telefono, domicilio, ciudad, matricula);
-			respuesta = MedicoFactory.especializa(medicoBase, especialidad, contratacion, posgrado);
+			respuesta = MedicoFactory.especializa(medicoBase, especialidad, posgrado, contratacion);
 			return respuesta;
 		} else
 			throw new ContratacionNoIndicadaExceptions("No se indico contratacion");
 	}
 
-	private static IMedico especializa(IMedico base, String especialidad, String contratacion, String posgrado)
+	private static IMedico especializa(IMedico base, String especialidad, String posgrado, String contratacion)
 			throws ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions,
 			PosgradoNoRegistradoExceptions {
 		IMedico encapsulado = base;
