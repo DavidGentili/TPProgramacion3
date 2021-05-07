@@ -12,4 +12,9 @@ public class Permanente extends DecoradorMedico {
 		return encapsulado.getSueldo() * 1.1;
 	}
 
+	@Override
+	public String toString() {
+		return encapsulado.toString() + " Contratacion: Permanente";
+	}
+
 }

@@ -11,5 +11,10 @@ public class Clinico extends DecoradorMedico {
 	public double getSueldo() {
 		return encapsulado.getSueldo() * 1.05;
 	}
+	
+	@Override
+	public String toString() {
+		return encapsulado.toString() + " Especialidad: Clinico";
+	}
 
 }

@@ -11,6 +11,9 @@ public class Cirujano extends DecoradorMedico {
 		return encapsulado.getSueldo() * 1.1;
 	}
 
-
+	@Override
+	public String toString() {
+		return encapsulado.toString() + " Especialidad: Cirujano";
+	}
 
 }

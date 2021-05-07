@@ -17,4 +17,6 @@ public interface IMedico {
 
 	String getCiudad();
 
+	String toString();
+
 }

@@ -11,5 +11,10 @@ public class Pediatra extends DecoradorMedico {
 	public double getSueldo() {
 		return encapsulado.getSueldo() * 1.07;
 	}
+	
+	@Override
+	public String toString() {
+		return encapsulado.toString() + " Especialidad: Pediatra";
+	}
 
 }

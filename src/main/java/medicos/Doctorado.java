@@ -11,5 +11,10 @@ public class Doctorado extends DecoradorMedico {
 	public double getSueldo() {
 		return encapsulado.getSueldo() * 1.1;
 	}
+	
+	@Override
+	public String toString() {
+		return encapsulado.toString() + " Posgrad: Doctorado";
+	}
 
 }

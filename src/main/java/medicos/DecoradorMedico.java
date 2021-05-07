@@ -43,4 +43,9 @@ public abstract class DecoradorMedico implements IMedico {
 		return encapsulado.getCiudad();
 	}
 
+	@Override
+	public String toString() {
+		return encapsulado.toString();
+	}
+
 }
