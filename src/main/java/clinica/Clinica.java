@@ -1,5 +1,6 @@
 package clinica;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import medicos.IMedico;
@@ -15,7 +16,7 @@ public class Clinica {
 	private static Clinica instancia = null;
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, Paciente> pacientes = new HashMap<Integer, Paciente>();
-	
+	private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
