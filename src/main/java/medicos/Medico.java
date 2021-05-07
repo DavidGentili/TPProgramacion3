@@ -19,9 +19,7 @@ public class Medico extends Persona implements IMedico {
 		this.matricula = matricula;
 	}
 
-	public int getMatricula() {
-		return matricula;
-	}
+	
 
 	@Override
 	public String toString() {
@@ -39,6 +37,12 @@ public class Medico extends Persona implements IMedico {
 
 	public static double getSueldoBasico() {
 		return Medico.sueldoBasico;
+	}
+
+	@Override
+	public int getMatricula() {
+		// TODO Auto-generated method stub
+		return this.matricula;
 	}
 
 }

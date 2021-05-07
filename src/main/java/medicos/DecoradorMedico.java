@@ -48,4 +48,11 @@ public abstract class DecoradorMedico implements IMedico {
 		return encapsulado.toString();
 	}
 
+	@Override
+	public int getMatricula() {
+		// TODO Auto-generated method stub
+		return encapsulado.getMatricula();
+	}
+
+	
 }

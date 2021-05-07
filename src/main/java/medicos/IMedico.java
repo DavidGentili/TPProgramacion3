@@ -10,6 +10,8 @@ public interface IMedico {
 	String getApellido();
 
 	int getDni();
+	
+	int getMatricula();
 
 	String getTelefono();
 
