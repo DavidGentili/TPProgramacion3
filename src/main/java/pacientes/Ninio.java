@@ -33,4 +33,9 @@ public class Ninio extends Paciente implements IRangoEtareo {
 		return otro;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + " niño ";
+	}
+
 }

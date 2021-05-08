@@ -8,4 +8,6 @@ public interface IRangoEtareo {
 	IRangoEtareo comparaConJoven(IRangoEtareo otro);
 
 	IRangoEtareo comparaConMayor(IRangoEtareo otro);
+	
+	
 }

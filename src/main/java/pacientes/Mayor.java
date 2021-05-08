@@ -33,4 +33,9 @@ public class Mayor extends Paciente implements IRangoEtareo {
 		return this;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + " Mayor";
+	}
+
 }

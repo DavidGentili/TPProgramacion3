@@ -21,4 +21,9 @@ public class Paciente extends Persona {
 		return this.nroHistoriaClinica;
 	}
 
+	@Override
+	public String toString() {
+		return super.toString() + " nroHistoriaClinica=" + nroHistoriaClinica;
+	}
+
 }

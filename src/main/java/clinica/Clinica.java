@@ -2,6 +2,9 @@ package clinica;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import exceptions.ClinicaInexistenteExcepcion;
 import exceptions.ContratacionNoIndicadaExceptions;
@@ -17,16 +20,16 @@ import personas.Domicilio;
 
 public class Clinica {
 	private static Clinica instancia = null;
-	
+
 	private String nombre;
 	private Domicilio direccion;
 	private String telefono;
 	private String ciudad;
-	private IRangoEtareo salaPrivada=null;
-	
+	private IRangoEtareo salaPrivada = null;
+
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
-	//private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
+	// private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
 	private ArrayList<IRangoEtareo> colaEspera = new ArrayList<IRangoEtareo>();
 	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
 
@@ -88,12 +91,12 @@ public class Clinica {
 	public void agregaPaciente(String nombre, String apellido, int dni, int historiaClinica, String rangoEtario) {
 
 		IRangoEtareo p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, historiaClinica);
-		if(p!=null) {
+		if (p != null) {
 			if (!pacientesHist.containsKey(historiaClinica))
 				pacientesHist.put(historiaClinica, p);
 			colaEspera.add(p);
 			this.reasignaEspera(p);
-		}else
+		} else
 			System.out.println("rango etario inexistente");
 	}
 
@@ -102,29 +105,67 @@ public class Clinica {
 
 		IRangoEtareo p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, telefono, domicilio, ciudad,
 				historiaClinica);
-		if(p!=null) {
+		if (p != null) {
 			if (!pacientesHist.containsKey(historiaClinica))
 				pacientesHist.put(historiaClinica, p);
 			colaEspera.add(p);
 			this.reasignaEspera(p);
-		}else
+		} else
 			System.out.println("rango etario inexistente");
 
 	}
-	
+
 	public void reasignaEspera(IRangoEtareo p) {
 		IRangoEtareo aux;
-		if(this.salaPrivada==null)
-			this.salaPrivada=p;
+		if (this.salaPrivada == null)
+			this.salaPrivada = p;
 		else {
-			aux=this.salaPrivada; //guardo en una variable auxiliar lo q habia
-			this.salaPrivada=this.salaPrivada.comparaIngreso(p); //comparo
-			if(aux==this.salaPrivada)  //si sigue siendo igual es porq p debe ir al patio
+			aux = this.salaPrivada; // guardo en una variable auxiliar lo q habia
+			this.salaPrivada = this.salaPrivada.comparaIngreso(p); // comparo
+			if (aux == this.salaPrivada) // si sigue siendo igual es porq p debe ir al patio
 				this.patio.add(p);
 			else
 				this.patio.add(aux);
 		}
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Clinica " + nombre + ", direccion=" + direccion + ", telefono=" + telefono + ", ciudad=" + ciudad;
+	}
+
+	public void imprimerMedicos() {
+		Iterator it = this.medicos.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			System.out.println(pair.getValue().toString());
+		}
+	}
+
+	public void imprimeHistoricoPacientes() {
+		Iterator it = this.pacientesHist.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pair = (Map.Entry) it.next();
+			System.out.println(pair.getValue().toString());
+		}
+	}
+
+	public void imprimeCola() {
+		Iterator it = this.colaEspera.iterator();
+		while (it.hasNext()) {
+			System.out.println(it.next().toString());
+		}
+	}
+
+	public void estadoSalaPrivada() {
+		System.out.println("En la sala de espera privada se encuentra "+this.salaPrivada.toString());
+	}
+
+	public void imprimePatio() {
+		Iterator it = this.patio.iterator();
+		System.out.println("En el patio se encuentran");
+		while (it.hasNext()) {
+			System.out.println(it.next().toString());
+		}
+	}
 }
