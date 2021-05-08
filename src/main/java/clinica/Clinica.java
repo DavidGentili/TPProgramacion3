@@ -169,6 +169,8 @@ public class Clinica {
 	}
 
 	public void imprimeCola() {
+		if(this.colaEspera.isEmpty())
+			System.out.println("No hay pacientes por ser antedidos");
 		Iterator it = this.colaEspera.iterator();
 		while (it.hasNext()) {
 			System.out.println(it.next().toString());
@@ -197,7 +199,7 @@ public class Clinica {
 
 	public void imprimeAtendidos() {
 		if(this.enAtencion.isEmpty())
-			System.out.println("No hay pacientes por ser atendidos");
+			System.out.println("No hay pacientes siendo atendidos");
 		else {
 			Iterator it = this.enAtencion.iterator();
 			System.out.println("Los pacientes que se encuentran siendo atendidos son");
