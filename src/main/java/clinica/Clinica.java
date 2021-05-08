@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import exceptions.ClinicaInexistenteExcepcion;
 import exceptions.ContratacionNoIndicadaExceptions;
@@ -116,6 +115,10 @@ public class Clinica {
 
 	}
 
+	/**
+	 * Asigna un paciente recien llegado a la sala privada o el patio
+	 * @param p
+	 */
 	public void reasignaEspera(IRangoEtareo p) {
 		IRangoEtareo aux;
 		if (this.salaPrivada == null)
@@ -130,7 +133,11 @@ public class Clinica {
 		}
 	}
 
-	public void atiendeSiguiente() {
+	/**
+	 * Localiza al siguiente paciente en ser atendido y lo retira del patio o de la sala de espera
+	 * @throws IndexOutOfBoundsException : lo lanzara si la cola esta vacia
+	 */
+	public void atiendeSiguiente() throws IndexOutOfBoundsException{
 		IRangoEtareo aux = this.colaEspera.remove(0);
 		if (this.salaPrivada == aux)
 			this.salaPrivada = null;
@@ -169,22 +176,35 @@ public class Clinica {
 	}
 
 	public void estadoSalaPrivada() {
-		System.out.println("En la sala de espera privada se encuentra " + this.salaPrivada.toString());
+		if(this.salaPrivada==null)
+			System.out.println("La sala privada esta vacia");
+		else
+			System.out.println("En la sala de espera privada se encuentra " + this.salaPrivada.toString());
 	}
 
 	public void imprimePatio() {
-		Iterator it = this.patio.iterator();
-		System.out.println("En el patio se encuentran");
-		while (it.hasNext()) {
-			System.out.println(it.next().toString());
+		if(this.patio.isEmpty())
+			System.out.println("No hay pacientes en el patio");
+		else {
+			Iterator it = this.patio.iterator();
+			System.out.println("En el patio se encuentran");
+			while (it.hasNext()) {
+				System.out.println(it.next().toString());
+			}
 		}
+		
 	}
 
 	public void imprimeAtendidos() {
-		Iterator it = this.enAtencion.iterator();
-		System.out.println("Los pacientes que se encuentran siendo atendidos son");
-		while (it.hasNext()) {
-			System.out.println(it.next().toString());
+		if(this.enAtencion.isEmpty())
+			System.out.println("No hay pacientes por ser atendidos");
+		else {
+			Iterator it = this.enAtencion.iterator();
+			System.out.println("Los pacientes que se encuentran siendo atendidos son");
+			while (it.hasNext()) {
+				System.out.println(it.next().toString());
+			}
 		}
+		
 	}
 }
