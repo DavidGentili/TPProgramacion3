@@ -32,6 +32,7 @@ public class Clinica {
 	// private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
 	private ArrayList<IRangoEtareo> colaEspera = new ArrayList<IRangoEtareo>();
 	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
+	private ArrayList<IRangoEtareo> enAtencion = new ArrayList<IRangoEtareo>();
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
@@ -129,6 +130,16 @@ public class Clinica {
 		}
 	}
 
+	public void atiendeSiguiente() {
+		IRangoEtareo aux = this.colaEspera.remove(0);
+		if (this.salaPrivada == aux)
+			this.salaPrivada = null;
+		else {
+			this.patio.remove(aux);
+		}
+		this.enAtencion.add(aux);
+	}
+
 	@Override
 	public String toString() {
 		return "Clinica " + nombre + ", direccion=" + direccion + ", telefono=" + telefono + ", ciudad=" + ciudad;
@@ -158,12 +169,20 @@ public class Clinica {
 	}
 
 	public void estadoSalaPrivada() {
-		System.out.println("En la sala de espera privada se encuentra "+this.salaPrivada.toString());
+		System.out.println("En la sala de espera privada se encuentra " + this.salaPrivada.toString());
 	}
 
 	public void imprimePatio() {
 		Iterator it = this.patio.iterator();
 		System.out.println("En el patio se encuentran");
+		while (it.hasNext()) {
+			System.out.println(it.next().toString());
+		}
+	}
+
+	public void imprimeAtendidos() {
+		Iterator it = this.enAtencion.iterator();
+		System.out.println("Los pacientes que se encuentran siendo atendidos son");
 		while (it.hasNext()) {
 			System.out.println(it.next().toString());
 		}
