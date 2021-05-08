@@ -2,7 +2,7 @@ package pacientes;
 
 import personas.Domicilio;
 
-public class Mayor extends Paciente implements IRangoHetareo {
+public class Mayor extends Paciente implements IRangoEtareo {
 
 	public Mayor(String nombre, String apellido, int dni, int historiaClinica) {
 		super(nombre, apellido, dni, historiaClinica);
@@ -14,22 +14,22 @@ public class Mayor extends Paciente implements IRangoHetareo {
 	}
 
 	@Override
-	public IRangoHetareo comparaIngreso(IRangoHetareo otro) {
+	public IRangoEtareo comparaIngreso(IRangoEtareo otro) {
 		return otro.comparaConMayor(this);
 	}
 
 	@Override
-	public IRangoHetareo comparaConNinio(IRangoHetareo otro) {
+	public IRangoEtareo comparaConNinio(IRangoEtareo otro) {
 		return this;
 	}
 
 	@Override
-	public IRangoHetareo comparaConJoven(IRangoHetareo otro) {
+	public IRangoEtareo comparaConJoven(IRangoEtareo otro) {
 		return otro;
 	}
 
 	@Override
-	public IRangoHetareo comparaConMayor(IRangoHetareo otro) {
+	public IRangoEtareo comparaConMayor(IRangoEtareo otro) {
 		return this;
 	}
 

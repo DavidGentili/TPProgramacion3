@@ -11,20 +11,24 @@ import exceptions.MedicoYaAgregadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import medicos.IMedico;
 import medicos.MedicoFactory;
-import pacientes.Paciente;
+import pacientes.IRangoEtareo;
+import pacientes.PacienteFactory;
 import personas.Domicilio;
 
 public class Clinica {
-
+	private static Clinica instancia = null;
+	
 	private String nombre;
 	private Domicilio direccion;
 	private String telefono;
 	private String ciudad;
-	private static Clinica instancia = null;
-	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>(); 
-	private HashMap<Integer, Paciente> pacientesHist = new HashMap<Integer, Paciente>();
-	private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
-	private ArrayList<Paciente> colaEspera = new ArrayList<Paciente>();
+	private IRangoEtareo salaPrivada=null;
+	
+	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
+	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
+	//private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
+	private ArrayList<IRangoEtareo> colaEspera = new ArrayList<IRangoEtareo>();
+	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
@@ -44,7 +48,8 @@ public class Clinica {
 		if (instancia != null)
 			return instancia;
 		else
-			throw new ClinicaInexistenteExcepcion("La clinica no se ha inicializado");// Deberiamos propagar una excepcion
+			throw new ClinicaInexistenteExcepcion("La clinica no se ha inicializado");// Deberiamos propagar una
+																						// excepcion
 	}
 
 	public String getTelefono() {
@@ -66,19 +71,60 @@ public class Clinica {
 	public String getCiudad() {
 		return ciudad;
 	}
-	
-	public void agregaMedico(String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad, int matricula, String especialidad, String posgrado, String contratacion) throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
+
+	public void agregaMedico(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
+			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
+			throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
+			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
 		IMedico medico;
-		if(!medicos.containsKey(matricula)) {
-			medico=MedicoFactory.getInstancia(nombre, apellido, dni, telefono, domicilio, ciudad, matricula, especialidad, posgrado, contratacion);
+		if (!medicos.containsKey(matricula)) {
+			medico = MedicoFactory.getInstancia(nombre, apellido, dni, telefono, domicilio, ciudad, matricula,
+					especialidad, posgrado, contratacion);
 			medicos.put(matricula, medico);
-		}
-		else
+		} else
 			throw new MedicoYaAgregadoException("El medico que desea agregar ya existe");
 	}
-	
-	public void agregaPaciente() {
-		
+
+	public void agregaPaciente(String nombre, String apellido, int dni, int historiaClinica, String rangoEtario) {
+
+		IRangoEtareo p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, historiaClinica);
+		if(p!=null) {
+			if (!pacientesHist.containsKey(historiaClinica))
+				pacientesHist.put(historiaClinica, p);
+			colaEspera.add(p);
+			this.reasignaEspera(p);
+		}else
+			System.out.println("rango etario inexistente");
 	}
 
+	public void agregaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
+			String ciudad, int historiaClinica, String rangoEtario) {
+
+		IRangoEtareo p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, telefono, domicilio, ciudad,
+				historiaClinica);
+		if(p!=null) {
+			if (!pacientesHist.containsKey(historiaClinica))
+				pacientesHist.put(historiaClinica, p);
+			colaEspera.add(p);
+			this.reasignaEspera(p);
+		}else
+			System.out.println("rango etario inexistente");
+
+	}
+	
+	public void reasignaEspera(IRangoEtareo p) {
+		IRangoEtareo aux;
+		if(this.salaPrivada==null)
+			this.salaPrivada=p;
+		else {
+			aux=this.salaPrivada; //guardo en una variable auxiliar lo q habia
+			this.salaPrivada=this.salaPrivada.comparaIngreso(p); //comparo
+			if(aux==this.salaPrivada)  //si sigue siendo igual es porq p debe ir al patio
+				this.patio.add(p);
+			else
+				this.patio.add(aux);
+		}
+	}
+
+	
 }
