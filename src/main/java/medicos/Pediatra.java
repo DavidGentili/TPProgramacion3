@@ -1,10 +1,9 @@
 package medicos;
 
-
 /**
  * 
  * Representa un medico Clinico, el cual esta implementando el patron Decorator,
- * usando como encapsulado a un IMedico, representando la especialidad Pediatria
+ * usando como encapsulado a un IMedico
  *
  */
 public class Pediatra extends DecoradorMedico {
@@ -21,7 +20,7 @@ public class Pediatra extends DecoradorMedico {
 	public double getSueldo() {
 		return encapsulado.getSueldo() * 1.07;
 	}
-	
+
 	/**
 	 * Se encarga de retornar un string con los datos del medico encapsulado,
 	 * adicionando que es un pediatra

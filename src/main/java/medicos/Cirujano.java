@@ -3,9 +3,7 @@ package medicos;
 /**
  * 
  * Representa un medico Cirujano, el cual esta implementando el patron
- * Decorator, usando como encapsulado a un IMedico, representando la
- * especialidad cirujia
- *
+ * Decorator, usando como encapsulado a un IMedico,
  */
 public class Cirujano extends DecoradorMedico {
 
