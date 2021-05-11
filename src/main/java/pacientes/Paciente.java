@@ -1,10 +1,14 @@
 package pacientes;
 
+import java.util.ArrayList;
+
 import personas.Domicilio;
 import personas.Persona;
+import prestaciones.IPrestacion;
 
 public class Paciente extends Persona {
 	protected int nroHistoriaClinica;
+	protected ArrayList<IPrestacion> prestaciones = new ArrayList<IPrestacion>();
 
 	public Paciente(String nombre, String apellido, int dni, int historiaClinica) {
 		super(nombre, apellido, dni);
@@ -19,6 +23,18 @@ public class Paciente extends Persona {
 
 	public int getNroHistoriaClinica() {
 		return this.nroHistoriaClinica;
+	}
+
+	public void agregarPrestacion(IPrestacion prestacion) {
+		this.prestaciones.add(prestacion);
+	}
+
+	public void vaciarPrestaciones() {
+		prestaciones.clear();
+	}
+
+	public ArrayList<IPrestacion> getPrestaciones() {
+		return prestaciones;
 	}
 
 	@Override

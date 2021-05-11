@@ -1,6 +1,7 @@
 package clinica;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -16,6 +17,7 @@ import medicos.MedicoFactory;
 import pacientes.IRangoEtareo;
 import pacientes.PacienteFactory;
 import personas.Domicilio;
+import prestaciones.Prestacion;
 
 public class Clinica {
 	private static Clinica instancia = null;
@@ -29,9 +31,10 @@ public class Clinica {
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
 	// private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
-	private ArrayList<IRangoEtareo> colaEspera = new ArrayList<IRangoEtareo>();
-	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
+	private ArrayList<IRangoEtareo> colaEspera = new ArrayList<IRangoEtareo>();//LinkedLista 
+	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();//HashMap
 	private ArrayList<IRangoEtareo> enAtencion = new ArrayList<IRangoEtareo>();
+	private HashMap<GregorianCalendar,Prestacion> historial = new HashMap<GregorianCalendar,Prestacion>();
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
@@ -51,8 +54,7 @@ public class Clinica {
 		if (instancia != null)
 			return instancia;
 		else
-			throw new ClinicaInexistenteExcepcion("La clinica no se ha inicializado");// Deberiamos propagar una
-																						// excepcion
+			throw new ClinicaInexistenteExcepcion("La clinica no se ha inicializado");
 	}
 
 	public String getTelefono() {
@@ -208,5 +210,12 @@ public class Clinica {
 			}
 		}
 		
+	}
+	
+	public void actualizarHistorial(Factura f) {
+		Iterator it = f.getPaciente().getPrestaciones().iterator();
+		while (it.hasNext()) {
+			this.historial.put(f.getFecha(),(Prestacion) it.next());
+		}
 	}
 }
