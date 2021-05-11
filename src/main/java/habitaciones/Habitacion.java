@@ -61,7 +61,7 @@ public abstract class Habitacion {
 			throw new PacienteNoEncontrado("El paciente que busca no se encuentra en esta habitacion");
 	}
 
-	protected abstract double getCosto(int cantidadDeDias);
+	public abstract double getCosto(int cantidadDeDias);
 
 	public Iterator getPacientesdeLaHabitacion() {
 		ArrayList<Paciente> aux = new ArrayList<Paciente>();

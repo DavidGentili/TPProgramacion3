@@ -17,7 +17,7 @@ public class HabitacionCompartida extends Habitacion {
 	}
 
 	@Override
-	protected double getCosto(int cantidadDeDias) {
+	public double getCosto(int cantidadDeDias) {
 		double costo = costoHabitacionCompartida;
 		return costo + costo * cantidadDeDias;
 	}

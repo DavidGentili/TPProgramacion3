@@ -36,10 +36,6 @@ public abstract class Prestacion implements IPrestacion, Comparable<Prestacion> 
 		return valor;
 	}
 
-	public double getSubtotal() {
-		return this.valor * this.cantidad;
-	}
-
 	@Override
 	public String toString() {
 		return nombreMedicoOSala + valor + cantidad + valor * cantidad;

@@ -10,10 +10,11 @@ public class Internacion extends Prestacion {
 		super(cantidad,"Nombre de la habitacion , privada,comp, o intensiva",999);//999=costo de la hab poner ahi
 		this.hab = hab;
 	}
+
 	@Override
-	public double calcularSubtotal() {
-		return 0;//this.hab.getCosto(); //retornar costo de sala privada, compartida , terapia intensiva
-		//este return no es el que va, lo puse por poner, no estan hechas las clases todavia 
+	public double calcularSubtotal(int cantidad) {
+		// TODO Auto-generated method stub
+		return this.hab.getCosto(cantidad);
 	}
 
 }

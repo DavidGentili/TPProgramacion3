@@ -16,7 +16,7 @@ public class HabitacionPrivada extends Habitacion {
 	}
 
 	@Override
-	protected double getCosto(int cantidadDeDias) {
+	public double getCosto(int cantidadDeDias) {
 		double costo = costoHabitacionPrivada;
 		if (cantidadDeDias == 1)
 			costo *= 2;

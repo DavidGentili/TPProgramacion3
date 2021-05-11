@@ -17,7 +17,7 @@ public class TerapiaIntensiva extends Habitacion {
 	}
 
 	@Override
-	protected double getCosto(int cantidadDeDias) {
+	public double getCosto(int cantidadDeDias) {
 		double costo = costoTerapiaIntensiva;
 		return Math.pow(costo, cantidadDeDias);
 	}
