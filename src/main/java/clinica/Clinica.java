@@ -12,6 +12,9 @@ import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoRegistradaExceptions;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
+import habitaciones.HabitacionCompartida;
+import habitaciones.HabitacionPrivada;
+import habitaciones.TerapiaIntensiva;
 import medicos.IMedico;
 import medicos.MedicoFactory;
 import pacientes.IRangoEtareo;
@@ -31,10 +34,10 @@ public class Clinica {
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
 	// private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
-	private ArrayList<IRangoEtareo> colaEspera = new ArrayList<IRangoEtareo>();//LinkedLista 
-	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();//HashMap
+	private ArrayList<IRangoEtareo> colaEspera = new ArrayList<IRangoEtareo>();// LinkedLista
+	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();// HashMap
 	private ArrayList<IRangoEtareo> enAtencion = new ArrayList<IRangoEtareo>();
-	private HashMap<GregorianCalendar,Prestacion> historial = new HashMap<GregorianCalendar,Prestacion>();
+	private HashMap<GregorianCalendar, Prestacion> historial = new HashMap<GregorianCalendar, Prestacion>();
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
@@ -119,6 +122,7 @@ public class Clinica {
 
 	/**
 	 * Asigna un paciente recien llegado a la sala privada o el patio
+	 * 
 	 * @param p
 	 */
 	public void reasignaEspera(IRangoEtareo p) {
@@ -136,10 +140,12 @@ public class Clinica {
 	}
 
 	/**
-	 * Localiza al siguiente paciente en ser atendido y lo retira del patio o de la sala de espera
+	 * Localiza al siguiente paciente en ser atendido y lo retira del patio o de la
+	 * sala de espera
+	 * 
 	 * @throws IndexOutOfBoundsException : lo lanzara si la cola esta vacia
 	 */
-	public void atiendeSiguiente() throws IndexOutOfBoundsException{
+	public void atiendeSiguiente() throws IndexOutOfBoundsException {
 		IRangoEtareo aux = this.colaEspera.remove(0);
 		if (this.salaPrivada == aux)
 			this.salaPrivada = null;
@@ -171,7 +177,7 @@ public class Clinica {
 	}
 
 	public void imprimeCola() {
-		if(this.colaEspera.isEmpty())
+		if (this.colaEspera.isEmpty())
 			System.out.println("No hay pacientes por ser antedidos");
 		Iterator it = this.colaEspera.iterator();
 		while (it.hasNext()) {
@@ -180,14 +186,14 @@ public class Clinica {
 	}
 
 	public void estadoSalaPrivada() {
-		if(this.salaPrivada==null)
+		if (this.salaPrivada == null)
 			System.out.println("La sala privada esta vacia");
 		else
 			System.out.println("En la sala de espera privada se encuentra " + this.salaPrivada.toString());
 	}
 
 	public void imprimePatio() {
-		if(this.patio.isEmpty())
+		if (this.patio.isEmpty())
 			System.out.println("No hay pacientes en el patio");
 		else {
 			Iterator it = this.patio.iterator();
@@ -196,11 +202,11 @@ public class Clinica {
 				System.out.println(it.next().toString());
 			}
 		}
-		
+
 	}
 
 	public void imprimeAtendidos() {
-		if(this.enAtencion.isEmpty())
+		if (this.enAtencion.isEmpty())
 			System.out.println("No hay pacientes siendo atendidos");
 		else {
 			Iterator it = this.enAtencion.iterator();
@@ -209,13 +215,38 @@ public class Clinica {
 				System.out.println(it.next().toString());
 			}
 		}
-		
+
 	}
-	
+
 	public void actualizarHistorial(Factura f) {
 		Iterator it = f.getPaciente().getPrestaciones().iterator();
 		while (it.hasNext()) {
-			this.historial.put(f.getFecha(),(Prestacion) it.next());
+			this.historial.put(f.getFecha(), (Prestacion) it.next());
 		}
 	}
+
+	public void setCostoHabitacionCompartida(double monto) {
+		HabitacionCompartida.setCostoHabitacionCompartida(monto);
+	}
+
+	public void setCostoHabitacionPrivada(double monto) {
+		HabitacionPrivada.setCostoHabitacionPrivada(monto);
+	}
+
+	public void setCostoTerapiaIntensiva(double monto) {
+		TerapiaIntensiva.setCostoTerapiaIntensiva(monto);
+	}
+
+	public double getCostoHabitacionCompartida() {
+		return HabitacionCompartida.getCostoHabitacionCompartida();
+	}
+
+	public double getCostoHabitacionPrivada() {
+		return HabitacionPrivada.getCostoHabitacionPrivada();
+	}
+
+	public double getCostoTerapiaIntensiva() {
+		return TerapiaIntensiva.getCostoTerapiaIntensiva();
+	}
+
 }
