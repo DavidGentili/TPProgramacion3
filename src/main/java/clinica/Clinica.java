@@ -1,10 +1,11 @@
 package clinica;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.TreeSet;
 
 import exceptions.ClinicaInexistenteExcepcion;
 import exceptions.ContratacionNoIndicadaExceptions;
@@ -33,11 +34,10 @@ public class Clinica {
 
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
-	// private ArrayList<Consultorio> consultorios = new ArrayList<Consultorio>();
-	private ArrayList<IRangoEtareo> colaEspera = new ArrayList<IRangoEtareo>();// LinkedLista
-	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();// HashMap
+	private LinkedList<IRangoEtareo> colaEspera = new LinkedList<IRangoEtareo>();
+	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
 	private ArrayList<IRangoEtareo> enAtencion = new ArrayList<IRangoEtareo>();
-	private HashMap<GregorianCalendar, Prestacion> historial = new HashMap<GregorianCalendar, Prestacion>();
+	private TreeSet<Prestacion> historial = new TreeSet<Prestacion>();
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
@@ -145,8 +145,9 @@ public class Clinica {
 	 * 
 	 * @throws IndexOutOfBoundsException : lo lanzara si la cola esta vacia
 	 */
-	public void atiendeSiguiente() throws IndexOutOfBoundsException {
-		IRangoEtareo aux = this.colaEspera.remove(0);
+
+	public void atiendeSiguiente() throws IndexOutOfBoundsException{
+		IRangoEtareo aux = this.colaEspera.removeFirst();
 		if (this.salaPrivada == aux)
 			this.salaPrivada = null;
 		else {
@@ -217,12 +218,9 @@ public class Clinica {
 		}
 
 	}
-
+	
 	public void actualizarHistorial(Factura f) {
 		Iterator it = f.getPaciente().getPrestaciones().iterator();
-		while (it.hasNext()) {
-			this.historial.put(f.getFecha(), (Prestacion) it.next());
-		}
 	}
 
 	public void setCostoHabitacionCompartida(double monto) {

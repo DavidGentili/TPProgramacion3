@@ -18,6 +18,10 @@ public class Factura {
 		this.nroFactura=++numero;
 		this.fecha = fecha;
 		this.paciente = paciente;
+		Iterator<IPrestacion> it= this.paciente.getPrestaciones().iterator();
+		while(it.hasNext()) {
+			it.next().setFecha(fecha);
+		}
 		this.muestraInformacion();
 	}
 
@@ -31,6 +35,7 @@ public class Factura {
 		System.out.println("Total = "+this.importeTotal);
 		Clinica.getInstancia().actualizarHistorial(this);;
 	}
+	
 	public double getImporteTotal() {
 		return this.importeTotal;
 	}
