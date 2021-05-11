@@ -1,7 +1,9 @@
 package habitaciones;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import exceptions.FechaInvalidaException;
 import exceptions.HabitacionLlena;
@@ -60,5 +62,12 @@ public abstract class Habitacion {
 	}
 
 	protected abstract double getCosto(int cantidadDeDias);
+
+	public Iterator getPacientesdeLaHabitacion() {
+		ArrayList<Paciente> aux = new ArrayList<Paciente>();
+		for(Integer i : pacientes.keySet())
+			aux.add(pacientes.get(i).getPaciente());
+		return aux.iterator();
+	}
 
 }
