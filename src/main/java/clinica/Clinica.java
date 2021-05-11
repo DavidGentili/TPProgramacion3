@@ -19,6 +19,7 @@ import habitaciones.TerapiaIntensiva;
 import medicos.IMedico;
 import medicos.MedicoFactory;
 import pacientes.IRangoEtareo;
+import pacientes.Paciente;
 import pacientes.PacienteFactory;
 import personas.Domicilio;
 import prestaciones.Prestacion;
@@ -78,6 +79,10 @@ public class Clinica {
 
 	public String getCiudad() {
 		return ciudad;
+	}
+
+	public ArrayList<IRangoEtareo> getEnAtencion() {
+		return enAtencion;
 	}
 
 	public void agregaMedico(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
@@ -154,6 +159,10 @@ public class Clinica {
 			this.patio.remove(aux);
 		}
 		this.enAtencion.add(aux);
+	}
+	
+	public void agregaPrestacion(IRangoEtareo p,Prestacion prestacion ) {
+		p.getPrestaciones().add(prestacion);		
 	}
 
 	@Override

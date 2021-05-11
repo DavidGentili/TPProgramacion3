@@ -2,7 +2,7 @@ package pacientes;
 
 import personas.Domicilio;
 
-public class Mayor extends Paciente implements IRangoEtareo {
+public class Mayor extends Paciente {
 
 	public Mayor(String nombre, String apellido, int dni, int historiaClinica) {
 		super(nombre, apellido, dni, historiaClinica);

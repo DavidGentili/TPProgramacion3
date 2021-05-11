@@ -1,5 +1,9 @@
 package pacientes;
 
+import java.util.ArrayList;
+
+import prestaciones.IPrestacion;
+
 public interface IRangoEtareo {
 	IRangoEtareo comparaIngreso(IRangoEtareo otro);
 
@@ -9,5 +13,8 @@ public interface IRangoEtareo {
 
 	IRangoEtareo comparaConMayor(IRangoEtareo otro);
 	
+	void agregarPrestacion(IPrestacion prestacion);
+	
+	public ArrayList<IPrestacion> getPrestaciones();
 	
 }

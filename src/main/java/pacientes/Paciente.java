@@ -6,7 +6,7 @@ import personas.Domicilio;
 import personas.Persona;
 import prestaciones.IPrestacion;
 
-public class Paciente extends Persona {
+public abstract class Paciente extends Persona implements IRangoEtareo{
 	protected int nroHistoriaClinica;
 	protected ArrayList<IPrestacion> prestaciones = new ArrayList<IPrestacion>();
 
@@ -25,6 +25,7 @@ public class Paciente extends Persona {
 		return this.nroHistoriaClinica;
 	}
 
+	@Override
 	public void agregarPrestacion(IPrestacion prestacion) {
 		this.prestaciones.add(prestacion);
 	}
@@ -33,6 +34,7 @@ public class Paciente extends Persona {
 		prestaciones.clear();
 	}
 
+	@Override
 	public ArrayList<IPrestacion> getPrestaciones() {
 		return prestaciones;
 	}
@@ -41,5 +43,17 @@ public class Paciente extends Persona {
 	public String toString() {
 		return super.toString() + " nroHistoriaClinica=" + nroHistoriaClinica;
 	}
+
+	@Override
+	public abstract IRangoEtareo comparaIngreso(IRangoEtareo otro);
+
+	@Override
+	public abstract IRangoEtareo comparaConNinio(IRangoEtareo otro);
+
+	@Override
+	public abstract IRangoEtareo comparaConJoven(IRangoEtareo otro) ;
+
+	@Override
+	public abstract IRangoEtareo comparaConMayor(IRangoEtareo otro);
 
 }
