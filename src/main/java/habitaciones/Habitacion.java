@@ -13,7 +13,7 @@ import pacientes.Paciente;
 
 public abstract class Habitacion {
 
-	private static int histHabitaciones=0;
+	private static int histHabitaciones = 0;
 	protected int nroHabitacion;
 	protected int limite;// Limite de personas dentro de la habitacion parametro pasado por hijo
 	protected HashMap<Integer, RegistroPaciente> pacientes = new HashMap<Integer, RegistroPaciente>();
@@ -62,13 +62,27 @@ public abstract class Habitacion {
 			throw new PacienteNoEncontrado("El paciente que busca no se encuentra en esta habitacion");
 	}
 
-	public abstract double getCosto(int cantidadDeDias);
+	public boolean estaPaciente(Paciente paciente) {
+		return pacientes.containsKey(paciente.getNroHistoriaClinica());
+
+	}
+
+	protected abstract double getCosto(int cantidadDeDias);
 
 	public Iterator getPacientesdeLaHabitacion() {
 		ArrayList<Paciente> aux = new ArrayList<Paciente>();
-		for(Integer i : pacientes.keySet())
+		for (Integer i : pacientes.keySet())
 			aux.add(pacientes.get(i).getPaciente());
 		return aux.iterator();
 	}
+
+	public boolean aceptaPaciente(String tipo) {
+		if (pacientes.size() < limite && this.aceptaTipo(tipo))
+			return true;
+		else
+			return false;
+	}
+
+	protected abstract boolean aceptaTipo(String tipo);
 
 }

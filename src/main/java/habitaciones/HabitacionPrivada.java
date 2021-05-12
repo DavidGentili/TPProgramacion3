@@ -16,7 +16,7 @@ public class HabitacionPrivada extends Habitacion {
 	}
 
 	@Override
-	public double getCosto(int cantidadDeDias) {
+	protected double getCosto(int cantidadDeDias) {
 		double costo = costoHabitacionPrivada;
 		if (cantidadDeDias == 1)
 			costo *= 2;
@@ -29,6 +29,14 @@ public class HabitacionPrivada extends Habitacion {
 			}
 		}
 		return costo;
+	}
+
+	@Override
+	protected boolean aceptaTipo(String tipo) {
+		if (tipo.equalsIgnoreCase("Habitacion Privada"))
+			return true;
+		else
+			return false;
 	}
 
 }

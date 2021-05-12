@@ -17,9 +17,17 @@ public class TerapiaIntensiva extends Habitacion {
 	}
 
 	@Override
-	public double getCosto(int cantidadDeDias) {
+	protected double getCosto(int cantidadDeDias) {
 		double costo = costoTerapiaIntensiva;
 		return Math.pow(costo, cantidadDeDias);
+	}
+	
+	@Override
+	protected boolean aceptaTipo(String tipo) {
+		if (tipo.equalsIgnoreCase("Terapia Intensiva"))
+			return true;
+		else
+			return false;
 	}
 
 }

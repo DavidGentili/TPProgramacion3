@@ -17,9 +17,17 @@ public class HabitacionCompartida extends Habitacion {
 	}
 
 	@Override
-	public double getCosto(int cantidadDeDias) {
+	protected double getCosto(int cantidadDeDias) {
 		double costo = costoHabitacionCompartida;
 		return costo + costo * cantidadDeDias;
+	}
+
+	@Override
+	protected boolean aceptaTipo(String tipo) {
+		if (tipo.equalsIgnoreCase("Habitacion Compartida"))
+			return true;
+		else
+			return false;
 	}
 
 }
