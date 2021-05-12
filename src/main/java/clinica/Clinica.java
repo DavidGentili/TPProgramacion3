@@ -13,13 +13,14 @@ import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoRegistradaExceptions;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
+import habitaciones.Habitacion;
 import habitaciones.HabitacionCompartida;
+import habitaciones.HabitacionFactory;
 import habitaciones.HabitacionPrivada;
 import habitaciones.TerapiaIntensiva;
 import medicos.IMedico;
 import medicos.MedicoFactory;
 import pacientes.IRangoEtareo;
-import pacientes.Paciente;
 import pacientes.PacienteFactory;
 import personas.Domicilio;
 import prestaciones.Prestacion;
@@ -34,11 +35,18 @@ public class Clinica {
 	private IRangoEtareo salaPrivada = null;
 
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
+	private HashMap<Integer, HabitacionCompartida> habitacionesCompartidas= new HashMap<Integer, HabitacionCompartida>();
+	private HashMap<Integer, HabitacionPrivada> habitacionesPrivadas= new HashMap<Integer, HabitacionPrivada>();
+	private HashMap<Integer, TerapiaIntensiva> salasIntensivas= new HashMap<Integer, TerapiaIntensiva>();
+	
 	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
+	private TreeSet<Prestacion> historial = new TreeSet<Prestacion>();
+	
+	
 	private LinkedList<IRangoEtareo> colaEspera = new LinkedList<IRangoEtareo>();
 	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
 	private ArrayList<IRangoEtareo> enAtencion = new ArrayList<IRangoEtareo>();
-	private TreeSet<Prestacion> historial = new TreeSet<Prestacion>();
+	
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
@@ -124,6 +132,16 @@ public class Clinica {
 			System.out.println("rango etario inexistente");
 
 	}
+	
+	public void agregaHabitacion(String tipo) {
+		Habitacion hab = HabitacionFactory.getInstance(tipo);
+		if(tipo.equalsIgnoreCase("intensiva"))
+			this.salasIntensivas.put(hab.getNroHabitacion(), (TerapiaIntensiva) hab);
+		else if(tipo.equalsIgnoreCase("compartida"))
+			this.habitacionesCompartidas.put(hab.getNroHabitacion(), (HabitacionCompartida) hab);
+		else if(tipo.equalsIgnoreCase("privada"))
+			this.habitacionesPrivadas.put(hab.getNroHabitacion(), (HabitacionPrivada) hab);
+	}
 
 	/**
 	 * Asigna un paciente recien llegado a la sala privada o el patio
@@ -161,8 +179,13 @@ public class Clinica {
 		this.enAtencion.add(aux);
 	}
 	
-	public void agregaPrestacion(IRangoEtareo p,Prestacion prestacion ) {
-		p.getPrestaciones().add(prestacion);		
+	public void agregaConsulta(IRangoEtareo p, IMedico medico, int cantidad) {
+		
+		p.getPrestaciones().add();		
+	}
+	
+	public void agregaInternacion(IRangoEtareo p, Habitacion habitacion, int cantidad) {
+		p.getPrestaciones().add();		
 	}
 
 	@Override

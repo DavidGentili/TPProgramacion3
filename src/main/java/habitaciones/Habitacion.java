@@ -13,12 +13,13 @@ import pacientes.Paciente;
 
 public abstract class Habitacion {
 
+	private static int histHabitaciones=0;
 	protected int nroHabitacion;
 	protected int limite;// Limite de personas dentro de la habitacion parametro pasado por hijo
 	protected HashMap<Integer, RegistroPaciente> pacientes = new HashMap<Integer, RegistroPaciente>();
 
-	public Habitacion(int identificador, int limite) {
-		this.nroHabitacion = identificador;
+	public Habitacion(int limite) {
+		this.nroHabitacion = ++Habitacion.histHabitaciones;
 		this.limite = limite;
 	}
 

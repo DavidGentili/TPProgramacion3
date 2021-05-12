@@ -3,8 +3,8 @@ package habitaciones;
 public class HabitacionPrivada extends Habitacion {
 	private static double costoHabitacionPrivada = 0;
 
-	public HabitacionPrivada(int identificador) {
-		super(identificador, 1);
+	public HabitacionPrivada() {
+		super(1);
 	}
 
 	public static double getCostoHabitacionPrivada() {

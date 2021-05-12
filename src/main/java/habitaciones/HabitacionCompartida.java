@@ -4,8 +4,8 @@ public class HabitacionCompartida extends Habitacion {
 
 	private static double costoHabitacionCompartida = 0;
 
-	public HabitacionCompartida(int identificador) {
-		super(identificador, 2);
+	public HabitacionCompartida() {
+		super(2);
 	}
 
 	public static double getCostoHabitacionCompartida() {

@@ -4,8 +4,8 @@ public class TerapiaIntensiva extends Habitacion {
 
 	private static double costoTerapiaIntensiva = 0;
 
-	public TerapiaIntensiva(int identificador, int limite) {
-		super(identificador, limite);
+	public TerapiaIntensiva(int limite) {
+		super(limite);
 	}
 
 	public static double getCostoTerapiaIntensiva() {

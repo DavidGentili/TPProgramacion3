@@ -13,7 +13,6 @@ public class Internacion extends Prestacion {
 
 	@Override
 	public double calcularSubtotal(int cantidad) {
-		// TODO Auto-generated method stub
 		return this.hab.getCosto(cantidad);
 	}
 

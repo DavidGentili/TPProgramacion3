@@ -12,7 +12,7 @@ public class Consulta extends Prestacion {
 			this.m = m;
 		}
 		@Override
-		public double calcularSubtotal() {
+		public double calcularSubtotal(int cantidad) {
 			return this.m.getSueldo()*this.cantidad;
 		}
 }
