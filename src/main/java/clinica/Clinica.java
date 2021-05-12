@@ -23,7 +23,10 @@ import medicos.MedicoFactory;
 import pacientes.IRangoEtareo;
 import pacientes.PacienteFactory;
 import personas.Domicilio;
+import prestaciones.Consulta;
+import prestaciones.Internacion;
 import prestaciones.Prestacion;
+import prestaciones.PrestacionFactory;
 
 public class Clinica {
 	private static Clinica instancia = null;
@@ -35,18 +38,16 @@ public class Clinica {
 	private IRangoEtareo salaPrivada = null;
 
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
-	private HashMap<Integer, HabitacionCompartida> habitacionesCompartidas= new HashMap<Integer, HabitacionCompartida>();
-	private HashMap<Integer, HabitacionPrivada> habitacionesPrivadas= new HashMap<Integer, HabitacionPrivada>();
-	private HashMap<Integer, TerapiaIntensiva> salasIntensivas= new HashMap<Integer, TerapiaIntensiva>();
-	
+	private HashMap<Integer, HabitacionCompartida> habitacionesCompartidas = new HashMap<Integer, HabitacionCompartida>();
+	private HashMap<Integer, HabitacionPrivada> habitacionesPrivadas = new HashMap<Integer, HabitacionPrivada>();
+	private HashMap<Integer, TerapiaIntensiva> salasIntensivas = new HashMap<Integer, TerapiaIntensiva>();
+
 	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
 	private TreeSet<Prestacion> historial = new TreeSet<Prestacion>();
-	
-	
+
 	private LinkedList<IRangoEtareo> colaEspera = new LinkedList<IRangoEtareo>();
 	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
 	private ArrayList<IRangoEtareo> enAtencion = new ArrayList<IRangoEtareo>();
-	
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
@@ -93,6 +94,10 @@ public class Clinica {
 		return enAtencion;
 	}
 
+	public HashMap<Integer, IMedico> getMedicos() {
+		return medicos;
+	}
+
 	public void agregaMedico(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
 			throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
@@ -132,14 +137,14 @@ public class Clinica {
 			System.out.println("rango etario inexistente");
 
 	}
-	
+
 	public void agregaHabitacion(String tipo) {
 		Habitacion hab = HabitacionFactory.getInstance(tipo);
-		if(tipo.equalsIgnoreCase("intensiva"))
+		if (tipo.equalsIgnoreCase("intensiva"))
 			this.salasIntensivas.put(hab.getNroHabitacion(), (TerapiaIntensiva) hab);
-		else if(tipo.equalsIgnoreCase("compartida"))
+		else if (tipo.equalsIgnoreCase("compartida"))
 			this.habitacionesCompartidas.put(hab.getNroHabitacion(), (HabitacionCompartida) hab);
-		else if(tipo.equalsIgnoreCase("privada"))
+		else if (tipo.equalsIgnoreCase("privada"))
 			this.habitacionesPrivadas.put(hab.getNroHabitacion(), (HabitacionPrivada) hab);
 	}
 
@@ -169,7 +174,7 @@ public class Clinica {
 	 * @throws IndexOutOfBoundsException : lo lanzara si la cola esta vacia
 	 */
 
-	public void atiendeSiguiente() throws IndexOutOfBoundsException{
+	public void atiendeSiguiente() throws IndexOutOfBoundsException {
 		IRangoEtareo aux = this.colaEspera.removeFirst();
 		if (this.salaPrivada == aux)
 			this.salaPrivada = null;
@@ -178,14 +183,32 @@ public class Clinica {
 		}
 		this.enAtencion.add(aux);
 	}
-	
-	public void agregaConsulta(IRangoEtareo p, IMedico medico, int cantidad) {
-		
-		p.getPrestaciones().add();		
+
+	/**
+	 * un paciente hace una consulta
+	 * @param p paciente con consulta
+	 * @param matricula matricula del medico
+	 * @param cantidad cantidad de consultas realizadas al medico
+	 */
+	public void agregaConsulta(IRangoEtareo p, int matricula, int cantidad) {
+		IMedico medico=this.medicos.get(matricula);
+		Consulta c = PrestacionFactory.getConsulta(medico, cantidad);
+		p.getPrestaciones().add(c);
+		this.historial.add(c);
 	}
-	
-	public void agregaInternacion(IRangoEtareo p, Habitacion habitacion, int cantidad) {
-		p.getPrestaciones().add();		
+
+	/**
+	 * interna a un paciente, debe buscar si hay alguna sala del tipo que espera libre
+	 * @param p paciente
+	 * @param tipo tipo de sala
+	 * @param cantidad cantidad de dias
+	 */
+	public void agregaInternacion(IRangoEtareo p, String tipo, int cantidad) {
+		Habitacion hab=null;
+		//aca hay que buscar alguna habitacion del tipo que se quiere, y sino largar una excepcion
+		Internacion i = PrestacionFactory.getInternacion(tipo, cantidad, hab);
+		p.getPrestaciones().add(i);
+		this.historial.add(i);
 	}
 
 	@Override
@@ -250,7 +273,7 @@ public class Clinica {
 		}
 
 	}
-	
+
 	public void actualizarHistorial(Factura f) {
 		Iterator it = f.getPaciente().getPrestaciones().iterator();
 	}
