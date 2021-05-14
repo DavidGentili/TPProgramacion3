@@ -2,7 +2,13 @@ package pacientes;
 
 import personas.Domicilio;
 
-public class Joven extends Paciente{
+/**
+ * Representa un paciente del Rango Etareo Mayor
+ * 
+ *
+ */
+
+public class Joven extends Paciente {
 
 	public Joven(String nombre, String apellido, int dni, int historiaClinica) {
 		super(nombre, apellido, dni, historiaClinica);
@@ -13,21 +19,47 @@ public class Joven extends Paciente{
 		super(nombre, apellido, dni, telefono, domicilio, ciudad, historiaClinica);
 	}
 
+	/**
+	 * compara entre dos pacientes cual tiene prioridad en la sala de espera privada
+	 * 
+	 * @param otro otro paciente a comparar
+	 * @return el paciente prioritario
+	 */
+
 	@Override
 	public Paciente comparaIngreso(Paciente otro) {
 		return otro.comparaConJoven(this);
 	}
 
+	/**
+	 * compara al joven actual con un ninio
+	 * 
+	 * @param otro otro paciente a comparar
+	 * @return el paciente prioritario
+	 */
 	@Override
 	public Paciente comparaConNinio(Paciente otro) {
 		return otro;
 	}
+
+	/**
+	 * compara al joven actual con otro joven
+	 * 
+	 * @param otro otro paciente a comparar
+	 * @return el paciente prioritario
+	 */
 
 	@Override
 	public Paciente comparaConJoven(Paciente otro) {
 		return this;
 	}
 
+	/**
+	 * compara al joven actual con un mayor
+	 * 
+	 * @param otro otro paciente a comparar
+	 * @return el paciente prioritario
+	 */
 	@Override
 	public Paciente comparaConMayor(Paciente otro) {
 		return this;
