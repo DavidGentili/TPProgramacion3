@@ -1,16 +1,16 @@
 package prestaciones;
 
-public class Prestacion {
+public class Prestacion implements Cloneable {
 
 	protected String descripcion;
 	protected int cantidad;
 	protected double valor;
 	protected double subtotal;
 
-	public Prestacion(String descripcion, int cantidad, double valor, double subtotal) {
+	public Prestacion(String descripcion, double valor, int cantidad, double subtotal) {
 		this.descripcion = descripcion;
-		this.cantidad = cantidad;
 		this.valor = valor;
+		this.cantidad = cantidad;
 		this.subtotal = subtotal;
 	}
 
@@ -33,6 +33,19 @@ public class Prestacion {
 	@Override
 	public String toString() {
 		return descripcion + " " + valor + " " + cantidad + " " + subtotal;
+	}
+
+	@Override
+	public Object clone() {
+		Object o = null;
+		try {
+			o = super.clone();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return o;
 	}
 
 }

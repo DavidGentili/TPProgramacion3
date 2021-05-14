@@ -20,7 +20,11 @@ public class Factura {
 		this.nroFactura = ++numero;
 		this.fecha = fecha;
 		this.paciente = paciente;
-
+		ArrayList<Prestacion> aux = paciente.getPretaciones();
+		this.prestaciones = (ArrayList<Prestacion>) aux.clone();
+		for (int i = 0; i < prestaciones.size(); i++) {
+			prestaciones.set(i, (Prestacion) aux.get(i).clone());
+		}
 		this.muestraInformacion();
 	}
 
@@ -29,10 +33,10 @@ public class Factura {
 		System.out.println("|  Prestacion  |   Valor  |  Cantidad  |  Subtotal  |\n");
 		Iterator it = prestaciones.iterator();
 		while (it.hasNext()) {
-			Prestacion prestacion= (Prestacion) it.next();
-			this.importeTotal+=prestacion.getSubtotal();
+			Prestacion prestacion = (Prestacion) it.next();
+			this.importeTotal += prestacion.getSubtotal();
 			System.out.println(prestacion.toString());
-			
+
 		}
 		System.out.println("Total = " + this.importeTotal);
 	}

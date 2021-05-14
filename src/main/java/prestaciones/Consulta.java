@@ -6,8 +6,8 @@ public class Consulta extends Prestacion {
 
 	protected IMedico medico;
 
-	public Consulta(String descripcion, int cantidad, double valor, double subtotal, IMedico medico) {
-		super(descripcion, cantidad, valor, subtotal);
+	public Consulta(String descripcion, double valor, int cantidad,double subtotal, IMedico medico) {
+		super(descripcion, valor, cantidad, subtotal);
 		this.medico = medico;
 	}
 

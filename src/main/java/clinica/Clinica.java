@@ -1,23 +1,28 @@
 package clinica;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
+import exceptions.CantidadDeDiasErroneosException;
 import exceptions.ClinicaInexistenteExcepcion;
 import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoRegistradaExceptions;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
+import exceptions.PacienteNoEncontrado;
 import exceptions.PosgradoNoRegistradoExceptions;
+import exceptions.TipoDeHabitacionIncorrectaException;
 import habitaciones.Internacion;
 import medicos.IMedico;
 import medicos.MedicoFactory;
 import pacientes.Paciente;
 import pacientes.PacienteFactory;
 import personas.Domicilio;
+import prestaciones.Consulta;
 import prestaciones.Prestacion;
 
 public class Clinica {
@@ -162,22 +167,50 @@ public class Clinica {
 	 * @param matricula matricula del medico
 	 * @param cantidad  cantidad de consultas realizadas al medico
 	 */
-	public void agregaConsulta(Paciente p, int matricula, int cantidad) {
-		
+	public void agregaConsulta(Paciente paciente, IMedico medico, int cantidad)
+			throws CantidadDeDiasErroneosException, PacienteNoEncontrado {
+		if (cantidad >= 0) {
+			if (this.enAtencion.contains(paciente)) {
+				paciente.agregaPrestacion(creaConsulta(medico, cantidad));
+			} else
+				throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+		} else
+			throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
+	}
+
+	private Prestacion creaConsulta(IMedico medico, int cantidad) {
+		Consulta consulta = null;
+		double valor = 0;
+		valor = medico.getSueldo() * 1.2;
+		consulta = new Consulta(medico.getApellido(), valor, cantidad, valor * cantidad, medico);
+		return consulta;
 	}
 
 	/**
 	 * 
 	 * 
-	 * @param p        paciente
+	 * @param paciente paciente
 	 * @param tipo     tipo de sala
 	 * @param cantidad cantidad de dias
+	 * @throws TipoDeHabitacionIncorrectaException - si no se encontro el tipo de
+	 *                                             habitacion <br>
+	 * @throws CantidadDeDiasErroneosException     - si el numero de dias es
+	 *                                             negativo<br>
+	 * @throws PacienteNoEncontrado                - Si el paciente no se encuentra
+	 *                                             en la lista de EnAtencion
 	 */
-	public void agregaInternacion(Paciente p, String tipo, int cantidad) {
-		
+	public void agregaInternacion(Paciente paciente, String tipo, int cantidad)
+			throws TipoDeHabitacionIncorrectaException, CantidadDeDiasErroneosException, PacienteNoEncontrado {
+		if (cantidad >= 0) {
+			if (this.enAtencion.contains(paciente)) {
+				paciente.agregaPrestacion(Internacion.getInstancia().getPrestacion(cantidad, tipo));
+			} else
+				throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+		} else
+			throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
 	}
 
-	public void facturaPaciente(Paciente p) {
+	public void facturaPaciente(Paciente paciente, GregorianCalendar fecha) {
 
 	}
 
