@@ -29,13 +29,13 @@ public class Medico extends Persona implements IMedico {
 	 * pos: <br>
 	 * Se retornara un tipo Medico ya instanciado
 	 * 
-	 * @param nombre
-	 * @param apellido
-	 * @param dni
-	 * @param telefono
-	 * @param domicilio
-	 * @param ciudad
-	 * @param matricula
+	 * @param nombre    nombre del medico
+	 * @param apellido  apellido del medico
+	 * @param dni       dni del medico
+	 * @param telefono  telefono del medico
+	 * @param domicilio domicilio del medico
+	 * @param ciudad    ciudad del medico
+	 * @param matricula matricula del medico
 	 */
 	public Medico(String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad,
 			int matricula) {
@@ -54,10 +54,10 @@ public class Medico extends Persona implements IMedico {
 	 * pos: <br>
 	 * Se retornara un tipo Medico ya instanciado
 	 * 
-	 * @param nombre
-	 * @param apellido
-	 * @param dni
-	 * @param matricula
+	 * @param nombre    nombre del medico
+	 * @param apellido  apellido del medico
+	 * @param dni       dni del medico
+	 * @param matricula matricula del medico
 	 */
 	public Medico(String nombre, String apellido, int dni, int matricula) {
 		super(nombre, apellido, dni);
