@@ -13,7 +13,6 @@ public class Factura {
 	private GregorianCalendar fecha;
 	private Paciente paciente;
 	private double importeTotal=0;
-//	private ArrayList<>
 	
 	public Factura(GregorianCalendar fecha, Paciente paciente){
 		this.nroFactura=++numero;

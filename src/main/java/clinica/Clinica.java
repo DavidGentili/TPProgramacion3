@@ -20,6 +20,7 @@ import habitaciones.TerapiaIntensiva;
 import medicos.IMedico;
 import medicos.MedicoFactory;
 import pacientes.IRangoEtareo;
+import pacientes.Paciente;
 import pacientes.PacienteFactory;
 import personas.Domicilio;
 import prestaciones.Consulta;
@@ -179,7 +180,7 @@ public class Clinica {
 	public void agregaConsulta(IRangoEtareo p, int matricula, int cantidad) {
 		IMedico medico=this.medicos.get(matricula);
 		Consulta c = PrestacionFactory.getConsulta(medico, cantidad);
-		p.getPrestaciones().add(c);
+		p.agregarPrestacion(c);
 		this.historial.add(c);
 	}
 
@@ -193,8 +194,12 @@ public class Clinica {
 		Habitacion hab=null;
 		//aca hay que buscar alguna habitacion del tipo que se quiere, y sino largar una excepcion
 		Internacion i = PrestacionFactory.getInternacion(tipo, cantidad);
-		p.getPrestaciones().add(i);
+		p.agregarPrestacion(i);
 		this.historial.add(i);
+	}
+	
+	public void facturaPaciente(Paciente p) {
+		
 	}
 
 	@Override
@@ -260,9 +265,7 @@ public class Clinica {
 
 	}
 
-	public void actualizarHistorial(Factura f) {
-		Iterator it = f.getPaciente().getPrestaciones().iterator();
-	}
+	public void actualizarHistorial(Factura f) 
 
 	public void setCostoHabitacionCompartida(double monto) {
 		HabitacionCompartida.setCostoHabitacionCompartida(monto);

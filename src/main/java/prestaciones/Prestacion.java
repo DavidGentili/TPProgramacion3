@@ -8,6 +8,11 @@ public abstract class Prestacion implements IPrestacion, Comparable<Prestacion> 
 	protected double valor;
 	protected GregorianCalendar fecha;
 
+	/**
+	 * La prestacion ya contendra el valor segun la cantidad de dias
+	 * @param cantidad
+	 * @param valor
+	 */
 	public Prestacion(int cantidad, double valor) {
 		this.cantidad = cantidad;
 		this.valor = valor;
@@ -30,8 +35,6 @@ public abstract class Prestacion implements IPrestacion, Comparable<Prestacion> 
 		return valor;
 	}
 	
-	
-
 	@Override
 	public double calcularSubtotal() {
 		return this.valor;
