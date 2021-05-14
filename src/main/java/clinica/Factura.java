@@ -45,8 +45,8 @@ public class Factura {
 		return this.importeTotal;
 	}
 
-	public void addPrestacion(Prestacion prestacion) {
-		this.prestaciones.add(prestacion);
+	public Iterator<Prestacion> getPrestaciones() {
+		return prestaciones.iterator();
 	}
 
 	public GregorianCalendar getFecha() {

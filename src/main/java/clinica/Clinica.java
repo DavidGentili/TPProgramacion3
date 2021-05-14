@@ -3,6 +3,7 @@ package clinica;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
@@ -223,6 +224,33 @@ public class Clinica {
 				throw new PacienteNoAtendido("El paciente no tiene prestaciones realizadas");
 		} else
 			throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+	}
+
+	public void reporteActividadMedica(IMedico medico, GregorianCalendar inicio, GregorianCalendar fin) {
+		Iterator<Factura> itFacturas = this.historial.iterator();
+		double acum = 0, valor;
+		GregorianCalendar fecha = null;
+		Prestacion aux;
+		Factura factura = itFacturas.next();
+		System.out.println("REPORTE DEL MEDICO: " + medico.getApellido() + " matricula " + medico.getMatricula());
+		while (itFacturas.hasNext()) {
+			if (factura.getFecha().compareTo(inicio) >= 0 && factura.getFecha().compareTo(fin) <= 0) {
+				Iterator<Prestacion> itPrestaciones = factura.getPrestaciones();
+				while (itPrestaciones.hasNext()) {
+					aux = itPrestaciones.next();
+					if (aux.getDescripcion().equalsIgnoreCase(medico.getApellido())) {
+						if (!fecha.equals(factura.getFecha())) {
+							fecha = factura.getFecha();
+							System.out.println(fecha);
+						}
+						valor = medico.getSueldo() * aux.getCantidad();
+						System.out.println(factura.getPaciente().getApellido() + " " + valor);
+						acum += valor;
+					}
+				}
+			}
+		}
+		System.out.println("El importe total del medico es:" + acum);
 	}
 
 	@Override
