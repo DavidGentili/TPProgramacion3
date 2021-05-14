@@ -13,6 +13,7 @@ import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoRegistradaExceptions;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
+import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
@@ -210,8 +211,18 @@ public class Clinica {
 			throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
 	}
 
-	public void facturaPaciente(Paciente paciente, GregorianCalendar fecha) {
-
+	public void facturaPaciente(Paciente paciente, GregorianCalendar fecha)
+			throws PacienteNoEncontrado, PacienteNoAtendido {
+		if (this.enAtencion.contains(paciente)) {
+			if (!paciente.getPretaciones().isEmpty()) {
+				Factura factura = new Factura(fecha, paciente);
+				this.enAtencion.remove(paciente);
+				paciente.limpiaPrestaciones();
+				this.historial.add(factura);
+			} else
+				throw new PacienteNoAtendido("El paciente no tiene prestaciones realizadas");
+		} else
+			throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
 	}
 
 	@Override

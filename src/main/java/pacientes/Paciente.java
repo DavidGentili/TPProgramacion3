@@ -44,7 +44,7 @@ public abstract class Paciente extends Persona {
 	 * pre:<br>
 	 * El paciente ya no debe estar mas en la lista de atencion.
 	 */
-	public void vaciaPrestaciones() {
+	public void limpiaPrestaciones() {
 		prestaciones.clear();
 	}
 

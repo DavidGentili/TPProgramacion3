@@ -19,7 +19,7 @@ public class Internacion {
 
 	public Prestacion getPrestacion(int cantDias, String tipo) throws TipoDeHabitacionIncorrectaException {
 		IHabitacion habitacion = this.gethabitacion(tipo);
-		Prestacion prestacion = new Prestacion(habitacion.toString(), cantDias, habitacion.getCostoMinimo(),
+		Prestacion prestacion = new Prestacion(habitacion.toString(), habitacion.getCostoMinimo(), cantDias,
 				habitacion.calculaCosto(cantDias));
 		return prestacion;
 	}
