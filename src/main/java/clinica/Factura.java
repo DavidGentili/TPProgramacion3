@@ -1,55 +1,56 @@
 package clinica;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import exceptions.ClinicaInexistenteExcepcion;
 import pacientes.Paciente;
-import prestaciones.IPrestacion;
+import prestaciones.Prestacion;
 
 public class Factura {
-	private static int numero=0;
+	private static int numero = 0;
 	private int nroFactura;
 	private GregorianCalendar fecha;
 	private Paciente paciente;
-	private double importeTotal=0;
-	
-	public Factura(GregorianCalendar fecha, Paciente paciente){
-		this.nroFactura=++numero;
+	private double importeTotal = 0;
+	private ArrayList<Prestacion> prestaciones = new ArrayList<Prestacion>();
+
+	public Factura(GregorianCalendar fecha, Paciente paciente) {
+		this.nroFactura = ++numero;
 		this.fecha = fecha;
 		this.paciente = paciente;
-		Iterator<IPrestacion> it= this.paciente.getPrestaciones().iterator();
-		while(it.hasNext()) {
-			it.next().setFecha(fecha);
-		}
+
 		this.muestraInformacion();
 	}
 
-	public void muestraInformacion(){
+	public void muestraInformacion() {
+		System.out.println("Nro:" + this.nroFactura + "Fecha" + this.fecha);
 		System.out.println("|  Prestacion  |   Valor  |  Cantidad  |  Subtotal  |\n");
-		Iterator<IPrestacion> it = this.paciente.getPrestaciones().iterator();
+		Iterator it = prestaciones.iterator();
 		while (it.hasNext()) {
-			this.importeTotal+=it.next().calcularSubtotal();
-			System.out.println(it.next().toString());
+			Prestacion prestacion= (Prestacion) it.next();
+			this.importeTotal+=prestacion.getSubtotal();
+			System.out.println(prestacion.toString());
+			
 		}
-		System.out.println("Total = "+this.importeTotal);
-		try {
-			Clinica.getInstancia().actualizarHistorial(this);
-		} catch (ClinicaInexistenteExcepcion e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		};
+		System.out.println("Total = " + this.importeTotal);
 	}
-	
+
 	public double getImporteTotal() {
 		return this.importeTotal;
 	}
+
+	public void addPrestacion(Prestacion prestacion) {
+		this.prestaciones.add(prestacion);
+	}
+
 	public GregorianCalendar getFecha() {
 		return fecha;
 	}
+
 	public Paciente getPaciente() {
 		return paciente;
 	}
-	
 
 }

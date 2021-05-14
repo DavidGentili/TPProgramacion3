@@ -1,7 +1,5 @@
 package prestaciones;
 
-import java.util.GregorianCalendar;
-
 public class Prestacion {
 
 	protected String descripcion;

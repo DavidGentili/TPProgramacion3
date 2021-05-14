@@ -30,7 +30,7 @@ public class Clinica {
 
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, Paciente> pacientesHist = new HashMap<Integer, Paciente>();
-	private TreeSet<Prestacion> historial = new TreeSet<Prestacion>();
+	private TreeSet<Factura> historial = new TreeSet<Factura>();
 
 	private Paciente salaPrivada = null;
 	private ArrayList<Paciente> patio = new ArrayList<Paciente>();
@@ -163,24 +163,18 @@ public class Clinica {
 	 * @param cantidad  cantidad de consultas realizadas al medico
 	 */
 	public void agregaConsulta(Paciente p, int matricula, int cantidad) {
-		IMedico medico = this.medicos.get(matricula);
-		Consulta c = PrestacionFactory.getConsulta(medico, cantidad);
-		p.agregarPrestacion(c);
-		this.historial.add(c);
+		
 	}
 
 	/**
-	 * interna a un paciente, debe buscar si hay alguna sala del tipo que espera
-	 * libre
+	 * 
 	 * 
 	 * @param p        paciente
 	 * @param tipo     tipo de sala
 	 * @param cantidad cantidad de dias
 	 */
 	public void agregaInternacion(Paciente p, String tipo, int cantidad) {
-
-		p.agregarPrestacion(i);
-		this.historial.add(i);
+		
 	}
 
 	public void facturaPaciente(Paciente p) {
