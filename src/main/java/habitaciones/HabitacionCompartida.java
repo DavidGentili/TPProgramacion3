@@ -3,9 +3,17 @@ package habitaciones;
 public class HabitacionCompartida extends Habitacion {
 
 	private static double costoHabitacionCompartida = 0;
-
-	public HabitacionCompartida() {
-		super(2);
+	private static HabitacionCompartida Instance = null;
+	
+	public static HabitacionCompartida getInstance(){
+		if(HabitacionCompartida.Instance==null)
+			HabitacionCompartida.Instance= new HabitacionCompartida();
+		
+		return HabitacionCompartida.Instance;
+	}
+	
+	private HabitacionCompartida() {
+		super();
 	}
 
 	public static double getCostoHabitacionCompartida() {
@@ -17,17 +25,14 @@ public class HabitacionCompartida extends Habitacion {
 	}
 
 	@Override
-	protected double getCosto(int cantidadDeDias) {
+	public double getCosto(int cantidadDeDias) {
 		double costo = costoHabitacionCompartida;
 		return costo + costo * cantidadDeDias;
 	}
 
 	@Override
-	protected boolean aceptaTipo(String tipo) {
-		if (tipo.equalsIgnoreCase("Habitacion Compartida"))
-			return true;
-		else
-			return false;
+	public String toString() {
+		return "habitacion compartida";
 	}
 
 }

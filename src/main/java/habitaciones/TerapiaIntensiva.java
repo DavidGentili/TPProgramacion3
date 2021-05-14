@@ -3,9 +3,17 @@ package habitaciones;
 public class TerapiaIntensiva extends Habitacion {
 
 	private static double costoTerapiaIntensiva = 0;
+	private static TerapiaIntensiva Instance = null;
+	
+	public static TerapiaIntensiva getInstance(){
+		if(TerapiaIntensiva.Instance==null)
+			TerapiaIntensiva.Instance= new TerapiaIntensiva();
+		
+		return TerapiaIntensiva.Instance;
+	}
 
-	public TerapiaIntensiva(int limite) {
-		super(limite);
+	private TerapiaIntensiva() {
+		super();
 	}
 
 	public static double getCostoTerapiaIntensiva() {
@@ -17,17 +25,14 @@ public class TerapiaIntensiva extends Habitacion {
 	}
 
 	@Override
-	protected double getCosto(int cantidadDeDias) {
+	public double getCosto(int cantidadDeDias) {
 		double costo = costoTerapiaIntensiva;
 		return Math.pow(costo, cantidadDeDias);
 	}
-	
+
 	@Override
-	protected boolean aceptaTipo(String tipo) {
-		if (tipo.equalsIgnoreCase("Terapia Intensiva"))
-			return true;
-		else
-			return false;
+	public String toString() {
+		return "la sala de terapia intensiva";
 	}
 
 }

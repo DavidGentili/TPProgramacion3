@@ -4,7 +4,7 @@ import java.util.GregorianCalendar;
 
 public interface IPrestacion {
 
-	double calcularSubtotal(int cantidad);
+	double calcularSubtotal();
 	
 	void setFecha(GregorianCalendar fecha);
 

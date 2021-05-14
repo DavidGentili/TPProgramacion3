@@ -13,8 +13,9 @@ public class Factura {
 	private GregorianCalendar fecha;
 	private Paciente paciente;
 	private double importeTotal=0;
+//	private ArrayList<>
 	
-	public Factura(GregorianCalendar fecha, Paciente paciente) throws ClinicaInexistenteExcepcion {
+	public Factura(GregorianCalendar fecha, Paciente paciente){
 		this.nroFactura=++numero;
 		this.fecha = fecha;
 		this.paciente = paciente;
@@ -25,7 +26,7 @@ public class Factura {
 		this.muestraInformacion();
 	}
 
-	public void muestraInformacion() throws ClinicaInexistenteExcepcion {
+	public void muestraInformacion(){
 		System.out.println("|  Prestacion  |   Valor  |  Cantidad  |  Subtotal  |\n");
 		Iterator<IPrestacion> it = this.paciente.getPrestaciones().iterator();
 		while (it.hasNext()) {
@@ -33,7 +34,12 @@ public class Factura {
 			System.out.println(it.next().toString());
 		}
 		System.out.println("Total = "+this.importeTotal);
-		Clinica.getInstancia().actualizarHistorial(this);;
+		try {
+			Clinica.getInstancia().actualizarHistorial(this);
+		} catch (ClinicaInexistenteExcepcion e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
 	}
 	
 	public double getImporteTotal() {

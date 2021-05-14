@@ -5,13 +5,11 @@ import java.util.GregorianCalendar;
 public abstract class Prestacion implements IPrestacion, Comparable<Prestacion> {
 	
 	protected int cantidad;
-	protected String nombreMedicoOSala;
 	protected double valor;
 	protected GregorianCalendar fecha;
 
-	public Prestacion(int cantidad, String nombreMedicoOSala, double valor) {
+	public Prestacion(int cantidad, double valor) {
 		this.cantidad = cantidad;
-		this.nombreMedicoOSala = nombreMedicoOSala;
 		this.valor = valor;
 	}
 	
@@ -28,18 +26,19 @@ public abstract class Prestacion implements IPrestacion, Comparable<Prestacion> 
 		return cantidad;
 	}
 
-	public String getNombreMedicoOSala() {
-		return nombreMedicoOSala;
-	}
-
 	public double getValor() {
 		return valor;
 	}
+	
+	
 
 	@Override
-	public String toString() {
-		return nombreMedicoOSala + valor + cantidad + valor * cantidad;
+	public double calcularSubtotal() {
+		return this.valor;
 	}
+
+	@Override
+	public abstract String toString(); 
 
 	@Override
 	public int compareTo(Prestacion o) {

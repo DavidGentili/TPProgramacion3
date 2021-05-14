@@ -15,7 +15,6 @@ import exceptions.MedicoYaAgregadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import habitaciones.Habitacion;
 import habitaciones.HabitacionCompartida;
-import habitaciones.HabitacionFactory;
 import habitaciones.HabitacionPrivada;
 import habitaciones.TerapiaIntensiva;
 import medicos.IMedico;
@@ -35,18 +34,15 @@ public class Clinica {
 	private Domicilio direccion;
 	private String telefono;
 	private String ciudad;
-	private IRangoEtareo salaPrivada = null;
-
+	
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
-	private HashMap<Integer, HabitacionCompartida> habitacionesCompartidas = new HashMap<Integer, HabitacionCompartida>();
-	private HashMap<Integer, HabitacionPrivada> habitacionesPrivadas = new HashMap<Integer, HabitacionPrivada>();
-	private HashMap<Integer, TerapiaIntensiva> salasIntensivas = new HashMap<Integer, TerapiaIntensiva>();
-
 	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
 	private TreeSet<Prestacion> historial = new TreeSet<Prestacion>();
-
-	private LinkedList<IRangoEtareo> colaEspera = new LinkedList<IRangoEtareo>();
+	
+	private IRangoEtareo salaPrivada = null;
 	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
+	private LinkedList<IRangoEtareo> colaEspera = new LinkedList<IRangoEtareo>();
+	
 	private ArrayList<IRangoEtareo> enAtencion = new ArrayList<IRangoEtareo>();
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
@@ -138,16 +134,6 @@ public class Clinica {
 
 	}
 
-	public void agregaHabitacion(String tipo) {
-		Habitacion hab = HabitacionFactory.getInstance(tipo);
-		if (tipo.equalsIgnoreCase("intensiva"))
-			this.salasIntensivas.put(hab.getNroHabitacion(), (TerapiaIntensiva) hab);
-		else if (tipo.equalsIgnoreCase("compartida"))
-			this.habitacionesCompartidas.put(hab.getNroHabitacion(), (HabitacionCompartida) hab);
-		else if (tipo.equalsIgnoreCase("privada"))
-			this.habitacionesPrivadas.put(hab.getNroHabitacion(), (HabitacionPrivada) hab);
-	}
-
 	/**
 	 * Asigna un paciente recien llegado a la sala privada o el patio
 	 * 
@@ -206,7 +192,7 @@ public class Clinica {
 	public void agregaInternacion(IRangoEtareo p, String tipo, int cantidad) {
 		Habitacion hab=null;
 		//aca hay que buscar alguna habitacion del tipo que se quiere, y sino largar una excepcion
-		Internacion i = PrestacionFactory.getInternacion(tipo, cantidad, hab);
+		Internacion i = PrestacionFactory.getInternacion(tipo, cantidad);
 		p.getPrestaciones().add(i);
 		this.historial.add(i);
 	}

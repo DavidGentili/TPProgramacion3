@@ -3,19 +3,22 @@ package prestaciones;
 import clinica.Clinica;
 import exceptions.ClinicaInexistenteExcepcion;
 import habitaciones.Habitacion;
+import habitaciones.HabitacionCompartida;
+import habitaciones.HabitacionPrivada;
+import habitaciones.TerapiaIntensiva;
 import medicos.IMedico;
 
 public class PrestacionFactory {
 	
 	private static Clinica c;
 	
-	public PrestacionFactory() {
-		try {
-			this.c= Clinica.getInstancia();
-		} catch (ClinicaInexistenteExcepcion e) {
-			
-		};
-	}
+//	public PrestacionFactory() {
+//		try {
+//			this.c= Clinica.getInstancia();
+//		} catch (ClinicaInexistenteExcepcion e) {
+//			
+//		};
+//	}
 	
 	 
 	/**
@@ -24,10 +27,16 @@ public class PrestacionFactory {
 	 * @param cantidad
 	 * @return
 	 */
-	public static Internacion getInternacion(String tipo, int cantidad, Habitacion hab) {
+	public static Internacion getInternacion(String tipo, int cantidad) {
 		Internacion respuesta=null;
-		
-		return respuesta;
+		Habitacion hab=null;
+		if(tipo.equalsIgnoreCase("intensiva"))
+			hab = TerapiaIntensiva.getInstance();
+		else if(tipo.equalsIgnoreCase("compartida"))
+			hab = HabitacionCompartida.getInstance();
+		else if(tipo.equalsIgnoreCase("privada"))
+			hab = HabitacionPrivada.getInstance();
+		return new Internacion(cantidad, hab);
 	}
 	
 	public static Consulta getConsulta(IMedico medico, int cantidad) {

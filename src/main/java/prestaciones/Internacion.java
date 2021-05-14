@@ -6,14 +6,19 @@ public class Internacion extends Prestacion {
 	
 	private Habitacion hab;
 	
-	public Internacion(int cantidad, Habitacion hab) {  //LO DE HABITACION SE REFIERE A LAS HABITACIONES DE ATENCION , despues lo tengo que cambiar
-		super(cantidad,"Nombre de la habitacion , privada,comp, o intensiva",999);//999=costo de la hab poner ahi
+	/**
+	 * Constructor, ya almacera en el atributo valor segun la cantidad de dias internados
+	 * @param cantidad
+	 * @param hab
+	 */
+	public Internacion(int cantidad, Habitacion hab) {  
+		super(cantidad,hab.getCosto(cantidad));
 		this.hab = hab;
 	}
 
 	@Override
-	public double calcularSubtotal(int cantidad) {
-		return this.hab.getCosto(cantidad);
+	public String toString() {
+		return "La internacion fue de " + this.cantidad + " dias en una"+ this.hab.toString() +"  con un valor de " +this.valor;
 	}
 
 }
