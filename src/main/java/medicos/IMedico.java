@@ -13,63 +13,63 @@ public interface IMedico {
 	/**
 	 * Retorna el Sueldo bruto del medico
 	 * 
-	 * @return
+	 * @return sueldo del medico
 	 */
 	double getSueldo();
 
 	/**
 	 * Retorna el nombre del medico
 	 * 
-	 * @return
+	 * @return nombre del medico
 	 */
 	String getNombre();
 
 	/**
 	 * Retorna el apellido del medico
 	 * 
-	 * @return
+	 * @return apellido del medico
 	 */
 	String getApellido();
 
 	/**
 	 * Retorna el DNI del medico
 	 * 
-	 * @return
+	 * @return dni del medico
 	 */
 	int getDni();
 
 	/**
 	 * Retorna la matricula del medico
 	 * 
-	 * @return
+	 * @return matricula del medico
 	 */
 	int getMatricula();
 
 	/**
 	 * Retorna el telefono del medico
 	 * 
-	 * @return
+	 * @return telefono del medico
 	 */
 	String getTelefono();
 
 	/**
 	 * Retorna el domicilio del medico
 	 * 
-	 * @return
+	 * @return domicilio del medico
 	 */
 	Domicilio getDomicilio();
 
 	/**
 	 * Retorna la ciudad del medico
 	 * 
-	 * @return
+	 * @return ciudad del medico
 	 */
 	String getCiudad();
 
 	/**
 	 * Retorna un string con la informacion del medico
 	 * 
-	 * @return
+	 * @return descripcion del medico
 	 */
 	String toString();
 
