@@ -1,5 +1,12 @@
 package prestaciones;
 
+/**
+ * La clase se encargar de almacenar una prestacion, que puede ser una
+ * internacion o una consulta clinica, reservando su descripcion, el valor base
+ * y su valor total. Ademas almacena la cantidad de dias en caso de ser
+ * internacion o la cantidad de consultas en caso de ser una consulta
+ *
+ */
 public class Prestacion implements Cloneable {
 
 	protected String descripcion;
@@ -14,27 +21,54 @@ public class Prestacion implements Cloneable {
 		this.subtotal = subtotal;
 	}
 
+	/**
+	 * Retorna la descripcion de la prestacion, que puede ser el
+	 * 
+	 * @return la descripcion de la prestacion
+	 */
 	public String getDescripcion() {
 		return descripcion;
 	}
 
+	/**
+	 * Retorn la cantidad, si es una internacion equivale a los dias internado, si
+	 * es una consulta medica equivale a la cantidad de consultas
+	 * 
+	 * @return la cantidad de dias o de consultas
+	 */
 	public int getCantidad() {
 		return cantidad;
 	}
 
+	/**
+	 * Retorna el valor base del tratamiento
+	 * 
+	 * @return el valor base de la prestacion
+	 */
 	public double getValor() {
 		return valor;
 	}
 
+	/**
+	 * Devuelve el total de la prestacion
+	 * 
+	 * @return el total de la prestacion
+	 */
 	public double getSubtotal() {
 		return subtotal;
 	}
 
+	/**
+	 * Retorna una cadena que describe la prestacion
+	 */
 	@Override
 	public String toString() {
 		return descripcion + " " + valor + " " + cantidad + " " + subtotal;
 	}
 
+	/**
+	 * Permite clonar el objeto prestacion
+	 */
 	@Override
 	public Object clone() {
 		Object o = null;

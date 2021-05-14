@@ -14,10 +14,12 @@ import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoRegistradaExceptions;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
+import exceptions.NroHistoriaClinicaNoEncontrado;
 import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
+import exceptions.TipoDePacienteIncorrectoException;
 import habitaciones.Internacion;
 import medicos.IMedico;
 import medicos.MedicoFactory;
@@ -99,30 +101,39 @@ public class Clinica {
 			throw new MedicoYaAgregadoException("El medico que desea agregar ya existe");
 	}
 
-	public void agregaPaciente(String nombre, String apellido, int dni, int historiaClinica, String rangoEtario) {
-
-		Paciente p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, historiaClinica);
-		if (p != null) {
-			if (!pacientesHist.containsKey(historiaClinica))
-				pacientesHist.put(historiaClinica, p);
+	public void IngresaPaciente(int nroHistoriaClinica) throws NroHistoriaClinicaNoEncontrado {
+		if (this.pacientesHist.containsKey(nroHistoriaClinica)) {
+			Paciente p = this.pacientesHist.get(nroHistoriaClinica);
 			colaEspera.add(p);
 			this.reasignaEspera(p);
 		} else
-			System.out.println("rango etario inexistente");
+			throw new NroHistoriaClinicaNoEncontrado("No se encontro el numero de historia clinica");
 	}
 
-	public void agregaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
-			String ciudad, int historiaClinica, String rangoEtario) {
+	public void IngresaPaciente(String nombre, String apellido, int dni, int historiaClinica, String rangoEtario)
+			throws TipoDePacienteIncorrectoException {
+		Paciente p = null;
+		if (!this.pacientesHist.containsKey(historiaClinica))
+			p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, historiaClinica);
+		else
+			p = this.pacientesHist.get(historiaClinica);
+		this.pacientesHist.put(p.getNroHistoriaClinica(), p);
+		colaEspera.add(p);
+		this.reasignaEspera(p);
 
-		Paciente p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, telefono, domicilio, ciudad,
-				historiaClinica);
-		if (p != null) {
-			if (!pacientesHist.containsKey(historiaClinica))
-				pacientesHist.put(historiaClinica, p);
-			colaEspera.add(p);
-			this.reasignaEspera(p);
-		} else
-			System.out.println("rango etario inexistente");
+	}
+
+	public void IngresaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
+			String ciudad, int historiaClinica, String rangoEtario) throws TipoDePacienteIncorrectoException {
+		Paciente p = null;
+		if (!this.pacientesHist.containsKey(historiaClinica))
+			p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, telefono, domicilio, ciudad,
+					historiaClinica);
+		else
+			p = this.pacientesHist.get(historiaClinica);
+		this.pacientesHist.put(p.getNroHistoriaClinica(), p);
+		colaEspera.add(p);
+		this.reasignaEspera(p);
 
 	}
 
@@ -230,22 +241,25 @@ public class Clinica {
 		Iterator<Factura> itFacturas = this.historial.iterator();
 		double acum = 0, valor;
 		GregorianCalendar fecha = null;
-		Prestacion aux;
+		Prestacion prestaciones;
 		Factura factura = itFacturas.next();
 		System.out.println("REPORTE DEL MEDICO: " + medico.getApellido() + " matricula " + medico.getMatricula());
 		while (itFacturas.hasNext()) {
 			if (factura.getFecha().compareTo(inicio) >= 0 && factura.getFecha().compareTo(fin) <= 0) {
 				Iterator<Prestacion> itPrestaciones = factura.getPrestaciones();
 				while (itPrestaciones.hasNext()) {
-					aux = itPrestaciones.next();
-					if (aux.getDescripcion().equalsIgnoreCase(medico.getApellido())) {
-						if (!fecha.equals(factura.getFecha())) {
-							fecha = factura.getFecha();
-							System.out.println(fecha);
+					prestaciones = itPrestaciones.next();
+					if (prestaciones.getDescripcion().equalsIgnoreCase(medico.getApellido())) {
+						Consulta aux = (Consulta) prestaciones;
+						if (medico.equals(aux.getMedico())) {
+							if (!fecha.equals(factura.getFecha())) {
+								fecha = factura.getFecha();
+								System.out.println(fecha);
+							}
+							valor = medico.getSueldo() * prestaciones.getCantidad();
+							System.out.println(factura.getPaciente().getApellido() + " " + valor);
+							acum += valor;
 						}
-						valor = medico.getSueldo() * aux.getCantidad();
-						System.out.println(factura.getPaciente().getApellido() + " " + valor);
-						acum += valor;
 					}
 				}
 			}
