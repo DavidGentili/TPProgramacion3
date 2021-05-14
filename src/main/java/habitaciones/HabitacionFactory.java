@@ -2,8 +2,22 @@ package habitaciones;
 
 import exceptions.TipoDeHabitacionIncorrectaException;
 
+/**
+ * Mediante el uso del patron Factory, se selecciona y se retorna una instancia
+ * del tipo de habitacion
+ *
+ */
+
 public class HabitacionFactory {
 
+	/**
+	 * Retorna una instancia del tipo de habitacion, si no encuentra el tipo propaga
+	 * excepcion
+	 * 
+	 * @param tipo tipo de habitacion
+	 * @return intancia de habitacion
+	 * @throws TipoDeHabitacionIncorrectaException si no encuentra el tipo ingresado
+	 */
 	public static IHabitacion getInstance(String tipo) throws TipoDeHabitacionIncorrectaException {
 		IHabitacion respuesta = null;
 		if (tipo.equalsIgnoreCase("intensiva") || tipo.equalsIgnoreCase("terapia")
