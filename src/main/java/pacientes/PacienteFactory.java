@@ -5,8 +5,8 @@ import personas.Domicilio;
 public class PacienteFactory {
 	public PacienteFactory() {}
 	
-	public static IRangoEtareo getInstance(String tipo, String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad, int historiaClinica) {
-		IRangoEtareo respuesta=null;
+	public static Paciente getInstance(String tipo, String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad, int historiaClinica) {
+		Paciente respuesta=null;
 		if(tipo.equalsIgnoreCase("ninio"))
 			respuesta=new Ninio(nombre,apellido,dni,telefono,domicilio,ciudad,historiaClinica);
 		else if(tipo.equalsIgnoreCase("joven"))
@@ -16,8 +16,8 @@ public class PacienteFactory {
 		return respuesta;
 	}
 	
-	public static IRangoEtareo getInstance(String tipo, String nombre, String apellido, int dni, int historiaClinica){
-		IRangoEtareo respuesta=null;
+	public static Paciente getInstance(String tipo, String nombre, String apellido, int dni, int historiaClinica){
+		Paciente respuesta=null;
 		if(tipo.equalsIgnoreCase("ninio"))
 			respuesta=new Ninio(nombre,apellido,dni,historiaClinica);
 		else if(tipo.equalsIgnoreCase("joven"))

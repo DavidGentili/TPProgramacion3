@@ -1,14 +1,10 @@
 package pacientes;
 
-import java.util.ArrayList;
-
 import personas.Domicilio;
 import personas.Persona;
-import prestaciones.IPrestacion;
 
-public abstract class Paciente extends Persona implements IRangoEtareo{
+public abstract class Paciente extends Persona{
 	protected int nroHistoriaClinica;
-	protected ArrayList<IPrestacion> prestaciones = new ArrayList<IPrestacion>();
 
 	public Paciente(String nombre, String apellido, int dni, int historiaClinica) {
 		super(nombre, apellido, dni);
@@ -26,34 +22,19 @@ public abstract class Paciente extends Persona implements IRangoEtareo{
 	}
 
 	@Override
-	public void agregarPrestacion(IPrestacion prestacion) {
-		this.prestaciones.add(prestacion);
-	}
-
-	public void vaciarPrestaciones() {
-		prestaciones.clear();
-	}
-
-	@Override
-	public ArrayList<IPrestacion> getPrestaciones() {
-		return prestaciones;
-	}
-
-	@Override
 	public String toString() {
 		return super.toString() + " nroHistoriaClinica=" + nroHistoriaClinica;
 	}
 
-	@Override
-	public abstract IRangoEtareo comparaIngreso(IRangoEtareo otro);
+	
+	public abstract Paciente comparaIngreso(Paciente otro);
 
-	@Override
-	public abstract IRangoEtareo comparaConNinio(IRangoEtareo otro);
+	
+	public abstract Paciente comparaConNinio(Paciente otro);
 
-	@Override
-	public abstract IRangoEtareo comparaConJoven(IRangoEtareo otro) ;
+	
+	public abstract Paciente comparaConJoven(Paciente otro) ;
 
-	@Override
-	public abstract IRangoEtareo comparaConMayor(IRangoEtareo otro);
+	public abstract Paciente comparaConMayor(Paciente otro);
 
 }

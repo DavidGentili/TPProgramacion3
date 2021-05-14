@@ -14,22 +14,22 @@ public class Ninio extends Paciente{
 	}
 
 	@Override
-	public IRangoEtareo comparaIngreso(IRangoEtareo otro) {
+	public Paciente comparaIngreso(Paciente otro) {
 		return otro.comparaConNinio(this);
 	}
 
 	@Override
-	public IRangoEtareo comparaConNinio(IRangoEtareo otro) {
+	public Paciente comparaConNinio(Paciente otro) {
 		return this;
 	}
 
 	@Override
-	public IRangoEtareo comparaConJoven(IRangoEtareo otro) {
+	public Paciente comparaConJoven(Paciente otro) {
 		return this;
 	}
 
 	@Override
-	public IRangoEtareo comparaConMayor(IRangoEtareo otro) {
+	public Paciente comparaConMayor(Paciente otro) {
 		return otro;
 	}
 

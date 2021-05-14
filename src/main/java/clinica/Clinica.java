@@ -2,9 +2,7 @@ package clinica;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.TreeSet;
 
 import exceptions.ClinicaInexistenteExcepcion;
@@ -12,21 +10,15 @@ import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoRegistradaExceptions;
 import exceptions.MedicoYaAgregadoException;
+import exceptions.MontoInvalidoException;
 import exceptions.PosgradoNoRegistradoExceptions;
-import habitaciones.Habitacion;
-import habitaciones.HabitacionCompartida;
-import habitaciones.HabitacionPrivada;
-import habitaciones.TerapiaIntensiva;
+import habitaciones.Internacion;
 import medicos.IMedico;
 import medicos.MedicoFactory;
-import pacientes.IRangoEtareo;
 import pacientes.Paciente;
 import pacientes.PacienteFactory;
 import personas.Domicilio;
-import prestaciones.Consulta;
-import prestaciones.Internacion;
 import prestaciones.Prestacion;
-import prestaciones.PrestacionFactory;
 
 public class Clinica {
 	private static Clinica instancia = null;
@@ -35,16 +27,16 @@ public class Clinica {
 	private Domicilio direccion;
 	private String telefono;
 	private String ciudad;
-	
+
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
-	private HashMap<Integer, IRangoEtareo> pacientesHist = new HashMap<Integer, IRangoEtareo>();
+	private HashMap<Integer, Paciente> pacientesHist = new HashMap<Integer, Paciente>();
 	private TreeSet<Prestacion> historial = new TreeSet<Prestacion>();
-	
-	private IRangoEtareo salaPrivada = null;
-	private ArrayList<IRangoEtareo> patio = new ArrayList<IRangoEtareo>();
-	private LinkedList<IRangoEtareo> colaEspera = new LinkedList<IRangoEtareo>();
-	
-	private ArrayList<IRangoEtareo> enAtencion = new ArrayList<IRangoEtareo>();
+
+	private Paciente salaPrivada = null;
+	private ArrayList<Paciente> patio = new ArrayList<Paciente>();
+	private LinkedList<Paciente> colaEspera = new LinkedList<Paciente>();
+
+	private ArrayList<Paciente> enAtencion = new ArrayList<Paciente>();
 
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
@@ -87,14 +79,6 @@ public class Clinica {
 		return ciudad;
 	}
 
-	public ArrayList<IRangoEtareo> getEnAtencion() {
-		return enAtencion;
-	}
-
-	public HashMap<Integer, IMedico> getMedicos() {
-		return medicos;
-	}
-
 	public void agregaMedico(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
 			throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
@@ -110,7 +94,7 @@ public class Clinica {
 
 	public void agregaPaciente(String nombre, String apellido, int dni, int historiaClinica, String rangoEtario) {
 
-		IRangoEtareo p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, historiaClinica);
+		Paciente p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, historiaClinica);
 		if (p != null) {
 			if (!pacientesHist.containsKey(historiaClinica))
 				pacientesHist.put(historiaClinica, p);
@@ -123,7 +107,7 @@ public class Clinica {
 	public void agregaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int historiaClinica, String rangoEtario) {
 
-		IRangoEtareo p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, telefono, domicilio, ciudad,
+		Paciente p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, telefono, domicilio, ciudad,
 				historiaClinica);
 		if (p != null) {
 			if (!pacientesHist.containsKey(historiaClinica))
@@ -140,8 +124,8 @@ public class Clinica {
 	 * 
 	 * @param p
 	 */
-	public void reasignaEspera(IRangoEtareo p) {
-		IRangoEtareo aux;
+	public void reasignaEspera(Paciente p) {
+		Paciente aux;
 		if (this.salaPrivada == null)
 			this.salaPrivada = p;
 		else {
@@ -162,7 +146,7 @@ public class Clinica {
 	 */
 
 	public void atiendeSiguiente() throws IndexOutOfBoundsException {
-		IRangoEtareo aux = this.colaEspera.removeFirst();
+		Paciente aux = this.colaEspera.removeFirst();
 		if (this.salaPrivada == aux)
 			this.salaPrivada = null;
 		else {
@@ -173,33 +157,34 @@ public class Clinica {
 
 	/**
 	 * un paciente hace una consulta
-	 * @param p paciente con consulta
+	 * 
+	 * @param p         paciente con consulta
 	 * @param matricula matricula del medico
-	 * @param cantidad cantidad de consultas realizadas al medico
+	 * @param cantidad  cantidad de consultas realizadas al medico
 	 */
-	public void agregaConsulta(IRangoEtareo p, int matricula, int cantidad) {
-		IMedico medico=this.medicos.get(matricula);
+	public void agregaConsulta(Paciente p, int matricula, int cantidad) {
+		IMedico medico = this.medicos.get(matricula);
 		Consulta c = PrestacionFactory.getConsulta(medico, cantidad);
 		p.agregarPrestacion(c);
 		this.historial.add(c);
 	}
 
 	/**
-	 * interna a un paciente, debe buscar si hay alguna sala del tipo que espera libre
-	 * @param p paciente
-	 * @param tipo tipo de sala
+	 * interna a un paciente, debe buscar si hay alguna sala del tipo que espera
+	 * libre
+	 * 
+	 * @param p        paciente
+	 * @param tipo     tipo de sala
 	 * @param cantidad cantidad de dias
 	 */
-	public void agregaInternacion(IRangoEtareo p, String tipo, int cantidad) {
-		Habitacion hab=null;
-		//aca hay que buscar alguna habitacion del tipo que se quiere, y sino largar una excepcion
-		Internacion i = PrestacionFactory.getInternacion(tipo, cantidad);
+	public void agregaInternacion(Paciente p, String tipo, int cantidad) {
+
 		p.agregarPrestacion(i);
 		this.historial.add(i);
 	}
-	
+
 	public void facturaPaciente(Paciente p) {
-		
+
 	}
 
 	@Override
@@ -207,88 +192,36 @@ public class Clinica {
 		return "Clinica " + nombre + ", direccion=" + direccion + ", telefono=" + telefono + ", ciudad=" + ciudad;
 	}
 
-	public void imprimerMedicos() {
-		Iterator it = this.medicos.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			System.out.println(pair.getValue().toString());
-		}
-	}
-
-	public void imprimeHistoricoPacientes() {
-		Iterator it = this.pacientesHist.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pair = (Map.Entry) it.next();
-			System.out.println(pair.getValue().toString());
-		}
-	}
-
-	public void imprimeCola() {
-		if (this.colaEspera.isEmpty())
-			System.out.println("No hay pacientes por ser antedidos");
-		Iterator it = this.colaEspera.iterator();
-		while (it.hasNext()) {
-			System.out.println(it.next().toString());
-		}
-	}
-
-	public void estadoSalaPrivada() {
-		if (this.salaPrivada == null)
-			System.out.println("La sala privada esta vacia");
+	public static void setCostoHabitacionCompartida(double monto) throws MontoInvalidoException {
+		if (monto >= 0)
+			Internacion.setCostoHabitacionCompartida(monto);
 		else
-			System.out.println("En la sala de espera privada se encuentra " + this.salaPrivada.toString());
+			throw new MontoInvalidoException("El monto de la habitacion Compartida debe ser positivo");
 	}
 
-	public void imprimePatio() {
-		if (this.patio.isEmpty())
-			System.out.println("No hay pacientes en el patio");
-		else {
-			Iterator it = this.patio.iterator();
-			System.out.println("En el patio se encuentran");
-			while (it.hasNext()) {
-				System.out.println(it.next().toString());
-			}
-		}
-
+	public static void setCostoHabitacionPrivada(double monto) throws MontoInvalidoException {
+		if (monto >= 0)
+			Internacion.setCostoHabitacionPrivada(monto);
+		else
+			throw new MontoInvalidoException("El monto de la habitacion Privada debe ser positivo");
 	}
 
-	public void imprimeAtendidos() {
-		if (this.enAtencion.isEmpty())
-			System.out.println("No hay pacientes siendo atendidos");
-		else {
-			Iterator it = this.enAtencion.iterator();
-			System.out.println("Los pacientes que se encuentran siendo atendidos son");
-			while (it.hasNext()) {
-				System.out.println(it.next().toString());
-			}
-		}
-
+	public static void setCostoTerapiaIntensiva(double monto) throws MontoInvalidoException {
+		if (monto >= 0)
+			Internacion.setCostoTerapiaIntensiva(monto);
+		else
+			throw new MontoInvalidoException("El monto de la Terapia Intensiva debe ser positivo");
 	}
 
-	public void actualizarHistorial(Factura f) 
-
-	public void setCostoHabitacionCompartida(double monto) {
-		HabitacionCompartida.setCostoHabitacionCompartida(monto);
+	public static double getCostoHabitacionCompartida() {
+		return Internacion.getCostoHabitacionCompartida();
 	}
 
-	public void setCostoHabitacionPrivada(double monto) {
-		HabitacionPrivada.setCostoHabitacionPrivada(monto);
+	public static double getCostoHabitacionPrivada() {
+		return Internacion.getCostoHabitacionPrivada();
 	}
 
-	public void setCostoTerapiaIntensiva(double monto) {
-		TerapiaIntensiva.setCostoTerapiaIntensiva(monto);
+	public static double getCostInternacion() {
+		return Internacion.getCostoTerapiaIntensiva();
 	}
-
-	public double getCostoHabitacionCompartida() {
-		return HabitacionCompartida.getCostoHabitacionCompartida();
-	}
-
-	public double getCostoHabitacionPrivada() {
-		return HabitacionPrivada.getCostoHabitacionPrivada();
-	}
-
-	public double getCostoTerapiaIntensiva() {
-		return TerapiaIntensiva.getCostoTerapiaIntensiva();
-	}
-
 }

@@ -2,29 +2,22 @@ package prestaciones;
 
 import java.util.GregorianCalendar;
 
-public abstract class Prestacion implements IPrestacion, Comparable<Prestacion> {
-	
+public class Prestacion {
+
+	protected String descripcion;
 	protected int cantidad;
 	protected double valor;
-	protected GregorianCalendar fecha;
+	protected double subtotal;
 
-	/**
-	 * La prestacion ya contendra el valor segun la cantidad de dias
-	 * @param cantidad
-	 * @param valor
-	 */
-	public Prestacion(int cantidad, double valor) {
+	public Prestacion(String descripcion, int cantidad, double valor, double subtotal) {
+		this.descripcion = descripcion;
 		this.cantidad = cantidad;
 		this.valor = valor;
-	}
-	
-	public GregorianCalendar getFecha() {
-		return fecha;
+		this.subtotal = subtotal;
 	}
 
-	@Override
-	public void setFecha(GregorianCalendar fecha) {
-		this.fecha=fecha;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
 	public int getCantidad() {
@@ -34,20 +27,14 @@ public abstract class Prestacion implements IPrestacion, Comparable<Prestacion> 
 	public double getValor() {
 		return valor;
 	}
-	
-	@Override
-	public double calcularSubtotal() {
-		return this.valor;
+
+	public double getSubtotal() {
+		return subtotal;
 	}
 
 	@Override
-	public abstract String toString(); 
-
-	@Override
-	public int compareTo(Prestacion o) {
-		return this.fecha.compareTo(o.fecha);
+	public String toString() {
+		return descripcion + " " + valor + " " + cantidad + " " + subtotal;
 	}
-	
-	
 
 }

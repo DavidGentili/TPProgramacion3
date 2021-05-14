@@ -1,18 +1,10 @@
 package habitaciones;
 
-public class TerapiaIntensiva extends Habitacion {
+class TerapiaIntensiva implements IHabitacion {
 
 	private static double costoTerapiaIntensiva = 0;
-	private static TerapiaIntensiva Instance = null;
-	
-	public static TerapiaIntensiva getInstance(){
-		if(TerapiaIntensiva.Instance==null)
-			TerapiaIntensiva.Instance= new TerapiaIntensiva();
-		
-		return TerapiaIntensiva.Instance;
-	}
 
-	private TerapiaIntensiva() {
+	protected TerapiaIntensiva() {
 		super();
 	}
 
@@ -24,10 +16,14 @@ public class TerapiaIntensiva extends Habitacion {
 		TerapiaIntensiva.costoTerapiaIntensiva = costoTerapiaIntensiva;
 	}
 
-	@Override
-	public double getCosto(int cantidadDeDias) {
+	public double calculaCosto(int cantidadDeDias) {
 		double costo = costoTerapiaIntensiva;
 		return Math.pow(costo, cantidadDeDias);
+	}
+	
+	@Override
+	public double getCostoMinimo() {
+		return costoTerapiaIntensiva;
 	}
 
 	@Override

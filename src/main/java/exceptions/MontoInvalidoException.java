@@ -1,12 +1,12 @@
 package exceptions;
 
-public class HabitacionVacia extends Exception {
+public class MontoInvalidoException extends Exception {
 
-	public HabitacionVacia() {
+	public MontoInvalidoException() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public HabitacionVacia(String message) {
+	public MontoInvalidoException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}

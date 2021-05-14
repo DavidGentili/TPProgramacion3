@@ -1,17 +1,9 @@
 package habitaciones;
 
-public class HabitacionPrivada extends Habitacion {
+class HabitacionPrivada implements IHabitacion {
 	private static double costoHabitacionPrivada = 0;
-	private static HabitacionPrivada Instance = null;
 
-	public static HabitacionPrivada getInstance() {
-		if (HabitacionPrivada.Instance == null)
-			HabitacionPrivada.Instance = new HabitacionPrivada();
-
-		return HabitacionPrivada.Instance;
-	}
-
-	private HabitacionPrivada() {
+	protected HabitacionPrivada() {
 		super();
 	}
 
@@ -23,8 +15,7 @@ public class HabitacionPrivada extends Habitacion {
 		HabitacionPrivada.costoHabitacionPrivada = costoHabitacionPrivada;
 	}
 
-	@Override
-	public double getCosto(int cantidadDeDias) {
+	public double calculaCosto(int cantidadDeDias) {
 		double costo = costoHabitacionPrivada;
 		if (cantidadDeDias == 1)
 			costo *= 2;
@@ -39,6 +30,11 @@ public class HabitacionPrivada extends Habitacion {
 		return costo;
 	}
 
+	@Override
+	public double getCostoMinimo() {
+		return costoHabitacionPrivada;
+	}
+	
 	@Override
 	public String toString() {
 		return "habitacion privada";
