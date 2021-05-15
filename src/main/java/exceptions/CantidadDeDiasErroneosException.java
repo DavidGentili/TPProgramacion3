@@ -1,5 +1,10 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando la cantidad de de internacion es
+ * negativa
+ *
+ */
 public class CantidadDeDiasErroneosException extends Exception {
 
 	public CantidadDeDiasErroneosException() {

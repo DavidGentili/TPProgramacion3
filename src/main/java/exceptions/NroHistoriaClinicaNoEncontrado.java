@@ -1,5 +1,10 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando no se encuentra el numero de historia
+ * clinica buscada
+ *
+ */
 public class NroHistoriaClinicaNoEncontrado extends Exception {
 
 	public NroHistoriaClinicaNoEncontrado() {

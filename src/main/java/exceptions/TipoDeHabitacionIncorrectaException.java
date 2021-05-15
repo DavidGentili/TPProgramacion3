@@ -1,5 +1,10 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando el tipo de habitacion ingresado no se
+ * encuentra
+ *
+ */
 public class TipoDeHabitacionIncorrectaException extends Exception {
 
 	public TipoDeHabitacionIncorrectaException() {

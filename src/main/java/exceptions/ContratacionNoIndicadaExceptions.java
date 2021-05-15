@@ -1,5 +1,9 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando La contratacion no esta indicada
+ *
+ */
 public class ContratacionNoIndicadaExceptions extends Exception {
 
 	public ContratacionNoIndicadaExceptions() {
@@ -10,6 +14,5 @@ public class ContratacionNoIndicadaExceptions extends Exception {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
-
 
 }

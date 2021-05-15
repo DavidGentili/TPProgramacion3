@@ -1,5 +1,10 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando La especialidad ingresada no se
+ * encuentra
+ *
+ */
 public class EspecialidadNoRegistradaExceptions extends Exception {
 
 	public EspecialidadNoRegistradaExceptions() {

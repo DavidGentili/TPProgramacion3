@@ -1,5 +1,11 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando el tipo de rango etareo del paciente
+ * ingresado es incorrecto
+ *
+ */
+
 public class TipoDePacienteIncorrectoException extends Exception {
 
 	public TipoDePacienteIncorrectoException() {
@@ -10,7 +16,5 @@ public class TipoDePacienteIncorrectoException extends Exception {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
-
-
 
 }

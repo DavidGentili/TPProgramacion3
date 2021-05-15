@@ -95,7 +95,7 @@ public class Medico extends Persona implements IMedico {
 	/**
 	 * Se regresa el valor del sueldo basico de un medico
 	 * 
-	 * @return: double
+	 * @return valor del sueldo basico de un medico
 	 */
 	public static double getSueldoBasico() {
 		return Medico.sueldoBasico;

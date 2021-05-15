@@ -1,6 +1,10 @@
 package exceptions;
 
-public class PosgradoNoRegistradoExceptions extends Exception{
+/**
+ * Es una Excepcion que se lanza cuando el posgrado ingresado no se encuentra
+ *
+ */
+public class PosgradoNoRegistradoExceptions extends Exception {
 
 	public PosgradoNoRegistradoExceptions() {
 		// TODO Auto-generated constructor stub

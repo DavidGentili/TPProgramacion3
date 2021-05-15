@@ -1,5 +1,10 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando no se encuentra el medico que se
+ * solicito
+ *
+ */
 public class MedicoNoEncontradoException extends Exception {
 
 	public MedicoNoEncontradoException() {

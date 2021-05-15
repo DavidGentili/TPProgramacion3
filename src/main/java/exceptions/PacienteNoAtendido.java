@@ -1,5 +1,10 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando se quiere facturar a un paciente no
+ * atendido
+ *
+ */
 public class PacienteNoAtendido extends Exception {
 
 	public PacienteNoAtendido() {

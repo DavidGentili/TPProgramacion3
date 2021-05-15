@@ -1,5 +1,10 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando el domicilio que se quiere ingresar es
+ * invalido
+ *
+ */
 public class DomicilioInvalido extends Exception {
 
 	public DomicilioInvalido() {

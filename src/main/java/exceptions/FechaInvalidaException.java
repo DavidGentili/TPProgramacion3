@@ -1,5 +1,10 @@
 package exceptions;
 
+/**
+ * Es una Excepcion que se lanza cuando la fecha ingresada no corresponde
+ *
+ */
+
 public class FechaInvalidaException extends Exception {
 
 	public FechaInvalidaException() {
@@ -10,6 +15,5 @@ public class FechaInvalidaException extends Exception {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
-
 
 }
