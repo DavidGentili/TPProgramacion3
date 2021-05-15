@@ -14,7 +14,7 @@ public class Domicilio {
 
 	public Domicilio(String calle, int numero) throws DomicilioInvalido {
 		super();
-		if (!calle.isBlank())
+		if (calle!=null && !calle.isBlank())
 			this.calle = calle;
 		else
 			throw new DomicilioInvalido("La calle debe ser distinta de blanco");
