@@ -1,10 +1,10 @@
 package clinica;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
-import exceptions.ClinicaInexistenteExcepcion;
 import pacientes.Paciente;
 import prestaciones.Prestacion;
 
@@ -14,7 +14,7 @@ import prestaciones.Prestacion;
  * 
  *
  */
-public class Factura {
+public class Factura implements Comparable {
 	private static int numero = 0;
 	private int nroFactura;
 	private GregorianCalendar fecha;
@@ -46,8 +46,9 @@ public class Factura {
 	 */
 	public void muestraInformacion() {
 		double acumulador = 0;
-		System.out.println("Nro:" + this.nroFactura + "Fecha" + this.fecha);
-		System.out.println("|  Prestacion  |   Valor  |  Cantidad  |  Subtotal  |\n");
+		SimpleDateFormat sdf = new SimpleDateFormat(" dd'/'MM'/'YY");
+		System.out.println("Nro:" + this.nroFactura + "	Fecha" + sdf.format(this.fecha.getTime()));
+		System.out.println("|     Prestacion     |   Valor  |  Cantidad  |  Subtotal  |\n");
 		Iterator it = prestaciones.iterator();
 		while (it.hasNext()) {
 			Prestacion prestacion = (Prestacion) it.next();
@@ -55,6 +56,7 @@ public class Factura {
 			System.out.println(prestacion.toString());
 
 		}
+		System.out.println();
 		System.out.println("Total = " + acumulador);
 		if (this.importeTotal == 0 && acumulador != 0) {
 			this.importeTotal = acumulador;
@@ -95,6 +97,12 @@ public class Factura {
 	 */
 	public Paciente getPaciente() {
 		return paciente;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Factura otra = (Factura) o;
+		return this.fecha.compareTo(otra.fecha);
 	}
 
 }

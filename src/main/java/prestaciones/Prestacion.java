@@ -63,7 +63,8 @@ public class Prestacion implements Cloneable {
 	 */
 	@Override
 	public String toString() {
-		return descripcion + " " + valor + " " + cantidad + " " + subtotal;
+		String patron = " %-20s %10.1f %12d %12.1f";
+		return String.format(patron, this.descripcion, this.valor, this.cantidad, this.subtotal);
 	}
 
 	/**

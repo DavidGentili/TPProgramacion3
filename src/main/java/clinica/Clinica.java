@@ -1,5 +1,6 @@
 package clinica;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -541,11 +542,14 @@ public class Clinica {
 	public void reporteActividadMedica(IMedico medico, GregorianCalendar inicio, GregorianCalendar fin) {
 		Iterator<Factura> itFacturas = this.historial.iterator();
 		double acum = 0, valor;
-		GregorianCalendar fecha = null;
+		GregorianCalendar fecha = new GregorianCalendar(2000, 0, 1);// Se pone una fecha previa para evitar un hacer una
+																	// comparacion con un null en la primera iteracion
+		SimpleDateFormat sdf = new SimpleDateFormat("dd'/'MM'/'yy");
 		Prestacion prestaciones;
-		Factura factura = itFacturas.next();
+		Factura factura;
 		System.out.println("REPORTE DEL MEDICO: " + medico.getApellido() + " matricula " + medico.getMatricula());
 		while (itFacturas.hasNext()) {
+			factura = itFacturas.next();
 			if (factura.getFecha().compareTo(inicio) >= 0 && factura.getFecha().compareTo(fin) <= 0) {
 				Iterator<Prestacion> itPrestaciones = factura.getPrestaciones();
 				while (itPrestaciones.hasNext()) {
@@ -555,17 +559,18 @@ public class Clinica {
 						if (medico.equals(aux.getMedico())) {
 							if (!fecha.equals(factura.getFecha())) {
 								fecha = factura.getFecha();
-								System.out.println(fecha);
+								System.out.println(sdf.format(fecha.getTime()));
 							}
 							valor = medico.getSueldo() * prestaciones.getCantidad();
-							System.out.println(factura.getPaciente().getApellido() + " " + valor);
+							System.out.println("|  Paciente  |  Cantidad  |   Valor   |");
+							System.out.printf("%-12s %12d %11.1f\n",factura.getPaciente().getApellido(), prestaciones.getCantidad(), valor);
 							acum += valor;
 						}
 					}
 				}
 			}
 		}
-		System.out.println("El importe total del medico es:" + acum);
+		System.out.println("\nEl importe total del medico es: " + acum);
 	}
 
 	@Override
