@@ -12,6 +12,7 @@ import exceptions.ClinicaInexistenteExcepcion;
 import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoRegistradaExceptions;
+import exceptions.MedicoNoEncontradoException;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
 import exceptions.NroHistoriaClinicaNoEncontrado;
@@ -22,6 +23,7 @@ import exceptions.TipoDeHabitacionIncorrectaException;
 import exceptions.TipoDePacienteIncorrectoException;
 import habitaciones.Internacion;
 import medicos.IMedico;
+import medicos.Medico;
 import medicos.MedicoFactory;
 import pacientes.Paciente;
 import pacientes.PacienteFactory;
@@ -138,6 +140,103 @@ public class Clinica {
 	}
 
 	/**
+	 * Retonra una paciente segun su numero de historia clinica, si no lo encuentra
+	 * propaga excepcion
+	 * 
+	 * @param historiaClinica El numero de historia clinica del paciente buscado
+	 * @return El paciente buscado
+	 * @throws PacienteNoEncontrado si no encuentra la paciente buscado
+	 */
+	public Paciente getPaciente(int historiaClinica) throws PacienteNoEncontrado {
+		Paciente p = null;
+		if (this.pacientesHist.containsKey(historiaClinica))
+			p = this.pacientesHist.get(historiaClinica);
+		else
+			throw new PacienteNoEncontrado("No se encontro el paciente que se buscaba");
+		return p;
+	}
+
+	/**
+	 * Se regresa un medico correspondiente con una matricula ingresada, si no se
+	 * encuentra se propaga excepcion
+	 * 
+	 * @param matricula Matricula del medico buscado
+	 * @return El medico con la matricula buscada
+	 * @throws MedicoNoEncontradoException Si el medico no esta registrado en la
+	 *                                     clinica
+	 */
+	public IMedico getMedico(int matricula) throws MedicoNoEncontradoException {
+		IMedico m = null;
+		if (this.medicos.containsKey(matricula))
+			m = this.medicos.get(matricula);
+		else
+			throw new MedicoNoEncontradoException("La matricula ingresada no se encuentra registrada en la clinica");
+		return m;
+	}
+
+	/**
+	 * Se retorna un iterator con los medicos registrados en al clinica
+	 * 
+	 * @return Medicos registrados en la clinica
+	 */
+	public Iterator getMedicos() {
+		ArrayList<IMedico> aux = new ArrayList<IMedico>();
+		for (Integer i : this.medicos.keySet()) {
+			aux.add(this.medicos.get(i));
+		}
+		return aux.iterator();
+	}
+
+	/**
+	 * Se retorna un iterator con los pacientes registrados en la clinica
+	 * 
+	 * @return los pacientes registrados en la clinica
+	 */
+	public Iterator getPacientesHistoricos() {
+		ArrayList<Paciente> aux = new ArrayList<Paciente>();
+		for (Integer i : this.pacientesHist.keySet()) {
+			aux.add(this.pacientesHist.get(i));
+		}
+		return aux.iterator();
+	}
+
+	/**
+	 * Se retorna un iterator con las facturas generadas
+	 * 
+	 * @return las facturas generadas
+	 */
+	public Iterator getFacturas() {
+		return this.historial.iterator();
+	}
+
+	/**
+	 * Se retorna el paciente de la sala privada, si no hay nadie se retorna null
+	 * 
+	 * @return el paciente de la sala privada o null
+	 */
+	public Paciente getSalaPrivada() {
+		return this.salaPrivada;
+	}
+
+	/**
+	 * Se retorna un iterator con los pacientes que se encuentran en el patio
+	 * 
+	 * @return los pacientes del patio
+	 */
+	public Iterator getPatio() {
+		return this.patio.iterator();
+	}
+
+	/**
+	 * Se retorna un iterator con los pacientes que se encuentran en atencion
+	 * 
+	 * @return los pacientes en atencion
+	 */
+	public Iterator getEnAtencion() {
+		return this.enAtencion.iterator();
+	}
+
+	/**
 	 * Nos permite crear y agregar un medico a la clinica
 	 * 
 	 * @param nombre       Nombre del Medico
@@ -147,9 +246,9 @@ public class Clinica {
 	 * @param domicilio    domicilio del medico
 	 * @param ciudad       ciudad del medico
 	 * @param matricula    Matricula del medico
-	 * @param especialidad Especialidad del medico
-	 * @param posgrado     Posgrado del medico
-	 * @param contratacion Contratacion del medico
+	 * @param especialidad Especialidad del medico |Cirujano|Clinico|Pediatra|
+	 * @param posgrado     Posgrado del medico |Magister|Doctorado|
+	 * @param contratacion Contratacion del medico |Temporario|Permanente|
 	 * @throws MedicoYaAgregadoException          Si la matricula que se quiere
 	 *                                            agregar ya existe en el sistema
 	 * @throws ContratacionNoIndicadaExceptions   Si no se indico la contratacion
@@ -174,6 +273,37 @@ public class Clinica {
 	}
 
 	/**
+	 * Nos permite crear y agregar un medico a la clinica
+	 * 
+	 * @param nombre       Nombre del Medico
+	 * @param apellido     Apellido del Medico
+	 * @param dni          DNI del Medico
+	 * @param matricula    Matricula del medico
+	 * @param especialidad Especialidad del medico |Cirujano|Clinico|Pediatra|
+	 * @param posgrado     Posgrado del medico |Magister|Doctorado|
+	 * @param contratacion Contratacion del medico |Temporario|Permanente|
+	 * @throws MedicoYaAgregadoException          Si la matricula que se quiere
+	 *                                            agregar ya existe en el sistema
+	 * @throws ContratacionNoIndicadaExceptions   Si no se indico la contratacion
+	 * @throws ContratacionNoRegistradaExceptions Si la contratacion indicada no
+	 *                                            esta registrada
+	 * @throws EspecialidadNoRegistradaExceptions Si la especialidad indicada no
+	 *                                            esta registrada
+	 * @throws PosgradoNoRegistradoExceptions     Si el posgrado indicado no esta
+	 *                                            registrado
+	 */
+	public void agregaMedico(String nombre, String apellido, int dni, int matricula, String especialidad,
+			String posgrado, String contratacion) throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions,
+			ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
+		IMedico medico;
+		if (!medicos.containsKey(matricula)) {
+			medico = MedicoFactory.getInstancia(nombre, apellido, dni, matricula, especialidad, posgrado, contratacion);
+			medicos.put(matricula, medico);
+		} else
+			throw new MedicoYaAgregadoException("El medico que desea agregar ya existe");
+	}
+
+	/**
 	 * Nos permite ingresar un paciente a la clinica, y colocarlo en la cola de
 	 * espera, siempre y cuando se haya atendido previamente en la misma
 	 * 
@@ -182,7 +312,7 @@ public class Clinica {
 	 *                                        ingresado no corresponde a ningun
 	 *                                        paciente registrado
 	 */
-	public void IngresaPaciente(int nroHistoriaClinica) throws NroHistoriaClinicaNoEncontrado {
+	public void ingresaPaciente(int nroHistoriaClinica) throws NroHistoriaClinicaNoEncontrado {
 		if (this.pacientesHist.containsKey(nroHistoriaClinica)) {
 			Paciente p = this.pacientesHist.get(nroHistoriaClinica);
 			colaEspera.add(p);
@@ -204,7 +334,7 @@ public class Clinica {
 	 * @throws TipoDePacienteIncorrectoException Si el tipo de rango etareo
 	 *                                           ingresado no se encuentra
 	 */
-	public void IngresaPaciente(String nombre, String apellido, int dni, int historiaClinica, String rangoEtario)
+	public void ingresaPaciente(String nombre, String apellido, int dni, int historiaClinica, String rangoEtario)
 			throws TipoDePacienteIncorrectoException {
 		Paciente p = null;
 		if (!this.pacientesHist.containsKey(historiaClinica))
@@ -233,7 +363,7 @@ public class Clinica {
 	 * @throws TipoDePacienteIncorrectoException Si el tipo de rango etareo
 	 *                                           ingresado no se encuentra
 	 */
-	public void IngresaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
+	public void ingresaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int historiaClinica, String rangoEtario) throws TipoDePacienteIncorrectoException {
 		Paciente p = null;
 		if (!this.pacientesHist.containsKey(historiaClinica))
@@ -286,21 +416,55 @@ public class Clinica {
 	}
 
 	/**
-	 * un paciente hace una cantidad indicadas de consultas al medico indicado
+	 * Agrega una cantidad determinadas de consultas entre un medico y un paciente
 	 * 
-	 * @param p         paciente con consulta
-	 * @param matricula matricula del medico
-	 * @param cantidad  cantidad de consultas realizadas al medico
+	 * @param paciente Paciente que realizo la consutla
+	 * @param medico   Medico que practico la consulta
+	 * @param cantidad cantidad de consultas
+	 * @throws CantidadDeDiasErroneosException Si la cantidad de consultas no es
+	 *                                         positivas
+	 * @throws PacienteNoEncontrado            Si no se encuentra el paciente
+	 *                                         ingresado
+	 * @throws MedicoNoEncontradoException     si no se encuentra el medico indicado
 	 */
 	public void agregaConsulta(Paciente paciente, IMedico medico, int cantidad)
-			throws CantidadDeDiasErroneosException, PacienteNoEncontrado {
-		if (cantidad >= 0) {
-			if (this.enAtencion.contains(paciente)) {
-				paciente.agregaPrestacion(creaConsulta(medico, cantidad));
+			throws CantidadDeDiasErroneosException, PacienteNoEncontrado, MedicoNoEncontradoException {
+		if (this.medicos.containsKey(medico.getMatricula())) {
+			if (cantidad > 0) {
+				if (this.enAtencion.contains(paciente)) {
+					paciente.agregaPrestacion(creaConsulta(medico, cantidad));
+				} else
+					throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
 			} else
-				throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+				throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
 		} else
-			throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
+			throw new MedicoNoEncontradoException("El medico ingresado no se encuentra");
+	}
+
+	/**
+	 * Agrega una cantidad determinadas de consultas entre un medico y un paciente
+	 * 
+	 * @param paciente  Paciente que realizo la consutla
+	 * @param matricula La matricula del medico ingresado
+	 * @param cantidad  cantidad de consultas
+	 * @throws CantidadDeDiasErroneosException Si la cantidad de consultas no es
+	 *                                         positivas
+	 * @throws PacienteNoEncontrado            Si no se encuentra el paciente
+	 *                                         ingresado
+	 * @throws MedicoNoEncontradoException     si no se encuentra el medico indicado
+	 */
+	public void agregaConsulta(Paciente paciente, int matricula, int cantidad)
+			throws CantidadDeDiasErroneosException, PacienteNoEncontrado, MedicoNoEncontradoException {
+		if (this.medicos.containsKey(matricula)) {
+			if (cantidad >= 0) {
+				if (this.enAtencion.contains(paciente)) {
+					paciente.agregaPrestacion(creaConsulta(this.medicos.get(matricula), cantidad));
+				} else
+					throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+			} else
+				throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
+		} else
+			throw new MedicoNoEncontradoException("El medico ingresado no se encuentra");
 	}
 
 	/**
@@ -419,7 +583,7 @@ public class Clinica {
 		if (monto >= 0)
 			Internacion.setCostoHabitacionCompartida(monto);
 		else
-			throw new MontoInvalidoException("El monto de la habitacion Compartida debe ser positivo");
+			throw new MontoInvalidoException("El monto de la habitacion Compartida no puede ser negativo");
 	}
 
 	/**
@@ -432,7 +596,7 @@ public class Clinica {
 		if (monto >= 0)
 			Internacion.setCostoHabitacionPrivada(monto);
 		else
-			throw new MontoInvalidoException("El monto de la habitacion Privada debe ser positivo");
+			throw new MontoInvalidoException("El monto de la habitacion Privada no puede ser negativo");
 	}
 
 	/**
@@ -445,7 +609,20 @@ public class Clinica {
 		if (monto >= 0)
 			Internacion.setCostoTerapiaIntensiva(monto);
 		else
-			throw new MontoInvalidoException("El monto de la Terapia Intensiva debe ser positivo");
+			throw new MontoInvalidoException("El monto de la Terapia Intensiva no puede ser negativo");
+	}
+
+	/**
+	 * Define el monto del sueldo basico de los medico
+	 * 
+	 * @param monto el monto del sueldo basico de los medicos
+	 * @throws MontoInvalidoException Si el monto
+	 */
+	public static void setSueldoBasicoMedico(double monto) throws MontoInvalidoException {
+		if (monto >= 0)
+			Medico.setSueldoBasico(monto);
+		else
+			throw new MontoInvalidoException("El monto del sueldo basico de los medicos no puede ser negativo");
 	}
 
 	/**
@@ -474,4 +651,9 @@ public class Clinica {
 	public static double getCostInternacion() {
 		return Internacion.getCostoTerapiaIntensiva();
 	}
+
+	public static double getSueldoBasicoMedico() {
+		return Medico.getSueldoBasico();
+	}
+
 }

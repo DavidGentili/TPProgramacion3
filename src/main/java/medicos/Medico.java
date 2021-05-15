@@ -1,6 +1,5 @@
 package medicos;
 
-import exceptions.SueldoBasicoIncorrectoException;
 import personas.Domicilio;
 import personas.Persona;
 
@@ -83,16 +82,14 @@ public class Medico extends Persona implements IMedico {
 
 	/**
 	 * Se adopta el valor ingresado para el sueldoBasico en caso de ser positivo,
-	 * caso contrario se propaga una excepcion
+	 * caso contrario se propaga una excepcion<br>
+	 * pre:<br>
+	 * El sueldo basico no puede ser negativo
 	 * 
-	 * @param sueldoBasico
-	 * @throws SueldoBasicoIncorrectoException
+	 * @param sueldoBasico el sueldo basico de todo medico
 	 */
-	public static void setSueldoBasico(double sueldoBasico) throws SueldoBasicoIncorrectoException {
-		if (sueldoBasico > 0)
-			Medico.sueldoBasico = sueldoBasico;
-		else
-			throw new SueldoBasicoIncorrectoException("Sueldo Basico Incorrecto");
+	public static void setSueldoBasico(double sueldoBasico) {
+		Medico.sueldoBasico = sueldoBasico;
 	}
 
 	/**
