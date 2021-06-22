@@ -151,10 +151,10 @@ public class MedicoFactory {
 	private static IMedico especializa(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int matricula, String especialidad) throws EspecialidadNoRegistradaExceptions {
 		IMedico respuesta = null;
-		if (especialidad.equalsIgnoreCase("pediatria"))
+		if (especialidad.equalsIgnoreCase("pediatra"))
 			respuesta = new Pediatra(nombre, apellido, dni, telefono, domicilio, ciudad, matricula);
 		else {
-			if (especialidad.equalsIgnoreCase("cirujia"))
+			if (especialidad.equalsIgnoreCase("cirujano"))
 				respuesta = new Cirujano(nombre, apellido, dni, telefono, domicilio, ciudad, matricula);
 			else {
 				if (especialidad.equalsIgnoreCase("clinico"))
@@ -210,6 +210,6 @@ public class MedicoFactory {
 			else
 				throw new PosgradoNoRegistradoExceptions("posgrado ingresado no encontrado");
 		}
-		return null;
+		return respuesta;
 	}
 }

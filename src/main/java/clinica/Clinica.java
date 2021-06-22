@@ -436,9 +436,9 @@ public class Clinica {
 	 */
 	public void agregaConsulta(Paciente paciente, IMedico medico, int cantidad)
 			throws CantidadDeDiasErroneosException, PacienteNoEncontrado, MedicoNoEncontradoException {
-		if (this.medicos.containsKey(medico.getMatricula())) {
+		if (medico != null && this.medicos.containsKey(medico.getMatricula())) {
 			if (cantidad > 0) {
-				if (this.enAtencion.contains(paciente)) {
+				if (paciente != null && this.enAtencion.contains(paciente)) {
 					paciente.agregaPrestacion(creaConsulta(medico, cantidad));
 				} else
 					throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
