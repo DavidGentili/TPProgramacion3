@@ -4,20 +4,28 @@ import personas.Domicilio;
 
 /**
  * 
- * Es la clase padre de todos los elementos del patron decorator, implementado a
- * los medicos
+ * Es la clase abstracta padre de los decoradores concretos de contratacion. 
+ * Utiliza como encapsulado un IMedico para la posterior implementacion del patron decorator
  *
  */
-public abstract class DecoradorMedico implements IMedico {
+public abstract class DecoradorMedicoContratacion implements IMedico {
 
-	protected IMedico encapsulado;
+    /**
+     * representa un medico con su respectiva especialidad.
+     * @aggregation composite
+     */
+    protected IMedico encapsulado;
 
-	public DecoradorMedico(IMedico encapsulado) {
+    /**
+     * 
+     * @param encapsulado un medico 
+     */
+	public DecoradorMedicoContratacion(IMedico encapsulado) {
 		this.encapsulado = encapsulado;
 	}
 
 	/**
-	 * Retorna el sueldo de los medicos
+	 * Retorna el sueldo del medico encapsulado
 	 */
 	@Override
 	public abstract double getSueldo();

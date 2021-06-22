@@ -12,6 +12,7 @@ import exceptions.CantidadDeDiasErroneosException;
 import exceptions.ClinicaInexistenteExcepcion;
 import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
+import exceptions.EspecialidadNoIndicadaException;
 import exceptions.EspecialidadNoRegistradaExceptions;
 import exceptions.MedicoNoEncontradoException;
 import exceptions.MedicoYaAgregadoException;
@@ -259,11 +260,13 @@ public class Clinica {
 	 *                                            esta registrada
 	 * @throws PosgradoNoRegistradoExceptions     Si el posgrado indicado no esta
 	 *                                            registrado
+	 * @throws EspecialidadNoIndicadaException    Si la especialidad no esta
+	 *                                            indicada
 	 */
 	public void agregaMedico(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
 			throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
-			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
+			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
 		IMedico medico;
 		if (!medicos.containsKey(matricula)) {
 			medico = MedicoFactory.getInstancia(nombre, apellido, dni, telefono, domicilio, ciudad, matricula,
@@ -292,10 +295,13 @@ public class Clinica {
 	 *                                            esta registrada
 	 * @throws PosgradoNoRegistradoExceptions     Si el posgrado indicado no esta
 	 *                                            registrado
+	 * @throws EspecialidadNoIndicadaException    si no esta indicada la
+	 *                                            especialidad
 	 */
 	public void agregaMedico(String nombre, String apellido, int dni, int matricula, String especialidad,
-			String posgrado, String contratacion) throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions,
-			ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
+			String posgrado, String contratacion)
+			throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
+			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
 		IMedico medico;
 		if (!medicos.containsKey(matricula)) {
 			medico = MedicoFactory.getInstancia(nombre, apellido, dni, matricula, especialidad, posgrado, contratacion);
@@ -563,7 +569,8 @@ public class Clinica {
 							}
 							valor = medico.getSueldo() * prestaciones.getCantidad();
 							System.out.println("|  Paciente  |  Cantidad  |   Valor   |");
-							System.out.printf("%-12s %12d %11.1f\n",factura.getPaciente().getApellido(), prestaciones.getCantidad(), valor);
+							System.out.printf("%-12s %12d %11.1f\n", factura.getPaciente().getApellido(),
+									prestaciones.getCantidad(), valor);
 							acum += valor;
 						}
 					}

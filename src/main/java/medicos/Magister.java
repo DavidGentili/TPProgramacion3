@@ -3,12 +3,12 @@ package medicos;
 /**
  * 
  * Representa un medico con el posgrado Magister, el cual esta implementando el
- * patron Decorator, usando como encapsulado a un IMedico
+ * patron Decorator, usando como encapsulado a un DecoradorMedicoContratacion
  *
  */
-public class Magister extends DecoradorMedico {
+public class Magister extends DecoradorMedicoPosgrado {
 
-	public Magister(IMedico encapsulado) {
+	public Magister(DecoradorMedicoContratacion encapsulado) {
 		super(encapsulado);
 		// TODO Auto-generated constructor stub
 	}

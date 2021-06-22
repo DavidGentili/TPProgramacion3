@@ -2,6 +2,7 @@ package medicos;
 
 import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
+import exceptions.EspecialidadNoIndicadaException;
 import exceptions.EspecialidadNoRegistradaExceptions;
 import exceptions.PosgradoNoRegistradoExceptions;
 import personas.Domicilio;
@@ -37,15 +38,23 @@ public class MedicoFactory {
 	 * @throws PosgradoNoRegistradoExceptions     si el posgrado no esta registrado
 	 */
 	public static IMedico getInstancia(String nombre, String apellido, int dni, int matricula, String especialidad,
-			String posgrado, String contratacion) throws ContratacionNoIndicadaExceptions,
-			ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
-		if (contratacion != null) {
-			IMedico respuesta = null;
-			IMedico medicoBase = new Medico(nombre, apellido, dni, matricula);
-			respuesta = MedicoFactory.especializa(medicoBase, especialidad, posgrado, contratacion);
+			String posgrado, String contratacion) throws ContratacionNoRegistradaExceptions,
+			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
+		IMedico respuesta = null;
+		if (especialidad != null) {
+			IMedico medicoEspecializado = null;
+			respuesta = medicoEspecializado = MedicoFactory.especializa(nombre, apellido, dni, matricula, especialidad);
+			if (contratacion != null) {
+				DecoradorMedicoContratacion medicoConContratacion = null;
+				respuesta = medicoConContratacion = MedicoFactory.agregaContratacion(medicoEspecializado, contratacion);
+				if (posgrado != null) {
+					DecoradorMedicoPosgrado medicoPosgrado = null;
+					respuesta = medicoPosgrado = MedicoFactory.agregaPosgrado(medicoConContratacion, posgrado);
+				}
+			}
 			return respuesta;
 		} else
-			throw new ContratacionNoIndicadaExceptions("No se indico contratacion");
+			throw new EspecialidadNoIndicadaException("No se indico especialidad");
 	}
 
 	/**
@@ -69,82 +78,138 @@ public class MedicoFactory {
 	 * @throws EspecialidadNoRegistradaExceptions si la especialidad no esta
 	 *                                            registrada
 	 * @throws PosgradoNoRegistradoExceptions     si el posgrado no esta registrado
+	 * @throws EspecialidadNoIndicadaException    si la especialidad indicada no se
+	 *                                            encuentra
 	 */
 	public static IMedico getInstancia(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
 			throws ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
-			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions {
-		if (contratacion != null) {
-			IMedico respuesta = null;
-			IMedico medicoBase = new Medico(nombre, apellido, dni, telefono, domicilio, ciudad, matricula);
-			respuesta = MedicoFactory.especializa(medicoBase, especialidad, posgrado, contratacion);
+			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
+		IMedico respuesta = null;
+		if (especialidad != null) {
+			IMedico medicoEspecializado = null;
+			respuesta = medicoEspecializado = MedicoFactory.especializa(nombre, apellido, dni, telefono, domicilio,
+					ciudad, matricula, especialidad);
+			if (contratacion != null) {
+				DecoradorMedicoContratacion medicoConContratacion = null;
+				respuesta = medicoConContratacion = MedicoFactory.agregaContratacion(medicoEspecializado, contratacion);
+				if (posgrado != null) {
+					DecoradorMedicoPosgrado medicoPosgrado = null;
+					respuesta = medicoPosgrado = MedicoFactory.agregaPosgrado(medicoConContratacion, posgrado);
+				}
+			}
 			return respuesta;
 		} else
-			throw new ContratacionNoIndicadaExceptions("No se indico contratacion");
+			throw new EspecialidadNoIndicadaException("No se indico especialidad");
 	}
 
 	/**
+	 * Retorna un medico concreto con su respectiva especialidad
 	 * 
-	 * Se encarga de adicionar las especialidades, los posgrados y la contratacion
-	 * segun corresponda
-	 * 
-	 * @param base         medico base creado
+	 * @param nombre       Nombre del medico
+	 * @param apellido     apellido del medico
+	 * @param dni          Dni del medico
+	 * @param matricula    Matricula del medico
 	 * @param especialidad Especialidad del medico
-	 * @param posgrado     Posgrado del medico
-	 * @param contratacion Contratacion del medico
-	 * @return
-	 * @throws ContratacionNoRegistradaExceptions
-	 * @throws EspecialidadNoRegistradaExceptions
-	 * @throws PosgradoNoRegistradoExceptions
+	 * @return IMedico especializado
+	 * @throws EspecialidadNoRegistradaExceptions Si la especialidad ingresada no
+	 *                                            corresponde con las resgistradas.
 	 */
-	private static IMedico especializa(IMedico base, String especialidad, String posgrado, String contratacion)
-			throws ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions,
-			PosgradoNoRegistradoExceptions {
-		IMedico encapsulado = base;
-		// Se crea el medico especializado o se lanza excepcion si no encuentra
-		// especialidad
-		if (especialidad != null) {
-			switch (especialidad.toLowerCase()) {
-			case "cirujano":
-				encapsulado = new Cirujano(base);
-				break;
-			case "clinico":
-				encapsulado = new Clinico(base);
-				break;
-			case "pediatra":
-				encapsulado = new Pediatra(base);
-				break;
-			default:
-				throw new EspecialidadNoRegistradaExceptions("Especialida ingresada no encontrada");
+	private static IMedico especializa(String nombre, String apellido, int dni, int matricula, String especialidad)
+			throws EspecialidadNoRegistradaExceptions {
+		IMedico respuesta = null;
+		if (especialidad.equalsIgnoreCase("pediatria"))
+			respuesta = new Pediatra(nombre, apellido, dni, matricula);
+		else {
+			if (especialidad.equalsIgnoreCase("cirujia"))
+				respuesta = new Cirujano(nombre, apellido, dni, matricula);
+			else {
+				if (especialidad.equalsIgnoreCase("clinico"))
+					respuesta = new Clinico(nombre, apellido, dni, matricula);
+				else
+					throw new EspecialidadNoRegistradaExceptions("Especialidad ingresada no encontrada");
 			}
-			base = encapsulado;
 		}
-		// Se crea Medico con posgrado o se propaga excepcion si no se encuentra
-		if (posgrado != null) {
-			switch (posgrado.toLowerCase()) {
-			case "magister":
-				encapsulado = new Magister(base);
-				break;
-			case "doctorado":
-				encapsulado = new Doctorado(base);
-				break;
-			default:
-				throw new PosgradoNoRegistradoExceptions("Posgrado ingresado no encontrado");
+		return respuesta;
+	}
+
+	/**
+	 * Retorna un medico concreto con su respectiva especialidad
+	 * 
+	 * @param nombre       Nombre del medico
+	 * @param apellido     apellido del medico
+	 * @param dni          Dni del medico
+	 * @param telefono     Telefono del medico
+	 * @param domicilio    Domicilio del medico
+	 * @param ciudad       Ciudad del medico
+	 * @param matricula    Matricula del medico
+	 * @param especialidad Especialidad del medico
+	 * @return IMedico especializado
+	 * @throws EspecialidadNoRegistradaExceptions Si la especialidad ingresada no
+	 *                                            corresponde con las resgistradas.
+	 */
+	private static IMedico especializa(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
+			String ciudad, int matricula, String especialidad) throws EspecialidadNoRegistradaExceptions {
+		IMedico respuesta = null;
+		if (especialidad.equalsIgnoreCase("pediatria"))
+			respuesta = new Pediatra(nombre, apellido, dni, telefono, domicilio, ciudad, matricula);
+		else {
+			if (especialidad.equalsIgnoreCase("cirujia"))
+				respuesta = new Cirujano(nombre, apellido, dni, telefono, domicilio, ciudad, matricula);
+			else {
+				if (especialidad.equalsIgnoreCase("clinico"))
+					respuesta = new Clinico(nombre, apellido, dni, telefono, domicilio, ciudad, matricula);
+				else
+					throw new EspecialidadNoRegistradaExceptions("Especialidad ingresada no encontrada");
 			}
-			base = encapsulado;
 		}
+		return respuesta;
+	}
 
-		switch (contratacion.toLowerCase()) {
-		case "temporario":
-			encapsulado = new Temporario(base);
-			break;
-		case "permanente":
-			encapsulado = new Permanente(base);
-			break;
-		default:
-			throw new ContratacionNoRegistradaExceptions("Contratacion ingresada no encontrada");
+	/**
+	 * Retorna un medico decorado con su respectiva contratacion
+	 * 
+	 * @param medicoEspecializado un medico ya instanciado con su contratacion
+	 * @param contratacion        un tipo de contratacion
+	 * @return un DecoradorMedicoContratacion, con el medico decorado con su
+	 *         contratacion
+	 * @throws ContratacionNoRegistradaExceptions si la contratacion indicada no
+	 *                                            esta registrada.
+	 */
+	private static DecoradorMedicoContratacion agregaContratacion(IMedico medicoEspecializado, String contratacion)
+			throws ContratacionNoRegistradaExceptions {
+		DecoradorMedicoContratacion respuesta = null;
+		if (contratacion.equalsIgnoreCase("Temporario"))
+			respuesta = new Temporario(medicoEspecializado);
+		else {
+			if (contratacion.equalsIgnoreCase("Permanente"))
+				respuesta = new Permanente(medicoEspecializado);
+			else
+				throw new ContratacionNoRegistradaExceptions("contratacion ingresada no encontrada");
 		}
+		return respuesta;
+	}
 
-		return encapsulado;
+	/**
+	 * Retorna un medicon con su respectivo posgrado
+	 * 
+	 * @param medicoConContratacion Un medico decorado con su contratacion
+	 * @param posgrado              el posgrado con el que se desea decorar
+	 * @return Un medico decorado con su posgrado
+	 * @throws PosgradoNoRegistradoExceptions Si el posgrado ingresado no se
+	 *                                        encentra registrado
+	 */
+	private static DecoradorMedicoPosgrado agregaPosgrado(DecoradorMedicoContratacion medicoConContratacion,
+			String posgrado) throws PosgradoNoRegistradoExceptions {
+		DecoradorMedicoPosgrado respuesta = null;
+		if (posgrado.equalsIgnoreCase("Magister"))
+			respuesta = new Magister(medicoConContratacion);
+		else {
+			if (posgrado.equalsIgnoreCase("Doctorado"))
+				respuesta = new Doctorado(medicoConContratacion);
+			else
+				throw new PosgradoNoRegistradoExceptions("posgrado ingresado no encontrado");
+		}
+		return null;
 	}
 }

@@ -6,7 +6,7 @@ package medicos;
  * esta implementando el patron Decorator, usando como encapsulado a un IMedico
  *
  */
-public class Temporario extends DecoradorMedico {
+public class Temporario extends DecoradorMedicoContratacion {
 
 	public Temporario(IMedico encapsulado) {
 		super(encapsulado);
