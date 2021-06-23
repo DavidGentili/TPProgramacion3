@@ -19,28 +19,32 @@ import exceptions.PacienteNoEncontrado;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
 import personas.Domicilio;
+import vista.IVistaAmbulancia;
 import vista.IVistaFacturacion;
 import vista.IVistaMedicos;
 
 public class Controlador implements ActionListener {
 	IVistaFacturacion ventanaFacturacion;
 	IVistaMedicos ventanaMedicos;
+	IVistaAmbulancia ventanaAmbulancia;
 	Clinica clinica;
 
-	public Controlador(IVistaFacturacion ventanaFacturacion, IVistaMedicos ventanaMedicos, Clinica clinica) {
+	public Controlador(IVistaFacturacion ventanaFacturacion, IVistaMedicos ventanaMedicos, IVistaAmbulancia ventanaAmbulancia, Clinica clinica) {
 		this.ventanaFacturacion = ventanaFacturacion;
 		this.ventanaMedicos = ventanaMedicos;
 		this.clinica = clinica;
+		this.ventanaAmbulancia = ventanaAmbulancia;
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
 		this.ventanaFacturacion.actualizaListaMedicos(this.clinica.getMedicos());
 		this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getEnAtencion());
 		this.ventanaMedicos.actualizaListaMedicos(this.clinica.getMedicos());
+		this.ventanaAmbulancia.actualizaHistoricosAmbulancia(this.clinica.getPacientesHistoricos());
 
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) { //cuando hagamos el modulo de agregar pacientes, llamar al actualiza Lista pacientes del la pestaña ambulancia
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Atencion Medica")
 				|| e.getActionCommand().equalsIgnoreCase("Agregar Internacion")) {
 			this.agregaPrestacion(e.getActionCommand());
@@ -51,6 +55,9 @@ public class Controlador implements ActionListener {
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Medico")) {
 			this.agregaMedico();
 			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getMedicos());
+		}
+		if(e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
+			
 		}
 		this.ventanaFacturacion.limpiarCamposFacturacion();
 		this.ventanaMedicos.limpiarCamposMedicos();

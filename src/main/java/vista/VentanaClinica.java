@@ -2,12 +2,9 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Iterator;
@@ -30,10 +27,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import clinica.Ambulancia;
 import medicos.IMedico;
 import pacientes.Paciente;
 
-public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaMedicos, KeyListener {
+public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia {
 
 	private JPanel contentPane;
 	private JTabbedPane tabPanel;
@@ -121,9 +119,9 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JComboBox comboBoxPosgrado;
 	private JPanel panelBotonesAmbulancia;
 	private JPanel panelListaPacAmbulancia;
-	private JPanel panelEstadoAmbulancia;
+	private PanelAmbulancia panelEstadoAmbulancia;
 	private JScrollPane scrollPaneListPac;
-	private JList listPacien;
+	private JList<Paciente> listPacien;
 	private JTextArea textAreaEstadoAmbulancia;
 	private JButton btnLlamaTranslado;
 	private JButton btnSolReparacion;
@@ -131,22 +129,9 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JPanel panelBtLlama;
 	private JPanel panel_BtAtencion;
 	private JPanel panel_BtReparacion;
+	private DefaultListModel<Paciente> listaPacienteHistoricos = new DefaultListModel<Paciente>();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaClinica frame = new VentanaClinica();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
@@ -301,10 +286,10 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.scrollPaneListPac = new JScrollPane();
 		this.panelListaPacAmbulancia.add(this.scrollPaneListPac, BorderLayout.CENTER);
 		
-		this.listPacien = new JList();
+		this.listPacien = new JList<Paciente>(listaPacienteHistoricos);
 		this.scrollPaneListPac.setViewportView(this.listPacien);
 		
-		this.panelEstadoAmbulancia = new JPanel();
+		this.panelEstadoAmbulancia = new PanelAmbulancia();
 		this.panelAmbulancia.add(this.panelEstadoAmbulancia);
 		this.panelEstadoAmbulancia.setLayout(new BorderLayout(0, 0));
 		
@@ -674,6 +659,27 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 			this.btnAgregarMedico.setEnabled(false);
 		}
 
+	}
+
+	@Override
+	public void setAmbulancia(Ambulancia a) {
+		this.panelEstadoAmbulancia.setObservado(a);
+		
+	}
+
+	@Override
+	public void actualizaHistoricosAmbulancia(Iterator<Paciente> historicos) {
+		this.listaPacienteHistoricos.clear();
+		while(historicos.hasNext()) {
+			this.listaPacienteHistoricos.addElement(historicos.next());
+		}
+		this.repaint();
+		
+	}
+
+	@Override
+	public Paciente getPacienteAmbulancia() {
+		return this.listPacien.getSelectedValue();
 	}
 
 }

@@ -46,6 +46,7 @@ public class Clinica {
 	private Domicilio direccion;
 	private String telefono;
 	private String ciudad;
+	private Ambulancia a;
 
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, Paciente> pacientesHist = new HashMap<Integer, Paciente>();
@@ -63,6 +64,7 @@ public class Clinica {
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.ciudad = ciudad;
+		this.a = new Ambulancia();
 	}
 
 	/**
