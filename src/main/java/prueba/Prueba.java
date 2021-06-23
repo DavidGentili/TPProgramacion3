@@ -9,6 +9,7 @@ import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.DomicilioInvalido;
 import exceptions.EspecialidadNoIndicadaException;
 import exceptions.EspecialidadNoRegistradaExceptions;
+import exceptions.FechaInvalidaException;
 import exceptions.MedicoNoEncontradoException;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
@@ -48,7 +49,7 @@ public class Prueba {
 				| ContratacionNoRegistradaExceptions | EspecialidadNoRegistradaExceptions
 				| PosgradoNoRegistradoExceptions | MontoInvalidoException | TipoDePacienteIncorrectoException
 				| CantidadDeDiasErroneosException | PacienteNoEncontrado | MedicoNoEncontradoException
-				| TipoDeHabitacionIncorrectaException | PacienteNoAtendido e) {
+				| TipoDeHabitacionIncorrectaException | PacienteNoAtendido | FechaInvalidaException e) {
 			System.out.println(e.getMessage());
 		}
 

@@ -14,6 +14,7 @@ import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoIndicadaException;
 import exceptions.EspecialidadNoRegistradaExceptions;
+import exceptions.FechaInvalidaException;
 import exceptions.MedicoNoEncontradoException;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
@@ -522,20 +523,25 @@ public class Clinica {
 	 * @param fecha    La fecha en la que se realiza una factura
 	 * @throws PacienteNoEncontrado Si el paciente indicado no se encuentra
 	 * @throws PacienteNoAtendido   Si el paciente no posee prestaciones
+	 * @throws FechaInvalidaException 
 	 */
 	public String facturaPaciente(Paciente paciente, GregorianCalendar fecha)
-			throws PacienteNoEncontrado, PacienteNoAtendido {
-		if (this.enAtencion.contains(paciente)) {
-			if (!paciente.getPretaciones().isEmpty()) {
-				Factura factura = new Factura(fecha, paciente);
-				this.enAtencion.remove(paciente);
-				paciente.limpiaPrestaciones();
-				this.historial.add(factura);
-				return factura.muestraInformacion();
+			throws PacienteNoEncontrado, PacienteNoAtendido, FechaInvalidaException {
+		if (fecha.compareTo(new GregorianCalendar()) <= 0) {
+			if (this.enAtencion.contains(paciente)) {
+				if (!paciente.getPretaciones().isEmpty()) {
+					Factura factura = new Factura(fecha, paciente);
+					this.enAtencion.remove(paciente);
+					paciente.limpiaPrestaciones();
+					this.historial.add(factura);
+					return factura.muestraInformacion();
+				} else
+					throw new PacienteNoAtendido("El paciente no tiene prestaciones realizadas");
 			} else
-				throw new PacienteNoAtendido("El paciente no tiene prestaciones realizadas");
+				throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
 		} else
-			throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+			throw new FechaInvalidaException("La fecha es incorrecta");
+		
 	}
 
 	/**
@@ -555,8 +561,8 @@ public class Clinica {
 		Prestacion prestaciones;
 		Factura factura;
 		StringBuilder sb = new StringBuilder();
-		
-		sb.append("REPORTE DEL MEDICO: " + medico.getApellido() + " matricula " + medico.getMatricula()+"\n");
+
+		sb.append("REPORTE DEL MEDICO: " + medico.getApellido() + " matricula " + medico.getMatricula() + "\n");
 		while (itFacturas.hasNext()) {
 			factura = itFacturas.next();
 			if (factura.getFecha().compareTo(inicio) >= 0 && factura.getFecha().compareTo(fin) <= 0) {
@@ -568,11 +574,12 @@ public class Clinica {
 						if (medico.equals(aux.getMedico())) {
 							if (!fecha.equals(factura.getFecha())) {
 								fecha = factura.getFecha();
-								sb.append(sdf.format(fecha.getTime())+ "\n");
+								sb.append(sdf.format(fecha.getTime()) + "\n");
 							}
 							valor = medico.getSueldo() * prestaciones.getCantidad();
 							sb.append("|  Paciente  |  Cantidad  |   Valor   |\n");
-							sb.append( factura.getPaciente().getApellido()+ "        " +prestaciones.getCantidad()+ "        " + valor + "\n");
+							sb.append(factura.getPaciente().getApellido() + "        " + prestaciones.getCantidad()
+									+ "        " + valor + "\n");
 							acum += valor;
 						}
 					}
