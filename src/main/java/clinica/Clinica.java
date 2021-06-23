@@ -442,11 +442,11 @@ public class Clinica {
 				if (paciente != null && this.enAtencion.contains(paciente)) {
 					paciente.agregaPrestacion(creaConsulta(medico, cantidad));
 				} else
-					throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+					throw new PacienteNoEncontrado("debe seleccionar un paciente correcto de la lista de 'en atencion'");
 			} else
 				throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
 		} else
-			throw new MedicoNoEncontradoException("El medico ingresado no se encuentra");
+			throw new MedicoNoEncontradoException("debe seleccionar un medico correcto");
 	}
 
 	/**
@@ -468,11 +468,11 @@ public class Clinica {
 				if (this.enAtencion.contains(paciente)) {
 					paciente.agregaPrestacion(creaConsulta(this.medicos.get(matricula), cantidad));
 				} else
-					throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+					throw new PacienteNoEncontrado("debe seleccionar un paciente correcto de la lista de 'en atencion'");
 			} else
 				throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
 		} else
-			throw new MedicoNoEncontradoException("El medico ingresado no se encuentra");
+			throw new MedicoNoEncontradoException("debe seleccionar un medico correcto");
 	}
 
 	/**
@@ -509,7 +509,7 @@ public class Clinica {
 			if (this.enAtencion.contains(paciente)) {
 				paciente.agregaPrestacion(Internacion.getInstancia().getPrestacion(cantidad, tipo));
 			} else
-				throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+				throw new PacienteNoEncontrado("debe seleccionar un paciente correcto de la lista de 'en atendidos'");
 		} else
 			throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
 	}
@@ -536,9 +536,9 @@ public class Clinica {
 					this.historial.add(factura);
 					return factura.muestraInformacion();
 				} else
-					throw new PacienteNoAtendido("El paciente no tiene prestaciones realizadas");
+					throw new PacienteNoAtendido("el paciente no tiene prestaciones realizadas");
 			} else
-				throw new PacienteNoEncontrado("No se encontro el paciente seleccionado en la lista de espera");
+				throw new PacienteNoEncontrado("debe seleccionar un paciente perteneciente a la lista de 'en atendidos'");
 		} else
 			throw new FechaInvalidaException("La fecha es incorrecta");
 		
