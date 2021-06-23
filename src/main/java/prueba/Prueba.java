@@ -37,9 +37,13 @@ public class Prueba {
 			colon.atiendeSiguiente();
 			colon.agregaConsulta(colon.getPaciente(10531), 10536, 2);
 			colon.agregaInternacion(colon.getPaciente(10531), "habitacion privada", 2);
-			colon.facturaPaciente(colon.getPaciente(10531), new GregorianCalendar(2021, 5, 15));
+			
+			
+			System.out.println(colon.facturaPaciente(colon.getPaciente(10531), new GregorianCalendar(2021, 5, 15)));
+			
+			
 			System.out.println();
-			colon.reporteActividadMedica(colon.getMedico(10536), new GregorianCalendar(2021,5,10), new GregorianCalendar(2021,5,25));
+			System.out.println(colon.reporteActividadMedica(colon.getMedico(10536), new GregorianCalendar(2021,5,10), new GregorianCalendar(2021,5,25)));
 		} catch (DomicilioInvalido | MedicoYaAgregadoException | ContratacionNoIndicadaExceptions
 				| ContratacionNoRegistradaExceptions | EspecialidadNoRegistradaExceptions
 				| PosgradoNoRegistradoExceptions | MontoInvalidoException | TipoDePacienteIncorrectoException

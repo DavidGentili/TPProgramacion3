@@ -38,29 +38,30 @@ public class Factura implements Comparable {
 		for (int i = 0; i < prestaciones.size(); i++) {
 			prestaciones.set(i, (Prestacion) aux.get(i).clone());
 		}
-		this.muestraInformacion();
 	}
 
 	/**
 	 * Muestra la factura realizada, y calcula el total de la factura
 	 */
-	public void muestraInformacion() {
+	public String muestraInformacion() {
+		StringBuilder sb = new StringBuilder();
 		double acumulador = 0;
 		SimpleDateFormat sdf = new SimpleDateFormat(" dd'/'MM'/'YY");
-		System.out.println("Nro:" + this.nroFactura + "	Fecha" + sdf.format(this.fecha.getTime()));
-		System.out.println("|     Prestacion     |   Valor  |  Cantidad  |  Subtotal  |\n");
+		
+		sb.append("Nro:" + this.nroFactura + "	Fecha" + sdf.format(this.fecha.getTime())+"\n");
+		sb.append("|     Prestacion     |   Valor  |  Cantidad  |  Subtotal  |\n");
 		Iterator it = prestaciones.iterator();
 		while (it.hasNext()) {
 			Prestacion prestacion = (Prestacion) it.next();
 			acumulador += prestacion.getSubtotal();
-			System.out.println(prestacion.toString());
+			sb.append(prestacion.toString()+"\n");
 
 		}
-		System.out.println();
-		System.out.println("Total = " + acumulador);
+		sb.append("Total = " + acumulador);
 		if (this.importeTotal == 0 && acumulador != 0) {
 			this.importeTotal = acumulador;
 		}
+		return sb.toString();
 	}
 
 	/**

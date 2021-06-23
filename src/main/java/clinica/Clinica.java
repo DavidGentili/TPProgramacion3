@@ -523,7 +523,7 @@ public class Clinica {
 	 * @throws PacienteNoEncontrado Si el paciente indicado no se encuentra
 	 * @throws PacienteNoAtendido   Si el paciente no posee prestaciones
 	 */
-	public void facturaPaciente(Paciente paciente, GregorianCalendar fecha)
+	public String facturaPaciente(Paciente paciente, GregorianCalendar fecha)
 			throws PacienteNoEncontrado, PacienteNoAtendido {
 		if (this.enAtencion.contains(paciente)) {
 			if (!paciente.getPretaciones().isEmpty()) {
@@ -531,6 +531,7 @@ public class Clinica {
 				this.enAtencion.remove(paciente);
 				paciente.limpiaPrestaciones();
 				this.historial.add(factura);
+				return factura.muestraInformacion();
 			} else
 				throw new PacienteNoAtendido("El paciente no tiene prestaciones realizadas");
 		} else
@@ -545,7 +546,7 @@ public class Clinica {
 	 * @param inicio Fecha inicial de periodo
 	 * @param fin    Fecha final del periodo
 	 */
-	public void reporteActividadMedica(IMedico medico, GregorianCalendar inicio, GregorianCalendar fin) {
+	public String reporteActividadMedica(IMedico medico, GregorianCalendar inicio, GregorianCalendar fin) {
 		Iterator<Factura> itFacturas = this.historial.iterator();
 		double acum = 0, valor;
 		GregorianCalendar fecha = new GregorianCalendar(2000, 0, 1);// Se pone una fecha previa para evitar un hacer una
@@ -553,7 +554,9 @@ public class Clinica {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd'/'MM'/'yy");
 		Prestacion prestaciones;
 		Factura factura;
-		System.out.println("REPORTE DEL MEDICO: " + medico.getApellido() + " matricula " + medico.getMatricula());
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("REPORTE DEL MEDICO: " + medico.getApellido() + " matricula " + medico.getMatricula()+"\n");
 		while (itFacturas.hasNext()) {
 			factura = itFacturas.next();
 			if (factura.getFecha().compareTo(inicio) >= 0 && factura.getFecha().compareTo(fin) <= 0) {
@@ -565,19 +568,19 @@ public class Clinica {
 						if (medico.equals(aux.getMedico())) {
 							if (!fecha.equals(factura.getFecha())) {
 								fecha = factura.getFecha();
-								System.out.println(sdf.format(fecha.getTime()));
+								sb.append(sdf.format(fecha.getTime())+ "\n");
 							}
 							valor = medico.getSueldo() * prestaciones.getCantidad();
-							System.out.println("|  Paciente  |  Cantidad  |   Valor   |");
-							System.out.printf("%-12s %12d %11.1f\n", factura.getPaciente().getApellido(),
-									prestaciones.getCantidad(), valor);
+							sb.append("|  Paciente  |  Cantidad  |   Valor   |\n");
+							sb.append( factura.getPaciente().getApellido()+ "        " +prestaciones.getCantidad()+ "        " + valor + "\n");
 							acum += valor;
 						}
 					}
 				}
 			}
 		}
-		System.out.println("\nEl importe total del medico es: " + acum);
+		sb.append("\nEl importe total del medico es: " + acum);
+		return sb.toString();
 	}
 
 	@Override
