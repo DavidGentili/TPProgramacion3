@@ -119,6 +119,18 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JComboBox comboBoxContratacion;
 	private JPanel panelContenedorPosgrado;
 	private JComboBox comboBoxPosgrado;
+	private JPanel panelBotonesAmbulancia;
+	private JPanel panelListaPacAmbulancia;
+	private JPanel panelEstadoAmbulancia;
+	private JScrollPane scrollPaneListPac;
+	private JList listPacien;
+	private JTextArea textAreaEstadoAmbulancia;
+	private JButton btnLlamaTranslado;
+	private JButton btnSolReparacion;
+	private JButton btnLlamaAtencion;
+	private JPanel panelBtLlama;
+	private JPanel panel_BtAtencion;
+	private JPanel panel_BtReparacion;
 
 	/**
 	 * Launch the application.
@@ -257,6 +269,47 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 
 		this.panelAmbulancia = new JPanel();
 		this.tabPanel.addTab("Ambulancia", null, this.panelAmbulancia, null);
+		this.panelAmbulancia.setLayout(new GridLayout(0, 3, 0, 0));
+		
+		this.panelBotonesAmbulancia = new JPanel();
+		this.panelAmbulancia.add(this.panelBotonesAmbulancia);
+		this.panelBotonesAmbulancia.setLayout(new GridLayout(3, 0, 0, 0));
+		
+		this.panelBtLlama = new JPanel();
+		this.panelBotonesAmbulancia.add(this.panelBtLlama);
+		this.panelBtLlama.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		this.btnLlamaTranslado = new JButton("Llama Translado");
+		this.panelBtLlama.add(this.btnLlamaTranslado);
+		
+		this.panel_BtAtencion = new JPanel();
+		this.panelBotonesAmbulancia.add(this.panel_BtAtencion);
+		
+		this.btnLlamaAtencion = new JButton("Llama atencion");
+		this.panel_BtAtencion.add(this.btnLlamaAtencion);
+		
+		this.panel_BtReparacion = new JPanel();
+		this.panelBotonesAmbulancia.add(this.panel_BtReparacion);
+		
+		this.btnSolReparacion = new JButton("Solicitar Reparacion");
+		this.panel_BtReparacion.add(this.btnSolReparacion);
+		
+		this.panelListaPacAmbulancia = new JPanel();
+		this.panelAmbulancia.add(this.panelListaPacAmbulancia);
+		this.panelListaPacAmbulancia.setLayout(new BorderLayout(0, 0));
+		
+		this.scrollPaneListPac = new JScrollPane();
+		this.panelListaPacAmbulancia.add(this.scrollPaneListPac, BorderLayout.CENTER);
+		
+		this.listPacien = new JList();
+		this.scrollPaneListPac.setViewportView(this.listPacien);
+		
+		this.panelEstadoAmbulancia = new JPanel();
+		this.panelAmbulancia.add(this.panelEstadoAmbulancia);
+		this.panelEstadoAmbulancia.setLayout(new BorderLayout(0, 0));
+		
+		this.textAreaEstadoAmbulancia = new JTextArea();
+		this.panelEstadoAmbulancia.add(this.textAreaEstadoAmbulancia);
 
 		this.scrollPane = new JScrollPane();
 		this.tabPanel.addTab("Medicos", null, this.scrollPane, null);
