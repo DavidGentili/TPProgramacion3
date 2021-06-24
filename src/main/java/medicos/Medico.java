@@ -78,7 +78,7 @@ public class Medico extends Persona implements IMedico, Serializable {
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " Nro de Matricula: " + matricula;
+		return super.toString() + " " + matricula;
 	}
 
 	/**

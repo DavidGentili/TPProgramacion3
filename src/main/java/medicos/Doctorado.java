@@ -33,7 +33,7 @@ public class Doctorado extends DecoradorMedicoPosgrado {
 	 */
 	@Override
 	public String toString() {
-		return encapsulado.toString() + " Posgrado: Doctorado";
+		return encapsulado.toString() + " Doctorado";
 	}
 
 }
