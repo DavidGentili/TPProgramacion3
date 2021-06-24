@@ -33,6 +33,7 @@ import medicos.IMedico;
 import pacientes.Paciente;
 import javax.swing.border.BevelBorder;
 import javax.swing.BoxLayout;
+import java.awt.event.ActionEvent;
 
 public class VentanaClinica extends JFrame
 		implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia, IVistaConfiguraciones {
@@ -123,7 +124,6 @@ public class VentanaClinica extends JFrame
 	private JComboBox comboBoxPosgrado;
 	private JPanel panelBotonesAmbulancia;
 	private JPanel panelListaPacAmbulancia;
-	private PanelAmbulancia panelEstadoAmbulancia;
 	private JScrollPane scrollPaneListPac;
 	private JList<Paciente> listPacien;
 	private JTextArea textAreaEstadoAmbulancia;
@@ -200,6 +200,8 @@ public class VentanaClinica extends JFrame
 	private JPanel panelContenedorLblNuevaCiudadDeLaClinica;
 	private JPanel panelContenedorTextFieldNuevaCiudadDeLaClinica;
 	private JLabel lblCiudadActualDeLaClinica;
+	private JPanel panelEstadoAmbulancia;
+	private JTextArea textAreaAmbulancia;
 
 	/**
 	 * Create the frame.
@@ -345,6 +347,7 @@ public class VentanaClinica extends JFrame
 		this.panelBotonesAmbulancia.add(this.panel_BtReparacion);
 
 		this.btnSolReparacion = new JButton("Solicitar Reparacion");
+		this.btnSolReparacion.setActionCommand("Solicitar Reparacion");
 		this.panel_BtReparacion.add(this.btnSolReparacion);
 
 		this.panelListaPacAmbulancia = new JPanel();
@@ -356,13 +359,13 @@ public class VentanaClinica extends JFrame
 
 		this.listPacien = new JList<Paciente>(listaPacienteHistoricos);
 		this.scrollPaneListPac.setViewportView(this.listPacien);
-
-		this.panelEstadoAmbulancia = new PanelAmbulancia();
+		
+		this.panelEstadoAmbulancia = new JPanel();
 		this.panelAmbulancia.add(this.panelEstadoAmbulancia);
 		this.panelEstadoAmbulancia.setLayout(new BorderLayout(0, 0));
-
-		this.textAreaEstadoAmbulancia = new JTextArea();
-		this.panelEstadoAmbulancia.add(this.textAreaEstadoAmbulancia);
+		
+		this.textAreaAmbulancia = new JTextArea();
+		this.panelEstadoAmbulancia.add(this.textAreaAmbulancia);
 
 		this.scrollPane = new JScrollPane();
 		this.tabPanel.addTab("Medicos", null, this.scrollPane, null);
@@ -964,12 +967,6 @@ public class VentanaClinica extends JFrame
 	}
 
 	@Override
-	public void setAmbulancia(Ambulancia a) {
-		this.panelEstadoAmbulancia.setObservado(a);
-
-	}
-
-	@Override
 	public void actualizaHistoricosAmbulancia(Iterator<Paciente> historicos) {
 		this.listaPacienteHistoricos.clear();
 		while (historicos.hasNext()) {
@@ -1077,4 +1074,14 @@ public class VentanaClinica extends JFrame
 
 	}
 
+	@Override
+	public void actualizaEstadoAmbulancia(String estado) {
+		this.textAreaAmbulancia.append(estado + "\n");
+	}
+
+	@Override
+	public void setActionListener(ActionListener a) {
+		this.btnSolReparacion.addActionListener(a);
+		
+	}
 }

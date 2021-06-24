@@ -145,6 +145,8 @@ public class Clinica {
 	public String getCiudad() {
 		return ciudad;
 	}
+	
+	
 
 	/**
 	 * Retonra una paciente segun su numero de historia clinica, si no lo encuentra
@@ -850,6 +852,10 @@ public class Clinica {
 	 */
 	public ArrayList<Paciente> getEnAtencion() {
 		return enAtencion;
+	}
+	
+	public void agregaAmbulancia() {
+		this.a = new Ambulancia();
 	}
 
 }

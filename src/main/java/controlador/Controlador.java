@@ -6,6 +6,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.GregorianCalendar;
+import java.util.Observable;
+import java.util.Observer;
 
 import clinica.Clinica;
 import exceptions.CantidadDeDiasErroneosException;
@@ -22,6 +24,9 @@ import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
+import pacientes.Paciente;
+import pedidos.Pedido;
+import pedidos.PedidoTranslado;
 import persistencia.PersistirClinica;
 import personas.Domicilio;
 import vista.IVistaAmbulancia;
@@ -29,7 +34,7 @@ import vista.IVistaConfiguraciones;
 import vista.IVistaFacturacion;
 import vista.IVistaMedicos;
 
-public class Controlador implements ActionListener, WindowListener {
+public class Controlador implements ActionListener, WindowListener, Observer {
 	IVistaFacturacion ventanaFacturacion;
 	IVistaMedicos ventanaMedicos;
 	IVistaAmbulancia ventanaAmbulancia;
@@ -43,16 +48,18 @@ public class Controlador implements ActionListener, WindowListener {
 		this.ventanaMedicos = ventanaMedicos;
 		this.ventanaConfiguraciones = ventanaConfiguraciones;
 		this.clinica = Clinica.getInstancia();
+		this.clinica.agregaAmbulancia();
 		this.ventanaAmbulancia = ventanaAmbulancia;
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
+		this.ventanaAmbulancia.setActionListener(this);
 		this.ventanaFacturacion.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getIteratorEnAtencion());
 		this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		this.ventanaAmbulancia.actualizaHistoricosAmbulancia(this.clinica.getIteratorPacientesHistoricos());
 		this.ventanaConfiguraciones.setActionListenerConfiguraciones(this);
 		this.ventanaConfiguraciones.SetWindowListenerConfiguraciones(this);
-
+		this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
 		actualizarDatosConfiguracion();
 		actualizarValoresConfiguracion();
 	}
@@ -74,7 +81,13 @@ public class Controlador implements ActionListener, WindowListener {
 		if (e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
 
 		}
-
+		
+		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
+			Paciente p = this.ventanaAmbulancia.getPacienteAmbulancia();
+			Pedido pedido = new PedidoTranslado(p.getNombre(), p.getApellido(), this.clinica.getA());
+			pedido.start();
+		}
+		
 		if (e.getActionCommand().equalsIgnoreCase("Restaurar Clinica")) {
 			PersistirClinica.restaurarClinica();
 			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
@@ -95,6 +108,7 @@ public class Controlador implements ActionListener, WindowListener {
 		if (e.getActionCommand().equalsIgnoreCase("Actualizar valores")) {
 			actualizarValoresClinica();
 		}
+		
 
 		this.ventanaFacturacion.limpiarCamposFacturacion();
 		this.ventanaMedicos.limpiarCamposMedicos();
@@ -363,6 +377,12 @@ public class Controlador implements ActionListener, WindowListener {
 	public void windowDeactivated(WindowEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		this.ventanaAmbulancia.actualizaEstadoAmbulancia((String) arg);
+		
 	}
 
 }
