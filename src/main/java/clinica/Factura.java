@@ -47,14 +47,14 @@ public class Factura implements Comparable {
 		StringBuilder sb = new StringBuilder();
 		double acumulador = 0;
 		SimpleDateFormat sdf = new SimpleDateFormat(" dd'/'MM'/'YY");
-		
-		sb.append("Nro:" + this.nroFactura + "	Fecha" + sdf.format(this.fecha.getTime())+"\n");
+
+		sb.append("Nro:" + this.nroFactura + "	Fecha" + sdf.format(this.fecha.getTime()) + "\n");
 		sb.append("|     Prestacion     |   Valor  |  Cantidad  |  Subtotal  |\n");
 		Iterator it = prestaciones.iterator();
 		while (it.hasNext()) {
 			Prestacion prestacion = (Prestacion) it.next();
 			acumulador += prestacion.getSubtotal();
-			sb.append(prestacion.toString()+"\n");
+			sb.append(prestacion.toString() + "\n");
 
 		}
 		sb.append("Total = " + acumulador);
@@ -98,6 +98,24 @@ public class Factura implements Comparable {
 	 */
 	public Paciente getPaciente() {
 		return paciente;
+	}
+
+	/**
+	 * Retorna el numero general de factura
+	 * 
+	 * @return Numero general de factura
+	 */
+	public static int getNumero() {
+		return numero;
+	}
+
+	/**
+	 * Establece el numero general de factura
+	 * 
+	 * @param numero Numero general de factura
+	 */
+	public static void setNumero(int numero) {
+		Factura.numero = numero;
 	}
 
 	@Override

@@ -444,7 +444,8 @@ public class Clinica {
 				if (paciente != null && this.enAtencion.contains(paciente)) {
 					paciente.agregaPrestacion(creaConsulta(medico, cantidad));
 				} else
-					throw new PacienteNoEncontrado("debe seleccionar un paciente correcto de la lista de 'en atencion'");
+					throw new PacienteNoEncontrado(
+							"debe seleccionar un paciente correcto de la lista de 'en atencion'");
 			} else
 				throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
 		} else
@@ -470,7 +471,8 @@ public class Clinica {
 				if (this.enAtencion.contains(paciente)) {
 					paciente.agregaPrestacion(creaConsulta(this.medicos.get(matricula), cantidad));
 				} else
-					throw new PacienteNoEncontrado("debe seleccionar un paciente correcto de la lista de 'en atencion'");
+					throw new PacienteNoEncontrado(
+							"debe seleccionar un paciente correcto de la lista de 'en atencion'");
 			} else
 				throw new CantidadDeDiasErroneosException("No se pueden ingresar dias negativos para la internacion");
 		} else
@@ -523,9 +525,9 @@ public class Clinica {
 	 * 
 	 * @param paciente El paciente al que se le hace la factura
 	 * @param fecha    La fecha en la que se realiza una factura
-	 * @throws PacienteNoEncontrado Si el paciente indicado no se encuentra
-	 * @throws PacienteNoAtendido   Si el paciente no posee prestaciones
-	 * @throws FechaInvalidaException 
+	 * @throws PacienteNoEncontrado   Si el paciente indicado no se encuentra
+	 * @throws PacienteNoAtendido     Si el paciente no posee prestaciones
+	 * @throws FechaInvalidaException
 	 */
 	public String facturaPaciente(Paciente paciente, GregorianCalendar fecha)
 			throws PacienteNoEncontrado, PacienteNoAtendido, FechaInvalidaException {
@@ -540,10 +542,11 @@ public class Clinica {
 				} else
 					throw new PacienteNoAtendido("el paciente no tiene prestaciones realizadas");
 			} else
-				throw new PacienteNoEncontrado("debe seleccionar un paciente perteneciente a la lista de 'en atendidos'");
+				throw new PacienteNoEncontrado(
+						"debe seleccionar un paciente perteneciente a la lista de 'en atendidos'");
 		} else
 			throw new FechaInvalidaException("La fecha es incorrecta");
-		
+
 	}
 
 	/**
@@ -676,8 +679,148 @@ public class Clinica {
 		return Internacion.getCostoTerapiaIntensiva();
 	}
 
+	/**
+	 * Retorna el sueldo basico de los medicos
+	 * 
+	 * @return Sueldo basico de los medico
+	 */
 	public static double getSueldoBasicoMedico() {
 		return Medico.getSueldoBasico();
+	}
+
+	/**
+	 * Retorna la ambulancia de la clinica
+	 * 
+	 * @return Ambulancia de la clinica
+	 */
+	public Ambulancia getA() {
+		return a;
+	}
+
+	/**
+	 * Determina la ambulancia de la clinica
+	 * 
+	 * @param a Ambulancia de la clinica
+	 */
+	public void setA(Ambulancia a) {
+		this.a = a;
+	}
+
+	/**
+	 * Retonra el un HashMap con los pacientes historicos
+	 * 
+	 * @return Pacientes historicos
+	 */
+	public HashMap<Integer, Paciente> getPacientesHist() {
+		return pacientesHist;
+	}
+
+	/**
+	 * Determina un HashMap de pacientes historicos
+	 * 
+	 * @param pacientesHist Pacientes historicos
+	 */
+	public void setPacientesHist(HashMap<Integer, Paciente> pacientesHist) {
+		this.pacientesHist = pacientesHist;
+	}
+
+	/**
+	 * Retotna un TreeSet de Facturas realizadas
+	 * 
+	 * @return Facturas realizadas
+	 */
+	public TreeSet<Factura> getHistorial() {
+		return historial;
+	}
+
+	/**
+	 * Determina un TreeSet de Facturas realizadas
+	 * 
+	 * @param historial Facturas realizadas
+	 */
+	public void setHistorial(TreeSet<Factura> historial) {
+		this.historial = historial;
+	}
+
+	/**
+	 * Retorna LinkedList con la cola de espera
+	 * 
+	 * @return cola de espera
+	 */
+	public LinkedList<Paciente> getColaEspera() {
+		return colaEspera;
+	}
+
+	/**
+	 * determina la cola de espera
+	 * 
+	 * @param colaEspera Cola de espera de pacientes
+	 */
+	public void setColaEspera(LinkedList<Paciente> colaEspera) {
+		this.colaEspera = colaEspera;
+	}
+
+	/**
+	 * Determina el nombre de la clinica
+	 * 
+	 * @param nombre Nombre de la clinica
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * Determina la direccion de la clinica
+	 * 
+	 * @param direccion Direccion de la clinica
+	 */
+	public void setDireccion(Domicilio direccion) {
+		this.direccion = direccion;
+	}
+
+	/**
+	 * Determina la ciudad de la clinica
+	 * 
+	 * @param ciudad Ciudad de la clinica
+	 */
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	/**
+	 * Determina los medicos de la clinica
+	 * 
+	 * @param medicos HashMap de medicos
+	 */
+	public void setMedicos(HashMap<Integer, IMedico> medicos) {
+		this.medicos = medicos;
+	}
+
+	/**
+	 * Determina el paciente que integra la sala privada
+	 * 
+	 * @param salaPrivada Paciente de la sala privada
+	 */
+	public void setSalaPrivada(Paciente salaPrivada) {
+		this.salaPrivada = salaPrivada;
+	}
+
+	/**
+	 * Determina el patio de la sala de espera
+	 * 
+	 * @param patio patio de sala de espera
+	 */
+	public void setPatio(ArrayList<Paciente> patio) {
+		this.patio = patio;
+	}
+
+	/**
+	 * Determina los pacientes en atencion
+	 * 
+	 * @param enAtencion Pacientes en atencion
+	 */
+	public void setEnAtencion(ArrayList<Paciente> enAtencion) {
+		this.enAtencion = enAtencion;
 	}
 
 }
