@@ -36,10 +36,10 @@ public class Controlador implements ActionListener {
 		this.ventanaAmbulancia = ventanaAmbulancia;
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
-		this.ventanaFacturacion.actualizaListaMedicos(this.clinica.getMedicos());
-		this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getEnAtencion());
-		this.ventanaMedicos.actualizaListaMedicos(this.clinica.getMedicos());
-		this.ventanaAmbulancia.actualizaHistoricosAmbulancia(this.clinica.getPacientesHistoricos());
+		this.ventanaFacturacion.actualizaListaMedicos(this.clinica.getIteratorMedicos());
+		this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getIteratorEnAtencion());
+		this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
+		this.ventanaAmbulancia.actualizaHistoricosAmbulancia(this.clinica.getIteratorPacientesHistoricos());
 
 	}
 
@@ -54,7 +54,7 @@ public class Controlador implements ActionListener {
 		}
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Medico")) {
 			this.agregaMedico();
-			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getMedicos());
+			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		}
 		if(e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
 			
@@ -102,7 +102,7 @@ public class Controlador implements ActionListener {
 		try {
 			String factura = null;
 			factura = this.clinica.facturaPaciente(this.ventanaFacturacion.getPaciente(), new GregorianCalendar());
-			this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getEnAtencion());
+			this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getIteratorEnAtencion());
 			this.ventanaFacturacion.mostrarFactura(factura);
 		} catch (PacienteNoEncontrado | PacienteNoAtendido | FechaInvalidaException e) {
 			this.ventanaFacturacion.mostrarMensajeError(e.getMessage());
