@@ -66,7 +66,7 @@ public abstract class Paciente extends Persona implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " Historia clinica" + nroHistoriaClinica;
+		return super.toString() + " Historia clinica " + nroHistoriaClinica;
 	}
 
 	/**
