@@ -10,7 +10,7 @@ import personas.Domicilio;
  *
  */
 
-public class Joven extends Paciente implements Serializable {
+public class Joven extends Paciente {
 
 	/**
 	 * Constructor vacio
