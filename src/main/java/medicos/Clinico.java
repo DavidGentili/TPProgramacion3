@@ -1,5 +1,7 @@
 package medicos;
 
+import java.io.Serializable;
+
 import personas.Domicilio;
 
 /**
@@ -7,7 +9,14 @@ import personas.Domicilio;
  * Representa un medico concreto con la especialidad medico clinico.
  *
  */
-public class Clinico extends Medico {
+public class Clinico extends Medico implements Serializable{
+	
+	/**
+	 * Constructor vacio
+	 */
+	public Clinico(){
+		
+	}
 
 	/**
 	 * Utilizando los mimso parametros que su padre, instancia un medico concreto con la especialidad Clinica

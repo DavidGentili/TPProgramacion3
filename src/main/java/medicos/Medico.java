@@ -1,5 +1,7 @@
 package medicos;
 
+import java.io.Serializable;
+
 import personas.Domicilio;
 import personas.Persona;
 
@@ -10,10 +12,17 @@ import personas.Persona;
  * interface IMedico
  *
  */
-public class Medico extends Persona implements IMedico {
+public class Medico extends Persona implements IMedico, Serializable {
 
 	protected int matricula;
 	protected static double sueldoBasico;
+
+	/**
+	 * Constructor vacio
+	 */
+	public Medico() {
+
+	}
 
 	/**
 	 * se retorna un medico con sus datos totales para su creacion, un nombre, un
@@ -107,6 +116,15 @@ public class Medico extends Persona implements IMedico {
 	@Override
 	public int getMatricula() {
 		return this.matricula;
+	}
+
+	/**
+	 * Se define la matricula del medico
+	 * 
+	 * @param matricula Matricula del medico
+	 */
+	public void setMatricula(int matricula) {
+		this.matricula = matricula;
 	}
 
 }

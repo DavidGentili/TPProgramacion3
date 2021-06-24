@@ -1,5 +1,7 @@
 package medicos;
 
+import java.io.Serializable;
+
 import personas.Domicilio;
 
 /**
@@ -7,14 +9,22 @@ import personas.Domicilio;
  * Representa un medico concreto con la especialidad de pediatria.
  *
  */
-public class Pediatra extends Medico {
-	
-	
+public class Pediatra extends Medico implements Serializable {
+
 	/**
-	 * Utilizando los mimso parametros que su padre, instancia un medico concreto con la especialidad Pediatria
-	 * @param nombre Nombre del medico
-	 * @param apellido Apellido del medico
-	 * @param dni Dni del medico
+	 * Constructor vacio
+	 */
+	public Pediatra() {
+
+	}
+
+	/**
+	 * Utilizando los mimso parametros que su padre, instancia un medico concreto
+	 * con la especialidad Pediatria
+	 * 
+	 * @param nombre    Nombre del medico
+	 * @param apellido  Apellido del medico
+	 * @param dni       Dni del medico
 	 * @param matricula Matricula del medico
 	 */
 	public Pediatra(String nombre, String apellido, int dni, int matricula) {
@@ -24,13 +34,15 @@ public class Pediatra extends Medico {
 
 	/**
 	 * 
-	 * Utilizando los mimso parametros que su padre, instancia un medico concreto con la especialidad pediatria
-	 * @param nombre Nombre del medico
-	 * @param apellido Apellido del medico
-	 * @param dni Dni del medico
-	 * @param telefono telefono del medico
+	 * Utilizando los mimso parametros que su padre, instancia un medico concreto
+	 * con la especialidad pediatria
+	 * 
+	 * @param nombre    Nombre del medico
+	 * @param apellido  Apellido del medico
+	 * @param dni       Dni del medico
+	 * @param telefono  telefono del medico
 	 * @param domicilio Domicilio del medico
-	 * @param ciudad Ciudad del medico
+	 * @param ciudad    Ciudad del medico
 	 * @param matricula Matricula del medico
 	 */
 	public Pediatra(String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad,
@@ -48,8 +60,8 @@ public class Pediatra extends Medico {
 	}
 
 	/**
-	 * Se encarga de retornar un string con los datos del medico basico
-	 * adicionando que es un pediatra
+	 * Se encarga de retornar un string con los datos del medico basico adicionando
+	 * que es un pediatra
 	 */
 	@Override
 	public String toString() {
