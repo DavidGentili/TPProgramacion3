@@ -8,7 +8,7 @@ import personas.Domicilio;
  * 
  * Representa un medico concreto con la especialidad de cirujano
  */
-public class Cirujano extends Medico implements Serializable {
+public class Cirujano extends Medico {
 
 	/**
 	 * Constructor vacio

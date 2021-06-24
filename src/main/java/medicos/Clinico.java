@@ -9,7 +9,7 @@ import personas.Domicilio;
  * Representa un medico concreto con la especialidad medico clinico.
  *
  */
-public class Clinico extends Medico implements Serializable{
+public class Clinico extends Medico{
 	
 	/**
 	 * Constructor vacio
