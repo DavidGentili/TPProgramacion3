@@ -1,5 +1,7 @@
 package medicos;
 
+import java.io.Serializable;
+
 /**
  * 
  * Representa un medico con el posgrado Doctorado, el cual esta implementando el
@@ -7,6 +9,10 @@ package medicos;
  *
  */
 public class Doctorado extends DecoradorMedicoPosgrado {
+
+	public Doctorado() {
+
+	}
 
 	public Doctorado(DecoradorMedicoContratacion encapsulado) {
 		super(encapsulado);

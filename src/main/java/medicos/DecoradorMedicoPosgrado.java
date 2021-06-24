@@ -1,14 +1,24 @@
 package medicos;
 
+import java.io.Serializable;
+
 import personas.Domicilio;
 
 /**
  * Es la clase abstracta padre de los decoradores concretos de Posgrados.
- * utiliza como encapsulado un DecoradorMedicoContratacion para el patron decorator
+ * utiliza como encapsulado un DecoradorMedicoContratacion para el patron
+ * decorator
  *
  */
 
-public abstract class DecoradorMedicoPosgrado implements IMedico {
+public abstract class DecoradorMedicoPosgrado implements IMedico, Serializable {
+
+	/**
+	 * Constructor vacio
+	 */
+	public DecoradorMedicoPosgrado() {
+
+	}
 
 	/**
 	 * representa el medico con su contratacion indicada.
@@ -92,4 +102,23 @@ public abstract class DecoradorMedicoPosgrado implements IMedico {
 		// TODO Auto-generated method stub
 		return encapsulado.getMatricula();
 	}
+
+	/**
+	 * Retorna el medico encapsulado
+	 * 
+	 * @return  medico encapsulado
+	 */
+	public DecoradorMedicoContratacion getEncapsulado() {
+		return encapsulado;
+	}
+
+	/**
+	 * Define el medico encapsulado
+	 * 
+	 * @param encapsulado Medico encapsulado
+	 */
+	public void setEncapsulado(DecoradorMedicoContratacion encapsulado) {
+		this.encapsulado = encapsulado;
+	}
+
 }

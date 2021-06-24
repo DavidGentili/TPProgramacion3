@@ -8,6 +8,10 @@ package medicos;
  */
 public class Magister extends DecoradorMedicoPosgrado {
 
+	public Magister() {
+
+	}
+
 	public Magister(DecoradorMedicoContratacion encapsulado) {
 		super(encapsulado);
 		// TODO Auto-generated constructor stub
