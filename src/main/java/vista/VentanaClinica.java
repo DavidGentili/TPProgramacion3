@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowListener;
 import java.util.Iterator;
 
 import javax.swing.DefaultComboBoxModel;
@@ -30,8 +31,11 @@ import javax.swing.border.TitledBorder;
 import clinica.Ambulancia;
 import medicos.IMedico;
 import pacientes.Paciente;
+import javax.swing.border.BevelBorder;
+import javax.swing.BoxLayout;
 
-public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia {
+public class VentanaClinica extends JFrame
+		implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia, IVistaConfiguraciones {
 
 	private JPanel contentPane;
 	private JTabbedPane tabPanel;
@@ -131,13 +135,78 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JPanel panel_BtReparacion;
 	private DefaultListModel<Paciente> listaPacienteHistoricos = new DefaultListModel<Paciente>();
 	private JPanel panelConfiguraciones;
+	private JPanel panelCondicionesActuales;
+	private JPanel panelDatosActualClinica;
+	private JPanel panelCostosActualClinica;
+	private JLabel lblNombreActualClinica;
+	private JLabel lblTelefonoActualClinica;
+	private JLabel lblDireccionActualClinica;
+	private JLabel lblSueldoBasicoActualMedicos;
+	private JLabel lblCostoHabPrivadaActual;
+	private JLabel lblCostoHabCompartidaActual;
+	private JLabel lblCostoTerapiaIntensivaActual;
+	private JPanel panelActualizarConfiguraciones;
+	private JPanel panelActualizarDatosClinica;
+	private JPanel panelActualizarCostosClinica;
+	private JPanel panelPersistencia;
+	private JButton btnRestaurarClinica;
+	private JButton btnAlmacenarClinica;
+	private JPanel panelContenedorBtnRestaurarClinica;
+	private JPanel panelContenedorBtnAlmacenarClinica;
+	private JPanel panelContenedorNombreDeLaClinica;
+	private JPanel panelContenedorLblNombreDeLaClinica;
+	private JLabel lblNombreDeLaClinica;
+	private JPanel panelContenedorTextFielNombreDeLaClinica;
+	private JTextField textFieldNombreClinica;
+	private JPanel panelContenedorTelefonoDeLaClinica;
+	private JPanel panelContenedorLblTelefonoDeLaClinica;
+	private JLabel lblTelefonoDeLaClinica;
+	private JPanel panelContenedorTextFielTelefonoDeLaClinica;
+	private JTextField textFieldTelefonoClinica;
+	private JPanel panelContenedorDireccionDeLaClinica;
+	private JPanel panelContenedorLblDireccionDeLaClinica;
+	private JLabel lblDireccionDeLaClinica;
+	private JPanel panelContenedorTextFielCalleDeLaClinica;
+	private JTextField textFieldCalleClinica;
+	private JButton btnActualizarDatosClinica;
+	private JPanel panelContenedorBtnActualizarDatos;
+	private JPanel panelContenedorTextFielNumeroDeCalleDeLaClinica;
+	private JTextField textFieldNumeroDeCalleDeLaClinica;
+	private JPanel panelContenedorSueldoBasicoMedicos;
+	private JLabel lblSueldoBasicoMedicos;
+	private JPanel panelContenedorLblSueldoBasicoMedicos;
+	private JTextField textFieldSueldoBasicoMedicos;
+	private JPanel panelContenedorTextFieldSueldoBasicoMedicos;
+	private JPanel panelContenedorCostoPrivada;
+	private JLabel lblCostoPrivada;
+	private JTextField textFieldCostoPrivada;
+	private JPanel panelContenedorLblCostoPrivada;
+	private JPanel panelContenedorTextFieldCostoPrivada;
+	private JPanel panelContenedorCompartida;
+	private JLabel lblCostoCompartida;
+	private JTextField textFieldCostoCompartida;
+	private JPanel panelContenedorLblCostoCompartida;
+	private JPanel panelContenedorTextFieldCostoCompartida;
+	private JPanel panelContenedorTerapia;
+	private JLabel lblCostoTerapia;
+	private JTextField textFieldCostoTerapia;
+	private JPanel panelContenedorLblCostoTerapia;
+	private JPanel panelContenedorTextFieldCostoTerapia;
+	private JButton btnActualizarMontosClinica;
+	private JPanel panelActualizarMontos;
+	private JPanel panelContenedorCiudadDeLaClinica;
+	private JLabel lblNuevaCiudadDeLaClinica;
+	private JTextField textFieldNuevaCiudadDeLaClinica;
+	private JPanel panelContenedorLblNuevaCiudadDeLaClinica;
+	private JPanel panelContenedorTextFieldNuevaCiudadDeLaClinica;
+	private JLabel lblCiudadActualDeLaClinica;
 
 	/**
 	 * Create the frame.
 	 */
 	public VentanaClinica() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 700);
+		setBounds(100, 100, 1000, 700);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(this.contentPane);
@@ -480,9 +549,239 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.btnAgregarMedico = new JButton("Agregar Medico");
 		this.panelContenedorBtnAgregarMedico.add(this.btnAgregarMedico);
 		this.btnAgregarMedico.setEnabled(false);
-		
+
 		this.panelConfiguraciones = new JPanel();
 		this.tabPanel.addTab("General", null, this.panelConfiguraciones, null);
+		this.panelConfiguraciones.setLayout(new BorderLayout(0, 0));
+
+		this.panelCondicionesActuales = new JPanel();
+		this.panelCondicionesActuales.setBorder(new TitledBorder(null, "Datos Actuales de la clinica",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.panelConfiguraciones.add(this.panelCondicionesActuales, BorderLayout.NORTH);
+		this.panelCondicionesActuales.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelDatosActualClinica = new JPanel();
+		this.panelCondicionesActuales.add(this.panelDatosActualClinica);
+		this.panelDatosActualClinica.setLayout(new GridLayout(0, 1, 0, 0));
+
+		this.lblNombreActualClinica = new JLabel("");
+		this.panelDatosActualClinica.add(this.lblNombreActualClinica);
+
+		this.lblTelefonoActualClinica = new JLabel("");
+		this.panelDatosActualClinica.add(this.lblTelefonoActualClinica);
+
+		this.lblDireccionActualClinica = new JLabel("");
+		this.panelDatosActualClinica.add(this.lblDireccionActualClinica);
+
+		this.lblCiudadActualDeLaClinica = new JLabel("");
+		this.panelDatosActualClinica.add(this.lblCiudadActualDeLaClinica);
+
+		this.panelCostosActualClinica = new JPanel();
+		this.panelCondicionesActuales.add(this.panelCostosActualClinica);
+		this.panelCostosActualClinica.setLayout(new GridLayout(0, 1, 0, 0));
+
+		this.lblSueldoBasicoActualMedicos = new JLabel("");
+		this.panelCostosActualClinica.add(this.lblSueldoBasicoActualMedicos);
+
+		this.lblCostoHabPrivadaActual = new JLabel("");
+		this.panelCostosActualClinica.add(this.lblCostoHabPrivadaActual);
+
+		this.lblCostoHabCompartidaActual = new JLabel("");
+		this.panelCostosActualClinica.add(this.lblCostoHabCompartidaActual);
+
+		this.lblCostoTerapiaIntensivaActual = new JLabel("");
+		this.panelCostosActualClinica.add(this.lblCostoTerapiaIntensivaActual);
+
+		this.panelActualizarConfiguraciones = new JPanel();
+		this.panelActualizarConfiguraciones.setBorder(null);
+		this.panelConfiguraciones.add(this.panelActualizarConfiguraciones, BorderLayout.CENTER);
+		this.panelActualizarConfiguraciones.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelActualizarDatosClinica = new JPanel();
+		this.panelActualizarDatosClinica.setBorder(
+				new TitledBorder(null, "Datos de la Clinica", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.panelActualizarConfiguraciones.add(this.panelActualizarDatosClinica);
+		this.panelActualizarDatosClinica.setLayout(new GridLayout(0, 1, 0, 0));
+
+		this.panelContenedorNombreDeLaClinica = new JPanel();
+		this.panelActualizarDatosClinica.add(this.panelContenedorNombreDeLaClinica);
+		this.panelContenedorNombreDeLaClinica.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblNombreDeLaClinica = new JPanel();
+		this.panelContenedorNombreDeLaClinica.add(this.panelContenedorLblNombreDeLaClinica);
+
+		this.lblNombreDeLaClinica = new JLabel("Nombre");
+		this.panelContenedorLblNombreDeLaClinica.add(this.lblNombreDeLaClinica);
+
+		this.panelContenedorTextFielNombreDeLaClinica = new JPanel();
+		this.panelContenedorNombreDeLaClinica.add(this.panelContenedorTextFielNombreDeLaClinica);
+
+		this.textFieldNombreClinica = new JTextField();
+		this.textFieldNombreClinica.setColumns(10);
+		this.panelContenedorTextFielNombreDeLaClinica.add(this.textFieldNombreClinica);
+
+		this.panelContenedorTelefonoDeLaClinica = new JPanel();
+		this.panelActualizarDatosClinica.add(this.panelContenedorTelefonoDeLaClinica);
+		this.panelContenedorTelefonoDeLaClinica.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblTelefonoDeLaClinica = new JPanel();
+		this.panelContenedorTelefonoDeLaClinica.add(this.panelContenedorLblTelefonoDeLaClinica);
+
+		this.lblTelefonoDeLaClinica = new JLabel("Telefono");
+		this.panelContenedorLblTelefonoDeLaClinica.add(this.lblTelefonoDeLaClinica);
+
+		this.panelContenedorTextFielTelefonoDeLaClinica = new JPanel();
+		this.panelContenedorTelefonoDeLaClinica.add(this.panelContenedorTextFielTelefonoDeLaClinica);
+
+		this.textFieldTelefonoClinica = new JTextField();
+		this.textFieldTelefonoClinica.setColumns(10);
+		this.panelContenedorTextFielTelefonoDeLaClinica.add(this.textFieldTelefonoClinica);
+
+		this.panelContenedorDireccionDeLaClinica = new JPanel();
+		this.panelActualizarDatosClinica.add(this.panelContenedorDireccionDeLaClinica);
+		this.panelContenedorDireccionDeLaClinica.setLayout(new GridLayout(0, 3, 0, 0));
+
+		this.panelContenedorLblDireccionDeLaClinica = new JPanel();
+		this.panelContenedorDireccionDeLaClinica.add(this.panelContenedorLblDireccionDeLaClinica);
+
+		this.lblDireccionDeLaClinica = new JLabel("Direccion");
+		this.panelContenedorLblDireccionDeLaClinica.add(this.lblDireccionDeLaClinica);
+
+		this.panelContenedorTextFielCalleDeLaClinica = new JPanel();
+		this.panelContenedorDireccionDeLaClinica.add(this.panelContenedorTextFielCalleDeLaClinica);
+
+		this.textFieldCalleClinica = new JTextField();
+		this.textFieldCalleClinica.setColumns(10);
+		this.panelContenedorTextFielCalleDeLaClinica.add(this.textFieldCalleClinica);
+
+		this.panelContenedorTextFielNumeroDeCalleDeLaClinica = new JPanel();
+		this.panelContenedorDireccionDeLaClinica.add(this.panelContenedorTextFielNumeroDeCalleDeLaClinica);
+
+		this.textFieldNumeroDeCalleDeLaClinica = new JTextField();
+		this.textFieldNumeroDeCalleDeLaClinica.setColumns(10);
+		this.panelContenedorTextFielNumeroDeCalleDeLaClinica.add(this.textFieldNumeroDeCalleDeLaClinica);
+
+		this.panelContenedorCiudadDeLaClinica = new JPanel();
+		this.panelActualizarDatosClinica.add(this.panelContenedorCiudadDeLaClinica);
+		this.panelContenedorCiudadDeLaClinica.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblNuevaCiudadDeLaClinica = new JPanel();
+		this.panelContenedorCiudadDeLaClinica.add(this.panelContenedorLblNuevaCiudadDeLaClinica);
+
+		this.lblNuevaCiudadDeLaClinica = new JLabel("Ciudad");
+		this.panelContenedorLblNuevaCiudadDeLaClinica.add(this.lblNuevaCiudadDeLaClinica);
+
+		this.panelContenedorTextFieldNuevaCiudadDeLaClinica = new JPanel();
+		this.panelContenedorCiudadDeLaClinica.add(this.panelContenedorTextFieldNuevaCiudadDeLaClinica);
+
+		this.textFieldNuevaCiudadDeLaClinica = new JTextField();
+		this.panelContenedorTextFieldNuevaCiudadDeLaClinica.add(this.textFieldNuevaCiudadDeLaClinica);
+		this.textFieldNuevaCiudadDeLaClinica.setColumns(10);
+
+		this.panelContenedorBtnActualizarDatos = new JPanel();
+		FlowLayout fl_panelContenedorBtnActualizarDatos = (FlowLayout) this.panelContenedorBtnActualizarDatos
+				.getLayout();
+		this.panelActualizarDatosClinica.add(this.panelContenedorBtnActualizarDatos);
+
+		this.btnActualizarDatosClinica = new JButton("Actualizar datos");
+		this.panelContenedorBtnActualizarDatos.add(this.btnActualizarDatosClinica);
+
+		this.panelActualizarCostosClinica = new JPanel();
+		this.panelActualizarCostosClinica.setBorder(
+				new TitledBorder(null, "Valores de la Clinica", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.panelActualizarConfiguraciones.add(this.panelActualizarCostosClinica);
+		this.panelActualizarCostosClinica.setLayout(new GridLayout(0, 1, 0, 0));
+
+		this.panelContenedorSueldoBasicoMedicos = new JPanel();
+		this.panelActualizarCostosClinica.add(this.panelContenedorSueldoBasicoMedicos);
+		this.panelContenedorSueldoBasicoMedicos.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblSueldoBasicoMedicos = new JPanel();
+		this.panelContenedorSueldoBasicoMedicos.add(this.panelContenedorLblSueldoBasicoMedicos);
+
+		this.lblSueldoBasicoMedicos = new JLabel("Sueldo Basico Medicos");
+		this.panelContenedorLblSueldoBasicoMedicos.add(this.lblSueldoBasicoMedicos);
+
+		this.panelContenedorTextFieldSueldoBasicoMedicos = new JPanel();
+		this.panelContenedorSueldoBasicoMedicos.add(this.panelContenedorTextFieldSueldoBasicoMedicos);
+
+		this.textFieldSueldoBasicoMedicos = new JTextField();
+		this.panelContenedorTextFieldSueldoBasicoMedicos.add(this.textFieldSueldoBasicoMedicos);
+		this.textFieldSueldoBasicoMedicos.setColumns(10);
+
+		this.panelContenedorCostoPrivada = new JPanel();
+		this.panelActualizarCostosClinica.add(this.panelContenedorCostoPrivada);
+		this.panelContenedorCostoPrivada.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblCostoPrivada = new JPanel();
+		this.panelContenedorCostoPrivada.add(this.panelContenedorLblCostoPrivada);
+
+		this.lblCostoPrivada = new JLabel("Costo habitacion Privada");
+		this.panelContenedorLblCostoPrivada.add(this.lblCostoPrivada);
+
+		this.panelContenedorTextFieldCostoPrivada = new JPanel();
+		this.panelContenedorCostoPrivada.add(this.panelContenedorTextFieldCostoPrivada);
+
+		this.textFieldCostoPrivada = new JTextField();
+		this.panelContenedorTextFieldCostoPrivada.add(this.textFieldCostoPrivada);
+		this.textFieldCostoPrivada.setColumns(10);
+
+		this.panelContenedorCompartida = new JPanel();
+		this.panelActualizarCostosClinica.add(this.panelContenedorCompartida);
+		this.panelContenedorCompartida.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblCostoCompartida = new JPanel();
+		this.panelContenedorCompartida.add(this.panelContenedorLblCostoCompartida);
+
+		this.lblCostoCompartida = new JLabel("Costo Habiatacion Compartida");
+		this.panelContenedorLblCostoCompartida.add(this.lblCostoCompartida);
+
+		this.panelContenedorTextFieldCostoCompartida = new JPanel();
+		this.panelContenedorCompartida.add(this.panelContenedorTextFieldCostoCompartida);
+
+		this.textFieldCostoCompartida = new JTextField();
+		this.panelContenedorTextFieldCostoCompartida.add(this.textFieldCostoCompartida);
+		this.textFieldCostoCompartida.setColumns(10);
+
+		this.panelContenedorTerapia = new JPanel();
+		this.panelActualizarCostosClinica.add(this.panelContenedorTerapia);
+		this.panelContenedorTerapia.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblCostoTerapia = new JPanel();
+		this.panelContenedorTerapia.add(this.panelContenedorLblCostoTerapia);
+
+		this.lblCostoTerapia = new JLabel("Costo Terapia Intensiva");
+		this.panelContenedorLblCostoTerapia.add(this.lblCostoTerapia);
+
+		this.panelContenedorTextFieldCostoTerapia = new JPanel();
+		this.panelContenedorTerapia.add(this.panelContenedorTextFieldCostoTerapia);
+
+		this.textFieldCostoTerapia = new JTextField();
+		this.panelContenedorTextFieldCostoTerapia.add(this.textFieldCostoTerapia);
+		this.textFieldCostoTerapia.setColumns(10);
+
+		this.panelActualizarMontos = new JPanel();
+		this.panelActualizarCostosClinica.add(this.panelActualizarMontos);
+
+		this.btnActualizarMontosClinica = new JButton("Actualizar valores");
+		this.btnActualizarMontosClinica.setActionCommand("Actualizar valores");
+		this.panelActualizarMontos.add(this.btnActualizarMontosClinica);
+
+		this.panelPersistencia = new JPanel();
+		this.panelConfiguraciones.add(this.panelPersistencia, BorderLayout.SOUTH);
+		this.panelPersistencia.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorBtnRestaurarClinica = new JPanel();
+		this.panelPersistencia.add(this.panelContenedorBtnRestaurarClinica);
+
+		this.btnRestaurarClinica = new JButton("Restaurar Clinica");
+		this.panelContenedorBtnRestaurarClinica.add(this.btnRestaurarClinica);
+
+		this.panelContenedorBtnAlmacenarClinica = new JPanel();
+		this.panelPersistencia.add(this.panelContenedorBtnAlmacenarClinica);
+
+		this.btnAlmacenarClinica = new JButton("Almacenar Clinica");
+		this.panelContenedorBtnAlmacenarClinica.add(this.btnAlmacenarClinica);
 
 		this.setVisible(true);
 
@@ -683,6 +982,99 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	@Override
 	public Paciente getPacienteAmbulancia() {
 		return this.listPacien.getSelectedValue();
+	}
+
+	@Override
+	public void setActionListenerConfiguraciones(ActionListener listener) {
+		this.btnActualizarDatosClinica.addActionListener(listener);
+		this.btnActualizarMontosClinica.addActionListener(listener);
+		this.btnAlmacenarClinica.addActionListener(listener);
+		this.btnRestaurarClinica.addActionListener(listener);
+
+	}
+
+	@Override
+	public void SetWindowListenerConfiguraciones(WindowListener listener) {
+		this.addWindowListener(listener);
+
+	}
+
+	@Override
+	public void actualizarCostosDeLaClinica(double habPrivada, double habCompartida, double terapia, double sueldo) {
+		this.lblCostoHabCompartidaActual.setText("Costo de la habitacion compartida: " + habCompartida);
+		this.lblCostoHabPrivadaActual.setText("Costo de la habitacion privada: " + habPrivada);
+		this.lblCostoTerapiaIntensivaActual.setText("Costo de la terapia intensiva: " + terapia);
+		this.lblSueldoBasicoActualMedicos.setText("Sueldo Basico de los medicos: " + sueldo);
+		this.repaint();
+	}
+
+	@Override
+	public void actualizarDatosDeLaClinia(String nombre, String telefono, String direccion, String ciudad) {
+		this.lblNombreActualClinica.setText(nombre);
+		this.lblTelefonoActualClinica.setText(telefono);
+		this.lblDireccionActualClinica.setText(direccion);
+		this.lblCiudadActualDeLaClinica.setText(ciudad);
+		this.repaint();
+
+	}
+
+	@Override
+	public String getNuevoNombreClinica() {
+		return this.textFieldNombreClinica.getText();
+	}
+
+	@Override
+	public String getNuevoTelefonoClinica() {
+		return this.textFieldTelefonoClinica.getText();
+	}
+
+	@Override
+	public String getNuevaCalleClinica() {
+		return this.textFieldCalleClinica.getText();
+	}
+
+	@Override
+	public String getNuevoNumeroClinica() {
+		return this.textFieldNumeroDeCalleDeLaClinica.getText();
+	}
+
+	@Override
+	public String getCiudadClinica() {
+		return this.textFieldNuevaCiudadDeLaClinica.getText();
+	}
+
+	@Override
+	public String getNuevoCostoHabitacionPrivada() {
+		return this.textFieldCostoPrivada.getText();
+	}
+
+	@Override
+	public String getNuevoCostoHabitacionCompartida() {
+		return this.textFieldCostoCompartida.getText();
+	}
+
+	@Override
+	public String getNuevoCostoTerapiaIntensiva() {
+		return this.textFieldCostoTerapia.getText();
+	}
+
+	@Override
+	public String getNuevoSueldoBasicoMedicos() {
+		return this.textFieldSueldoBasicoMedicos.getText();
+	}
+
+	@Override
+	public void limpiarCamposConfiguracion() {
+		this.textFieldNombreClinica.setText("");
+		this.textFieldCalleClinica.setText("");
+		this.textFieldTelefonoClinica.setText("");
+		this.textFieldNumeroDeCalleDeLaClinica.setText("");
+		this.textFieldNuevaCiudadDeLaClinica.setText("");
+
+		this.textFieldCostoCompartida.setText("");
+		this.textFieldCostoPrivada.setText("");
+		this.textFieldCostoTerapia.setText("");
+
 	}
 
 }
