@@ -130,6 +130,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JPanel panel_BtAtencion;
 	private JPanel panel_BtReparacion;
 	private DefaultListModel<Paciente> listaPacienteHistoricos = new DefaultListModel<Paciente>();
+	private JPanel panelConfiguraciones;
 
 	/**
 	 * Create the frame.
@@ -479,6 +480,9 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.btnAgregarMedico = new JButton("Agregar Medico");
 		this.panelContenedorBtnAgregarMedico.add(this.btnAgregarMedico);
 		this.btnAgregarMedico.setEnabled(false);
+		
+		this.panelConfiguraciones = new JPanel();
+		this.tabPanel.addTab("General", null, this.panelConfiguraciones, null);
 
 		this.setVisible(true);
 
