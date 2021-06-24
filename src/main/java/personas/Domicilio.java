@@ -12,9 +12,17 @@ public class Domicilio {
 	private String calle;
 	private int numero;
 
+	/**
+	 * Se encarga se crear una instancia de un domicilio
+	 * 
+	 * @param calle  calle del domicilio
+	 * @param numero altura del domicilio
+	 * @throws DomicilioInvalido si el numero es negativo o la calle es un string
+	 *                           vacio o nulo
+	 */
 	public Domicilio(String calle, int numero) throws DomicilioInvalido {
 		super();
-		if (calle!=null && !calle.isBlank())
+		if (calle != null && !calle.isBlank() && !calle.isEmpty())
 			this.calle = calle;
 		else
 			throw new DomicilioInvalido("La calle debe ser distinta de blanco");

@@ -1,12 +1,14 @@
 package personas;
 
+import java.io.Serializable;
+
 /**
  * Es la clase base de las personas, toda representacion de una persona fisica
  * dentro del proyecto es una extension de esta clase
  *
  */
 
-public class Persona {
+public class Persona implements Serializable {
 	protected String nombre;
 	protected String apellido;
 	protected int dni;
@@ -14,6 +16,16 @@ public class Persona {
 	protected Domicilio domicilio;
 	protected String ciudad;
 
+	/**
+	 * crea una instancia de una persona con sus datos basicos <br>
+	 * pre: el nombre y el apellido deben ser distintos de null y de vacio, el DNI
+	 * debe ser un numero positivo
+	 * 
+	 * @param nombre   nombre de la persona
+	 * @param apellido Apellido de la persona
+	 * @param dni      Dni de la persona
+	 * 
+	 */
 	public Persona(String nombre, String apellido, int dni) {
 		super();
 		this.nombre = nombre;
@@ -24,6 +36,19 @@ public class Persona {
 		this.ciudad = null;
 	}
 
+	/**
+	 * crea una instancia de una persona con sus datos basicos <br>
+	 * pre: el nombre y el apellido deben ser distintos de null y de vacio, el DNI
+	 * debe ser un numero positivo
+	 * 
+	 * 
+	 * @param nombre    nombre de la persona
+	 * @param apellido  Apellido de la persona
+	 * @param dni       Dni de la persona
+	 * @param telefono  telefono de la persona
+	 * @param domicilio domicilio de la persona
+	 * @param ciudad    Ciudad de la persona
+	 */
 	public Persona(String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad) {
 		super();
 		this.nombre = nombre;
