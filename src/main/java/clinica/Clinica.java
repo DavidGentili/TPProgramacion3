@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import exceptions.CantidadDeDiasErroneosException;
-import exceptions.ClinicaInexistenteExcepcion;
 import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoIndicadaException;
@@ -58,6 +57,10 @@ public class Clinica {
 
 	private ArrayList<Paciente> enAtencion = new ArrayList<Paciente>();
 
+	private Clinica() {
+
+	}
+
 	private Clinica(String nombre, Domicilio direccion, String telefono, String ciudad) {
 		super();
 		this.nombre = nombre;
@@ -92,11 +95,10 @@ public class Clinica {
 	 * @throws ClinicaInexistenteExcepcion si la clinica no esta previamente
 	 *                                     inicializada
 	 */
-	public static Clinica getInstancia() throws ClinicaInexistenteExcepcion {
-		if (instancia != null)
-			return instancia;
-		else
-			throw new ClinicaInexistenteExcepcion("La clinica no se ha inicializado");
+	public static Clinica getInstancia() {
+		if (instancia == null)
+			instancia = new Clinica();
+		return instancia;
 	}
 
 	/**
@@ -184,7 +186,7 @@ public class Clinica {
 	 * 
 	 * @return Medicos registrados en la clinica
 	 */
-	public Iterator getMedicos() {
+	public Iterator getIteratorMedicos() {
 		ArrayList<IMedico> aux = new ArrayList<IMedico>();
 		for (Integer i : this.medicos.keySet()) {
 			aux.add(this.medicos.get(i));
@@ -197,7 +199,7 @@ public class Clinica {
 	 * 
 	 * @return los pacientes registrados en la clinica
 	 */
-	public Iterator getPacientesHistoricos() {
+	public Iterator getIteratorPacientesHistoricos() {
 		ArrayList<Paciente> aux = new ArrayList<Paciente>();
 		for (Integer i : this.pacientesHist.keySet()) {
 			aux.add(this.pacientesHist.get(i));
@@ -210,7 +212,7 @@ public class Clinica {
 	 * 
 	 * @return las facturas generadas
 	 */
-	public Iterator getFacturas() {
+	public Iterator getIteratorFacturas() {
 		return this.historial.iterator();
 	}
 
@@ -228,7 +230,7 @@ public class Clinica {
 	 * 
 	 * @return los pacientes del patio
 	 */
-	public Iterator getPatio() {
+	public Iterator getIteratorPatio() {
 		return this.patio.iterator();
 	}
 
@@ -237,7 +239,7 @@ public class Clinica {
 	 * 
 	 * @return los pacientes en atencion
 	 */
-	public Iterator getEnAtencion() {
+	public Iterator getIteratorEnAtencion() {
 		return this.enAtencion.iterator();
 	}
 
@@ -675,7 +677,7 @@ public class Clinica {
 	 * 
 	 * @return el costo basico de la terapia intensiva
 	 */
-	public static double getCostInternacion() {
+	public static double getCostoTerapiaIntensiva() {
 		return Internacion.getCostoTerapiaIntensiva();
 	}
 
@@ -821,6 +823,33 @@ public class Clinica {
 	 */
 	public void setEnAtencion(ArrayList<Paciente> enAtencion) {
 		this.enAtencion = enAtencion;
+	}
+
+	/**
+	 * Retorna un HashMap<Integer,IMedico> con los medicos
+	 * 
+	 * @return medicos de la clinica
+	 */
+	public HashMap<Integer, IMedico> getMedicos() {
+		return medicos;
+	}
+
+	/**
+	 * Retorna un arrayList con los pacientes del patio
+	 * 
+	 * @return Pacientes del patio
+	 */
+	public ArrayList<Paciente> getPatio() {
+		return patio;
+	}
+
+	/**
+	 * Retorna un ArrayList con los pacientes en atencion
+	 * 
+	 * @return Pacientes en atencion
+	 */
+	public ArrayList<Paciente> getEnAtencion() {
+		return enAtencion;
 	}
 
 }
