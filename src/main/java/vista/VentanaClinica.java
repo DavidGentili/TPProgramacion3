@@ -1010,10 +1010,10 @@ public class VentanaClinica extends JFrame
 
 	@Override
 	public void actualizarDatosDeLaClinia(String nombre, String telefono, String direccion, String ciudad) {
-		this.lblNombreActualClinica.setText(nombre);
-		this.lblTelefonoActualClinica.setText(telefono);
-		this.lblDireccionActualClinica.setText(direccion);
-		this.lblCiudadActualDeLaClinica.setText(ciudad);
+		this.lblNombreActualClinica.setText("Nombre: " + nombre);
+		this.lblTelefonoActualClinica.setText("Telefono: " + telefono);
+		this.lblDireccionActualClinica.setText("Direccion: " + direccion);
+		this.lblCiudadActualDeLaClinica.setText("Ciudad: " + ciudad);
 		this.repaint();
 
 	}
