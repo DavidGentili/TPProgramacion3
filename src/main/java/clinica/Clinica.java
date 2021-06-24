@@ -531,7 +531,7 @@ public class Clinica {
 			throws PacienteNoEncontrado, PacienteNoAtendido, FechaInvalidaException {
 		if (fecha.compareTo(new GregorianCalendar()) <= 0) {
 			if (this.enAtencion.contains(paciente)) {
-				if (!paciente.getPretaciones().isEmpty()) {
+				if (!paciente.getPrestaciones().isEmpty()) {
 					Factura factura = new Factura(fecha, paciente);
 					this.enAtencion.remove(paciente);
 					paciente.limpiaPrestaciones();
