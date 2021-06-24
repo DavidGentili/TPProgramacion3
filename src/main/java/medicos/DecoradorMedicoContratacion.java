@@ -1,25 +1,36 @@
 package medicos;
 
+import java.io.Serializable;
+
 import personas.Domicilio;
 
 /**
  * 
- * Es la clase abstracta padre de los decoradores concretos de contratacion. 
- * Utiliza como encapsulado un IMedico para la posterior implementacion del patron decorator
+ * Es la clase abstracta padre de los decoradores concretos de contratacion.
+ * Utiliza como encapsulado un IMedico para la posterior implementacion del
+ * patron decorator
  *
  */
-public abstract class DecoradorMedicoContratacion implements IMedico {
+public abstract class DecoradorMedicoContratacion implements IMedico, Serializable {
 
-    /**
-     * representa un medico con su respectiva especialidad.
-     * @aggregation composite
-     */
-    protected IMedico encapsulado;
+	/**
+	 * representa un medico con su respectiva especialidad.
+	 * 
+	 * @aggregation composite
+	 */
+	protected IMedico encapsulado;
 
-    /**
-     * 
-     * @param encapsulado un medico 
-     */
+	/**
+	 * Constructor vacio
+	 */
+	public DecoradorMedicoContratacion() {
+
+	}
+
+	/**
+	 * 
+	 * @param encapsulado un medico
+	 */
 	public DecoradorMedicoContratacion(IMedico encapsulado) {
 		this.encapsulado = encapsulado;
 	}
@@ -90,6 +101,24 @@ public abstract class DecoradorMedicoContratacion implements IMedico {
 	public int getMatricula() {
 		// TODO Auto-generated method stub
 		return encapsulado.getMatricula();
+	}
+
+	/**
+	 * retorna el Encapsulado
+	 * 
+	 * @return Medico Encapsulado
+	 */
+	public IMedico getEncapsulado() {
+		return encapsulado;
+	}
+
+	/**
+	 * Define el medico Encapsulado
+	 * 
+	 * @param encapsulado Medico Encapsulado
+	 */
+	public void setEncapsulado(IMedico encapsulado) {
+		this.encapsulado = encapsulado;
 	}
 
 }

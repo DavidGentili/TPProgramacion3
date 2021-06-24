@@ -8,6 +8,18 @@ package medicos;
  */
 public class Temporario extends DecoradorMedicoContratacion {
 
+	/**
+	 * Contructor vacio
+	 */
+	public Temporario() {
+
+	}
+
+	/**
+	 * instancia un medico con la contratacion temporaria
+	 * 
+	 * @param encapsulado Medico Encapsulado
+	 */
 	public Temporario(IMedico encapsulado) {
 		super(encapsulado);
 		// TODO Auto-generated constructor stub

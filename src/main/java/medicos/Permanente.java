@@ -8,6 +8,18 @@ package medicos;
  */
 public class Permanente extends DecoradorMedicoContratacion {
 
+	/**
+	 * Constructor vacio
+	 */
+	public Permanente() {
+
+	}
+
+	/**
+	 * Instancia un medico con la contratacion permanente
+	 * 
+	 * @param encapsulado Medico Encapsulado
+	 */
 	public Permanente(IMedico encapsulado) {
 		super(encapsulado);
 		// TODO Auto-generated constructor stub
