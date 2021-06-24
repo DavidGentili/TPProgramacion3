@@ -1,5 +1,7 @@
 package pacientes;
 
+import java.io.Serializable;
+
 import personas.Domicilio;
 
 /**
@@ -8,12 +10,39 @@ import personas.Domicilio;
  *
  */
 
-public class Joven extends Paciente {
+public class Joven extends Paciente implements Serializable {
 
+	/**
+	 * Constructor vacio
+	 */
+	public Joven() {
+
+	}
+
+	/**
+	 * Retorna un paciente Joven con sus datos Basicos
+	 * 
+	 * @param nombre          Nombre del joven
+	 * @param apellido        Apellido del joven
+	 * @param dni             Dni del joven
+	 * @param historiaClinica Nuero de historia Clinica del joven
+	 */
 	public Joven(String nombre, String apellido, int dni, int historiaClinica) {
 		super(nombre, apellido, dni, historiaClinica);
 	}
 
+	
+	/**
+	 * Retorna un paciente joven con sus datos completos
+	 * 
+	 * @param nombre          Nombre del joven
+	 * @param apellido        Apellido del joven
+	 * @param dni             Dni del joven
+	 * @param telefono        Telefono del joven
+	 * @param domicilio       Domicilio del joven
+	 * @param ciudad          Ciudad del joven
+	 * @param historiaClinica Nuero de historia Clinica del joven
+	 */
 	public Joven(String nombre, String apellido, int dni, String telefono, Domicilio domicilio, String ciudad,
 			int historiaClinica) {
 		super(nombre, apellido, dni, telefono, domicilio, ciudad, historiaClinica);

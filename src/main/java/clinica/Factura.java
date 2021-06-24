@@ -33,7 +33,7 @@ public class Factura implements Comparable {
 		this.nroFactura = ++numero;
 		this.fecha = fecha;
 		this.paciente = paciente;
-		ArrayList<Prestacion> aux = paciente.getPretaciones();
+		ArrayList<Prestacion> aux = paciente.getPrestaciones();
 		this.prestaciones = (ArrayList<Prestacion>) aux.clone();
 		for (int i = 0; i < prestaciones.size(); i++) {
 			prestaciones.set(i, (Prestacion) aux.get(i).clone());

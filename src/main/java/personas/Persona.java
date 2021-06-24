@@ -17,6 +17,13 @@ public class Persona implements Serializable {
 	protected String ciudad;
 
 	/**
+	 * Constructor vacio
+	 */
+	public Persona() {
+
+	}
+
+	/**
 	 * crea una instancia de una persona con sus datos basicos <br>
 	 * pre: el nombre y el apellido deben ser distintos de null y de vacio, el DNI
 	 * debe ser un numero positivo
@@ -144,6 +151,36 @@ public class Persona implements Serializable {
 		return dni;
 	}
 
+	/**
+	 * asigna el nombre de la persona
+	 * 
+	 * @param nombre Nombre de la persona
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	/**
+	 * asigna el apellido de una persona
+	 * 
+	 * @param apellido Apellido de la persona
+	 */
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	/**
+	 * Asigna el Dni de una persona
+	 * 
+	 * @param dni Dni de la persona
+	 */
+	public void setDni(int dni) {
+		this.dni = dni;
+	}
+
+	/**
+	 * Retorna un string con el nombre y el apellido de la persona
+	 */
 	@Override
 	public String toString() {
 		return nombre + " " + apellido;

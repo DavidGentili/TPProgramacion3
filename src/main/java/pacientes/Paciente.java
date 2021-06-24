@@ -1,7 +1,7 @@
 package pacientes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import personas.Domicilio;
 import personas.Persona;
@@ -12,9 +12,16 @@ import prestaciones.Prestacion;
  * 
  *
  */
-public abstract class Paciente extends Persona {
+public abstract class Paciente extends Persona implements Serializable {
 	protected int nroHistoriaClinica;
 	protected ArrayList<Prestacion> prestaciones = new ArrayList<Prestacion>();
+
+	/**
+	 * Constructor vacio
+	 */
+	public Paciente() {
+
+	}
 
 	public Paciente(String nombre, String apellido, int dni, int historiaClinica) {
 		super(nombre, apellido, dni);
@@ -36,9 +43,30 @@ public abstract class Paciente extends Persona {
 		return this.nroHistoriaClinica;
 	}
 
+	/**
+	 * Determina las prestaciones de un paciente
+	 * 
+	 * @param prestaciones Prestaciones de un paciente
+	 */
+	public void setPrestaciones(ArrayList<Prestacion> prestaciones) {
+		this.prestaciones = prestaciones;
+	}
+
+	/**
+	 * Determina el numero de historia clinica del paciente
+	 * 
+	 * @param nroHistoriaClinica Numero de historia clinica del paciente
+	 */
+	public void setNroHistoriaClinica(int nroHistoriaClinica) {
+		this.nroHistoriaClinica = nroHistoriaClinica;
+	}
+
+	/**
+	 * Retorna un string con los datos de persona y el numero de historia clinica
+	 */
 	@Override
 	public String toString() {
-		return super.toString() + " nroHistoriaClinica=" + nroHistoriaClinica;
+		return super.toString() + " Historia clinica" + nroHistoriaClinica;
 	}
 
 	/**
@@ -55,7 +83,7 @@ public abstract class Paciente extends Persona {
 	 * 
 	 * @return prestaciones recibidas
 	 */
-	public ArrayList<Prestacion> getPretaciones() {
+	public ArrayList<Prestacion> getPrestaciones() {
 		return prestaciones;
 	}
 

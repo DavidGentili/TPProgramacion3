@@ -1,5 +1,7 @@
 package personas;
 
+import java.io.Serializable;
+
 import exceptions.DomicilioInvalido;
 
 /**
@@ -8,9 +10,16 @@ import exceptions.DomicilioInvalido;
  * 
  *
  */
-public class Domicilio {
+public class Domicilio implements Serializable {
 	private String calle;
 	private int numero;
+
+	/**
+	 * Constructor vacio
+	 */
+	public Domicilio() {
+
+	}
 
 	/**
 	 * Se encarga se crear una instancia de un domicilio
@@ -56,6 +65,24 @@ public class Domicilio {
 	@Override
 	public String toString() {
 		return calle + " " + numero;
+	}
+
+	/**
+	 * Asigna una calle al domicilio
+	 * 
+	 * @param calle Calle del domicilio
+	 */
+	public void setCalle(String calle) {
+		this.calle = calle;
+	}
+
+	/**
+	 * Asigna una altura al domicilio
+	 * 
+	 * @param numero Numero de la altura del domicilio
+	 */
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
 
 }
