@@ -2,6 +2,9 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.GregorianCalendar;
 
 import clinica.Clinica;
@@ -18,21 +21,24 @@ import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
+import persistencia.PersistirClinica;
 import personas.Domicilio;
 import vista.IVistaAmbulancia;
 import vista.IVistaFacturacion;
 import vista.IVistaMedicos;
 
-public class Controlador implements ActionListener {
+public class Controlador implements ActionListener, WindowListener {
 	IVistaFacturacion ventanaFacturacion;
 	IVistaMedicos ventanaMedicos;
 	IVistaAmbulancia ventanaAmbulancia;
 	Clinica clinica;
 
-	public Controlador(IVistaFacturacion ventanaFacturacion, IVistaMedicos ventanaMedicos, IVistaAmbulancia ventanaAmbulancia, Clinica clinica) {
+	public Controlador(IVistaFacturacion ventanaFacturacion, IVistaMedicos ventanaMedicos,
+			IVistaAmbulancia ventanaAmbulancia) {
+		PersistirClinica.restaurarClinica();
 		this.ventanaFacturacion = ventanaFacturacion;
 		this.ventanaMedicos = ventanaMedicos;
-		this.clinica = clinica;
+		this.clinica = Clinica.getInstancia();
 		this.ventanaAmbulancia = ventanaAmbulancia;
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
@@ -44,7 +50,8 @@ public class Controlador implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) { //cuando hagamos el modulo de agregar pacientes, llamar al actualiza Lista pacientes del la pestaña ambulancia
+	public void actionPerformed(ActionEvent e) { // cuando hagamos el modulo de agregar pacientes, llamar al actualiza
+													// Lista pacientes del la pestaña ambulancia
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Atencion Medica")
 				|| e.getActionCommand().equalsIgnoreCase("Agregar Internacion")) {
 			this.agregaPrestacion(e.getActionCommand());
@@ -56,8 +63,8 @@ public class Controlador implements ActionListener {
 			this.agregaMedico();
 			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		}
-		if(e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
-			
+		if (e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
+
 		}
 		this.ventanaFacturacion.limpiarCamposFacturacion();
 		this.ventanaMedicos.limpiarCamposMedicos();
@@ -149,6 +156,54 @@ public class Controlador implements ActionListener {
 		} catch (NumberFormatException e) {
 			return false;
 		}
+
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		/*try {
+			PersistirClinica.almacenarClinica();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println(e1.getMessage());
+		}*/
+		System.out.println("Closing");
+
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+		System.out.println("Closed");
+
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
 
 	}
 

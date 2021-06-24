@@ -483,6 +483,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.btnAgregarMedico.setEnabled(false);
 
 		this.setVisible(true);
+		
 	}
 
 	@Override
