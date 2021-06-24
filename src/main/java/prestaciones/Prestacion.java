@@ -1,5 +1,7 @@
 package prestaciones;
 
+import java.io.Serializable;
+
 /**
  * La clase se encargar de almacenar una prestacion, que puede ser una
  * internacion o una consulta clinica, reservando su descripcion, el valor base
@@ -7,12 +9,16 @@ package prestaciones;
  * internacion o la cantidad de consultas en caso de ser una consulta
  *
  */
-public class Prestacion implements Cloneable {
+public class Prestacion implements Cloneable, Serializable {
 
 	protected String descripcion;
 	protected int cantidad;
 	protected double valor;
 	protected double subtotal;
+
+	public Prestacion() {
+
+	}
 
 	public Prestacion(String descripcion, double valor, int cantidad, double subtotal) {
 		this.descripcion = descripcion;
@@ -56,6 +62,42 @@ public class Prestacion implements Cloneable {
 	 */
 	public double getSubtotal() {
 		return subtotal;
+	}
+
+	/**
+	 * define la descripcion
+	 * 
+	 * @param descripcion Descripcion de la Prestacion
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	/**
+	 * define la cantidad
+	 * 
+	 * @param cantidad Cantidad de la prestacion
+	 */
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	/**
+	 * Define el valor de la prestacion
+	 * 
+	 * @param valor valor de la prestacion
+	 */
+	public void setValor(double valor) {
+		this.valor = valor;
+	}
+
+	/**
+	 * Define Subtotal de la prestacion
+	 * 
+	 * @param subtotal Subtotal de la prestacion
+	 */
+	public void setSubtotal(double subtotal) {
+		this.subtotal = subtotal;
 	}
 
 	/**

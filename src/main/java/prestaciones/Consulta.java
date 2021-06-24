@@ -12,6 +12,10 @@ public class Consulta extends Prestacion {
 
 	protected IMedico medico;
 
+	public Consulta() {
+
+	}
+
 	public Consulta(String descripcion, double valor, int cantidad, double subtotal, IMedico medico) {
 		super(descripcion, valor, cantidad, subtotal);
 		this.medico = medico;
@@ -26,4 +30,12 @@ public class Consulta extends Prestacion {
 		return medico;
 	}
 
+	/**
+	 * Define el medico de la prestacion
+	 * 
+	 * @param medico Medico de la prestacion
+	 */
+	public void setMedico(IMedico medico) {
+		this.medico = medico;
+	}
 }
