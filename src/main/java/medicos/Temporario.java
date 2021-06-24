@@ -39,7 +39,7 @@ public class Temporario extends DecoradorMedicoContratacion {
 	 */
 	@Override
 	public String toString() {
-		return encapsulado.toString() + " Contratacion: Temporario";
+		return encapsulado.toString() + " Temporario";
 	}
 
 }

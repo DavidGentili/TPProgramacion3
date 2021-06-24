@@ -64,7 +64,7 @@ public class Cirujano extends Medico {
 	 */
 	@Override
 	public String toString() {
-		return super.toString() + " Especialidad: Cirujano";
+		return super.toString() + " Cirujano";
 	}
 
 	

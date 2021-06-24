@@ -31,7 +31,7 @@ public class Magister extends DecoradorMedicoPosgrado {
 	 */
 	@Override
 	public String toString() {
-		return encapsulado.toString() + " Posgrado: Magister";
+		return encapsulado.toString() + " Magister";
 	}
 
 }

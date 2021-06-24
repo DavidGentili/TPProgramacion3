@@ -39,7 +39,7 @@ public class Permanente extends DecoradorMedicoContratacion {
 	 */
 	@Override
 	public String toString() {
-		return encapsulado.toString() + " Contratacion: Permanente";
+		return encapsulado.toString() + " Permanente";
 	}
 
 }
