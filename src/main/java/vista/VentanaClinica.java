@@ -131,8 +131,6 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JPanel panel_BtReparacion;
 	private DefaultListModel<Paciente> listaPacienteHistoricos = new DefaultListModel<Paciente>();
 
-	
-
 	/**
 	 * Create the frame.
 	 */
@@ -255,44 +253,44 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.panelAmbulancia = new JPanel();
 		this.tabPanel.addTab("Ambulancia", null, this.panelAmbulancia, null);
 		this.panelAmbulancia.setLayout(new GridLayout(0, 3, 0, 0));
-		
+
 		this.panelBotonesAmbulancia = new JPanel();
 		this.panelAmbulancia.add(this.panelBotonesAmbulancia);
 		this.panelBotonesAmbulancia.setLayout(new GridLayout(3, 0, 0, 0));
-		
+
 		this.panelBtLlama = new JPanel();
 		this.panelBotonesAmbulancia.add(this.panelBtLlama);
 		this.panelBtLlama.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		this.btnLlamaTranslado = new JButton("Llama Translado");
 		this.panelBtLlama.add(this.btnLlamaTranslado);
-		
+
 		this.panel_BtAtencion = new JPanel();
 		this.panelBotonesAmbulancia.add(this.panel_BtAtencion);
-		
+
 		this.btnLlamaAtencion = new JButton("Llama atencion");
 		this.panel_BtAtencion.add(this.btnLlamaAtencion);
-		
+
 		this.panel_BtReparacion = new JPanel();
 		this.panelBotonesAmbulancia.add(this.panel_BtReparacion);
-		
+
 		this.btnSolReparacion = new JButton("Solicitar Reparacion");
 		this.panel_BtReparacion.add(this.btnSolReparacion);
-		
+
 		this.panelListaPacAmbulancia = new JPanel();
 		this.panelAmbulancia.add(this.panelListaPacAmbulancia);
 		this.panelListaPacAmbulancia.setLayout(new BorderLayout(0, 0));
-		
+
 		this.scrollPaneListPac = new JScrollPane();
 		this.panelListaPacAmbulancia.add(this.scrollPaneListPac, BorderLayout.CENTER);
-		
+
 		this.listPacien = new JList<Paciente>(listaPacienteHistoricos);
 		this.scrollPaneListPac.setViewportView(this.listPacien);
-		
+
 		this.panelEstadoAmbulancia = new PanelAmbulancia();
 		this.panelAmbulancia.add(this.panelEstadoAmbulancia);
 		this.panelEstadoAmbulancia.setLayout(new BorderLayout(0, 0));
-		
+
 		this.textAreaEstadoAmbulancia = new JTextArea();
 		this.panelEstadoAmbulancia.add(this.textAreaEstadoAmbulancia);
 
@@ -483,7 +481,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.btnAgregarMedico.setEnabled(false);
 
 		this.setVisible(true);
-		
+
 	}
 
 	@Override
@@ -665,17 +663,17 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	@Override
 	public void setAmbulancia(Ambulancia a) {
 		this.panelEstadoAmbulancia.setObservado(a);
-		
+
 	}
 
 	@Override
 	public void actualizaHistoricosAmbulancia(Iterator<Paciente> historicos) {
 		this.listaPacienteHistoricos.clear();
-		while(historicos.hasNext()) {
+		while (historicos.hasNext()) {
 			this.listaPacienteHistoricos.addElement(historicos.next());
 		}
 		this.repaint();
-		
+
 	}
 
 	@Override
