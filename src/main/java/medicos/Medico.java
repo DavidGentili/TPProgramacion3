@@ -127,4 +127,32 @@ public class Medico extends Persona implements IMedico, Serializable {
 		this.matricula = matricula;
 	}
 
+	/**
+	 * Se considera que dos medicos son iguales si tienen la misma matricula
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + matricula;
+		return result;
+	}
+
+	/**
+	 * Se considera que dos medicos son iguales si tienen la misma matricula
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Medico other = (Medico) obj;
+		if (matricula != other.matricula)
+			return false;
+		return true;
+	}
+
 }

@@ -128,4 +128,36 @@ public abstract class Paciente extends Persona implements Serializable {
 	 */
 	public abstract Paciente comparaConMayor(Paciente otro);
 
+	/**
+	 * Se considera que dos pacientes son iguales si tiene el mismo numero de historia clinica
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + nroHistoriaClinica;
+		return result;
+	}
+
+	/**
+	 * Se considera que dos pacientes son iguales si tiene el mismo numero de historia clinica
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Paciente other = (Paciente) obj;
+		if (nroHistoriaClinica != other.nroHistoriaClinica)
+			return false;
+		return true;
+	}
+
+	
+	
+	
+
 }

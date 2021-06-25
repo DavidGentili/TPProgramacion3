@@ -186,4 +186,33 @@ public class Persona implements Serializable {
 		return nombre + " " + apellido;
 	}
 
+	/**
+	 * Se concidera que dos personas son iguales si tiene el mismo DNI
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + dni;
+		return result;
+	}
+
+	/**
+	 * Se concidera que dos personas son iguales si tiene el mismo DNI
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Persona other = (Persona) obj;
+		if (dni != other.dni)
+			return false;
+		return true;
+	}
+
+	
 }
