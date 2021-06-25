@@ -20,10 +20,9 @@ public class PersistenciaXML implements IPersistencia<Serializable> {
 	}
 
 	@Override
-	public void abirOutput(String nombre) throws IOException {
+	public void abrirOutput(String nombre) throws IOException {
 		fileOutput = new FileOutputStream(nombre);
 		encoder = new XMLEncoder(fileOutput);
-
 	}
 
 	@Override
@@ -52,7 +51,5 @@ public class PersistenciaXML implements IPersistencia<Serializable> {
 			aux = (Serializable) decoder.readObject();
 		return aux;
 	}
-
-
 
 }

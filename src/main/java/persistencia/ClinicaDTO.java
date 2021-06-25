@@ -165,7 +165,7 @@ public class ClinicaDTO implements Serializable {
 	public void setNumeroTotalDeFacturas(int numeroTotalDeFacturas) {
 		NumeroTotalDeFacturas = numeroTotalDeFacturas;
 	}
-	
+
 	public HashMap<Integer, Asociado> getAsociados() {
 		return asociados;
 	}

@@ -22,7 +22,7 @@ public class PersistenciaBIN implements IPersistencia<Serializable> {
 	}
 
 	@Override
-	public void abirOutput(String nombre) throws IOException {
+	public void abrirOutput(String nombre) throws IOException {
 		fileOutput = new FileOutputStream(nombre);
 		objOutput = new ObjectOutputStream(fileOutput);
 	}
