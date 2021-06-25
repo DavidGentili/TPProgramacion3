@@ -2,18 +2,17 @@ package estados;
 
 import clinica.Ambulancia;
 
-public class TransladandoState implements IState {
+public class EnElTallerState implements IState {
 
 	private Ambulancia a;
 
-	public TransladandoState(Ambulancia a) {
-		super();
+	public EnElTallerState(Ambulancia a) {
 		this.a = a;
 	}
 
 	@Override
 	public String reportaEstado() {
-		return "Transladando paciente a la clinica.";
+		return "En el taller.";
 	}
 
 	@Override
@@ -30,7 +29,7 @@ public class TransladandoState implements IState {
 
 	@Override
 	public void vuelveaClinica() {
-		this.a.setEstado(new DisponibleState(this.a));
+		this.a.setEstado(new RegresandoDelTallerState(this.a));
 	}
 
 }

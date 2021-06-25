@@ -4,12 +4,12 @@ public interface IState {
 	
 	public String reportaEstado();
 	
-	public void llamaTranslado();
+	public void solicitaTranslado();
 	
-	public void necesitaReparacion();
+	public void solicitaReparacion();
 	
-	public void llamaAtencion();
+	public void solicitaAtencion();
 	
-	public void llegoClinica();
+	public void vuelveaClinica();
 
 }

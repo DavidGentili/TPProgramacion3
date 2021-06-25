@@ -3,11 +3,9 @@ package estados;
 import clinica.Ambulancia;
 
 public class AtendiendoState implements IState {
-	
+
 	private Ambulancia a;
 
-	
-	
 	public AtendiendoState(Ambulancia a) {
 		super();
 		this.a = a;
@@ -15,23 +13,24 @@ public class AtendiendoState implements IState {
 
 	@Override
 	public String reportaEstado() {
-		return "La ambulancia esta atendendio a un paciente en su casa ";
+		return "Atendendio a un paciente en su domicilio.";
 	}
 
 	@Override
-	public void llamaTranslado() {	}
-
-	@Override
-	public void necesitaReparacion() {
+	public void solicitaTranslado() {
 	}
 
 	@Override
-	public void llamaAtencion() {
+	public void solicitaReparacion() {
 	}
 
 	@Override
-	public void llegoClinica() {
-		this.a.setEstado(new DisponibleState(this.a));
+	public void solicitaAtencion() {
+	}
+
+	@Override
+	public void vuelveaClinica() {
+		this.a.setEstado(new TransladandoState(this.a));
 	}
 
 }

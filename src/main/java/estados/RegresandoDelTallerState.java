@@ -2,18 +2,17 @@ package estados;
 
 import clinica.Ambulancia;
 
-public class TransladandoState implements IState {
+public class RegresandoDelTallerState implements IState {
 
 	private Ambulancia a;
 
-	public TransladandoState(Ambulancia a) {
-		super();
+	public RegresandoDelTallerState(Ambulancia a) {
 		this.a = a;
 	}
 
 	@Override
 	public String reportaEstado() {
-		return "Transladando paciente a la clinica.";
+		return "Regresando del taller.";
 	}
 
 	@Override

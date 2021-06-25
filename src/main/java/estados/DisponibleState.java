@@ -11,28 +11,26 @@ public class DisponibleState implements IState {
 
 	@Override
 	public String reportaEstado() {
-		return "La ambulancia se encuentra disponible en la clinica";
+		return "Disponible en la clinica.";
 	}
 
 	@Override
-	public void llamaTranslado() {
+	public void solicitaTranslado() {
 		this.a.setEstado(new TransladandoState(this.a));
 	}
 
 	@Override
-	public void necesitaReparacion() {
-		//this.a.setEstado(new ReparandoState(this.a));
+	public void solicitaReparacion() {
+		this.a.setEstado(new EnElTallerState(this.a));
 	}
 
 	@Override
-	public void llamaAtencion() {
+	public void solicitaAtencion() {
 		this.a.setEstado(new AtendiendoState(this.a));
 	}
 
 	@Override
-	public void llegoClinica() {}
-	
-	
-	
-	
+	public void vuelveaClinica() {
+	}
+
 }
