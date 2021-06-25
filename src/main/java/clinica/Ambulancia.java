@@ -5,11 +5,19 @@ import java.util.Observable;
 import estados.DisponibleState;
 import estados.IState;
 
-public class Ambulancia extends Observable{
+@SuppressWarnings("deprecation")
+public class Ambulancia extends Observable {
+	private static Ambulancia instancia = null;
 	private IState estado;
 
-	public Ambulancia() {
+	private Ambulancia() {
 		this.estado = new DisponibleState(this);
+	}
+	
+	public static Ambulancia getInstance() {
+		if(Ambulancia.instancia==null)
+			 Ambulancia.instancia= new Ambulancia();
+		return Ambulancia.instancia;
 	}
 
 	public IState getEstado() {
@@ -19,35 +27,71 @@ public class Ambulancia extends Observable{
 	public void setEstado(IState estado) {
 		this.estado = estado;
 	}
-	
+
 	public String informaEstado() {
 		return this.estado.reportaEstado();
 	}
 
-	public synchronized void devuelveAmbulancia() {
-		while(this.estado.reportaEstado().equalsIgnoreCase("La ambulancia se encuentra disponible en la clinica"))
+	public synchronized void vuelveaClinica() {
+		while (this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica."))
 			try {
 				wait();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		this.estado.llegoClinica();
+		this.estado.vuelveaClinica();
 		setChanged();
 		notifyObservers(this.estado.reportaEstado());
 	}
-	
-	public synchronized void llamanTranslado() {
-		while(!this.estado.reportaEstado().equalsIgnoreCase("La ambulancia se encuentra disponible en la clinica"))
+
+	public synchronized void solicitaTranslado() {
+		while (!this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica."))
 			try {
+				this.notifyObservers("Imposible transladar al paciente a clinica. La ambulancia se encuentra "
+						+ this.estado.reportaEstado());
 				wait();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		this.estado.llamaTranslado();
-		setChanged();
-		notifyObservers(this.estado.reportaEstado());
+		this.estado.solicitaTranslado();
+		this.setChanged();
+		this.notifyObservers(this.estado.reportaEstado());
 	}
-	
+
+	public synchronized void solicitaAtencion() {
+		while (this.estado.reportaEstado().equals("Transladando paciente a la clinica.")
+				|| this.estado.reportaEstado().equals("Atendiendo a un paciente en su domicilio.")
+				|| this.estado.reportaEstado().equals("En el taller.")
+				|| this.estado.reportaEstado().equals("Regresando del taller.")) {
+			try {
+				this.notifyObservers(
+						"Imposible ir al domicilio. La ambulancia se encuentra " + this.estado.reportaEstado());
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		this.estado.solicitaAtencion();
+		this.setChanged();
+		this.notifyObservers(this.estado.reportaEstado());
+
+	}
+
+	public synchronized void solicitaReparacion() {
+		while (!this.estado.reportaEstado().equals("Disponible en la clinica.")) {
+			try {
+				if (!this.estado.reportaEstado().equals("En el taller."))
+					this.notifyObservers(
+							"Imposible reparar la ambulancia. La misma se encuentra " + this.estado.reportaEstado());
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		this.estado.solicitaReparacion();
+		this.setChanged();
+		this.notifyObservers(this.estado.reportaEstado());
+
+	}
+
 }
