@@ -34,6 +34,12 @@ import pacientes.Paciente;
 import javax.swing.border.BevelBorder;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionEvent;
+import javax.swing.ListModel;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.UIManager;
+import java.awt.Dimension;
+import javax.swing.border.LineBorder;
+import java.awt.CardLayout;
 
 public class VentanaClinica extends JFrame
 		implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia, IVistaConfiguraciones {
@@ -72,8 +78,7 @@ public class VentanaClinica extends JFrame
 	private JPanel panelContenedorAgregarInternacion;
 	private JLabel lblPacientesEnAtencion;
 	private JLabel lblMedicosEnFacturacion;
-	private JScrollPane scrollPane;
-	private JList<IMedico> listMedicosEnMedicos;
+	private JScrollPane scrollPaneMedicos;
 	private JPanel panelOperacionesConMedicos;
 	private JPanel panelNombreMedico;
 	private JLabel lblNombreMedico;
@@ -202,6 +207,68 @@ public class VentanaClinica extends JFrame
 	private JLabel lblCiudadActualDeLaClinica;
 	private JPanel panelEstadoAmbulancia;
 	private JTextArea textAreaAmbulancia;
+	private JPanel panelMedicosEnMedicos;
+	private JList<IMedico> listMedicosEnMedicos;
+	private JPanel panelListaMedicosEnMedicos;
+	private JPanel panelPacientes;
+	private JPanel panelListasPacientes;
+	private JPanel panelAccionesPacientes;
+	private JPanel panelContenedorListaPacientesHistoricos;
+	private JPanel PanelContenedorListaPacientesEnAtencion;
+	private JPanel PanelContenedorListaDeEspera;
+	private JPanel PanelContenedorTiposDeEspera;
+	private JLabel lblTituloPacientesHistoricosEnPacientes;
+	private JList listPacientesHistoricosEnPacientes;
+	private JLabel lblTituloPacientesEnAtencionEnPacientes;
+	private JList listPacientesEnAtencionEnPacientes;
+	private JLabel lblTituloPacientesEnEsperaEnPacientes;
+	private JList listPacientesEnEsperaEnPacientes;
+	private JPanel panelSalaDeEsperaPrivada;
+	private JPanel panel_1;
+	private JButton btnAtiendeSiguiente;
+	private JLabel lblCartelSalaPrivada;
+	private JLabel lblPacienteSalaDeEsperaprivadaEnPacientes;
+	private JPanel panelNombrePaciente;
+	private JPanel PanelApellidoPaciente;
+	private JPanel PanelDniPaciente;
+	private JPanel panelDireccionPaciente;
+	private JPanel panelTelefonoPaciente;
+	private JPanel panelCiudadPaciente;
+	private JPanel panelNroHistoriaClinica;
+	private JLabel lblNombrePaciente;
+	private JTextField textFieldNombrePaciente;
+	private JPanel panelContenedorLblNombrePaciente;
+	private JPanel panelContenedorTextFieldNombrePaciente;
+	private JLabel lblApellidoPaciente;
+	private JTextField textFieldApellidoPaciente;
+	private JPanel panelContenedorLblPaciente;
+	private JPanel panelContenedorTextFieldApellidoPaciente;
+	private JLabel lblDniPaciente;
+	private JTextField textFieldDniPaciente;
+	private JPanel panelContenedorLblDniPaciente;
+	private JPanel panelContenedorTextFieldDniPaciente;
+	private JLabel lblDireccionPaciente;
+	private JTextField textFieldCallePaciente;
+	private JTextField textFieldNumeroDeCallePaciente;
+	private JPanel panelContenedorLblDireccionPaciente;
+	private JPanel panelContenedorTextFieldCallePaciente;
+	private JPanel panelContenedorTextFieldNumeroCallePaciente;
+	private JLabel lblTelefonoPaciente;
+	private JTextField textFieldTelefonoPaciente;
+	private JPanel panelContenedorLblTelefonoPaciente;
+	private JPanel panelContenedorTextFieldTelefonoPaciente;
+	private JLabel lblCiudadPaciente;
+	private JTextField textFieldCiudadPaciente;
+	private JPanel panelContenedorLblCiuadPaciente;
+	private JPanel panelContenedorTextFieldCiudadPaciente;
+	private JPanel panelContenedorBtnAgregarPaciente;
+	private JButton btnAgregarPaciente;
+	private JLabel lblNroDeHistoriaClinicaPaciente;
+	private JTextField textFieldNroDeHistoriaClinicaPaciente;
+	private JPanel panelContenedorComboBoxRangoEtareo;
+	private JComboBox comboBoxRangoEtareo;
+	private JPanel panelContenedorLblNroDeHistoriaClinicaPaciente;
+	private JPanel panelContenedorTextFieldNroDeHistoriaClinicaPaciente;
 
 	/**
 	 * Create the frame.
@@ -359,22 +426,20 @@ public class VentanaClinica extends JFrame
 
 		this.listPacien = new JList<Paciente>(listaPacienteHistoricos);
 		this.scrollPaneListPac.setViewportView(this.listPacien);
-		
+
 		this.panelEstadoAmbulancia = new JPanel();
 		this.panelAmbulancia.add(this.panelEstadoAmbulancia);
 		this.panelEstadoAmbulancia.setLayout(new BorderLayout(0, 0));
-		
+
 		this.textAreaAmbulancia = new JTextArea();
 		this.panelEstadoAmbulancia.add(this.textAreaAmbulancia);
 
-		this.scrollPane = new JScrollPane();
-		this.tabPanel.addTab("Medicos", null, this.scrollPane, null);
-
-		this.listMedicosEnMedicos = new JList<IMedico>(this.listaMedicos);
-		this.scrollPane.setViewportView(this.listMedicosEnMedicos);
+		this.scrollPaneMedicos = new JScrollPane();
+		this.tabPanel.addTab("Medicos", null, this.scrollPaneMedicos, null);
 
 		this.panelOperacionesConMedicos = new JPanel();
-		this.scrollPane.setRowHeaderView(this.panelOperacionesConMedicos);
+		this.panelOperacionesConMedicos.setBorder(UIManager.getBorder("OptionPane.border"));
+		this.scrollPaneMedicos.setRowHeaderView(this.panelOperacionesConMedicos);
 		this.panelOperacionesConMedicos.setLayout(new GridLayout(0, 1, 0, 0));
 
 		this.panelNombreMedico = new JPanel();
@@ -552,6 +617,237 @@ public class VentanaClinica extends JFrame
 		this.btnAgregarMedico = new JButton("Agregar Medico");
 		this.panelContenedorBtnAgregarMedico.add(this.btnAgregarMedico);
 		this.btnAgregarMedico.setEnabled(false);
+
+		this.panelMedicosEnMedicos = new JPanel();
+		this.scrollPaneMedicos.setViewportView(this.panelMedicosEnMedicos);
+		this.panelMedicosEnMedicos.setLayout(new BorderLayout(0, 0));
+
+		this.panelListaMedicosEnMedicos = new JPanel();
+		this.panelListaMedicosEnMedicos
+				.setBorder(new TitledBorder(null, "Medicos", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		this.panelMedicosEnMedicos.add(this.panelListaMedicosEnMedicos);
+		this.panelListaMedicosEnMedicos.setLayout(new GridLayout(0, 1, 0, 0));
+
+		this.listMedicosEnMedicos = new JList<IMedico>(this.listaMedicos);
+		this.panelListaMedicosEnMedicos.add(this.listMedicosEnMedicos);
+
+		this.panelPacientes = new JPanel();
+		this.tabPanel.addTab("Pacientes", null, this.panelPacientes, null);
+		this.panelPacientes.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelListasPacientes = new JPanel();
+		this.panelListasPacientes.setBorder(new LineBorder(new Color(0, 0, 0)));
+		this.panelPacientes.add(this.panelListasPacientes);
+		this.panelListasPacientes.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorListaPacientesHistoricos = new JPanel();
+		this.panelContenedorListaPacientesHistoricos.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.panelListasPacientes.add(this.panelContenedorListaPacientesHistoricos);
+		this.panelContenedorListaPacientesHistoricos.setLayout(new BorderLayout(0, 0));
+
+		this.lblTituloPacientesHistoricosEnPacientes = new JLabel("Registro de Pacientes");
+		this.lblTituloPacientesHistoricosEnPacientes.setHorizontalAlignment(SwingConstants.CENTER);
+		this.panelContenedorListaPacientesHistoricos.add(this.lblTituloPacientesHistoricosEnPacientes,
+				BorderLayout.NORTH);
+
+		this.listPacientesHistoricosEnPacientes = new JList();
+		this.panelContenedorListaPacientesHistoricos.add(this.listPacientesHistoricosEnPacientes, BorderLayout.CENTER);
+
+		this.PanelContenedorListaPacientesEnAtencion = new JPanel();
+		this.PanelContenedorListaPacientesEnAtencion.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.panelListasPacientes.add(this.PanelContenedorListaPacientesEnAtencion);
+		this.PanelContenedorListaPacientesEnAtencion.setLayout(new BorderLayout(0, 0));
+
+		this.lblTituloPacientesEnAtencionEnPacientes = new JLabel("Pacientes en atencion");
+		this.lblTituloPacientesEnAtencionEnPacientes.setHorizontalAlignment(SwingConstants.CENTER);
+		this.PanelContenedorListaPacientesEnAtencion.add(this.lblTituloPacientesEnAtencionEnPacientes,
+				BorderLayout.NORTH);
+
+		this.listPacientesEnAtencionEnPacientes = new JList();
+		this.PanelContenedorListaPacientesEnAtencion.add(this.listPacientesEnAtencionEnPacientes, BorderLayout.CENTER);
+
+		this.PanelContenedorListaDeEspera = new JPanel();
+		this.PanelContenedorListaDeEspera.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.panelListasPacientes.add(this.PanelContenedorListaDeEspera);
+		this.PanelContenedorListaDeEspera.setLayout(new BorderLayout(0, 0));
+
+		this.lblTituloPacientesEnEsperaEnPacientes = new JLabel("Pacientes en espera");
+		this.lblTituloPacientesEnEsperaEnPacientes.setHorizontalAlignment(SwingConstants.CENTER);
+		this.PanelContenedorListaDeEspera.add(this.lblTituloPacientesEnEsperaEnPacientes, BorderLayout.NORTH);
+
+		this.listPacientesEnEsperaEnPacientes = new JList();
+		this.PanelContenedorListaDeEspera.add(this.listPacientesEnEsperaEnPacientes, BorderLayout.CENTER);
+
+		this.PanelContenedorTiposDeEspera = new JPanel();
+		this.panelListasPacientes.add(this.PanelContenedorTiposDeEspera);
+		this.PanelContenedorTiposDeEspera.setLayout(new GridLayout(2, 0, 0, 0));
+
+		this.panelSalaDeEsperaPrivada = new JPanel();
+		this.PanelContenedorTiposDeEspera.add(this.panelSalaDeEsperaPrivada);
+		this.panelSalaDeEsperaPrivada.setLayout(new GridLayout(0, 1, 0, 0));
+
+		this.lblCartelSalaPrivada = new JLabel("Sala de Espera privada:");
+		this.lblCartelSalaPrivada.setHorizontalAlignment(SwingConstants.CENTER);
+		this.panelSalaDeEsperaPrivada.add(this.lblCartelSalaPrivada);
+
+		this.lblPacienteSalaDeEsperaprivadaEnPacientes = new JLabel("");
+		this.lblPacienteSalaDeEsperaprivadaEnPacientes.setHorizontalAlignment(SwingConstants.CENTER);
+		this.panelSalaDeEsperaPrivada.add(this.lblPacienteSalaDeEsperaprivadaEnPacientes);
+
+		this.panel_1 = new JPanel();
+		this.PanelContenedorTiposDeEspera.add(this.panel_1);
+
+		this.btnAtiendeSiguiente = new JButton("Atender Siguiente");
+		this.btnAtiendeSiguiente.setHorizontalTextPosition(SwingConstants.CENTER);
+		this.panel_1.add(this.btnAtiendeSiguiente);
+
+		this.panelAccionesPacientes = new JPanel();
+		this.panelPacientes.add(this.panelAccionesPacientes);
+		this.panelAccionesPacientes.setLayout(new GridLayout(0, 1, 0, 0));
+
+		this.panelNombrePaciente = new JPanel();
+		this.panelAccionesPacientes.add(this.panelNombrePaciente);
+		this.panelNombrePaciente.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblNombrePaciente = new JPanel();
+		this.panelNombrePaciente.add(this.panelContenedorLblNombrePaciente);
+
+		this.lblNombrePaciente = new JLabel("Nombre");
+		this.panelContenedorLblNombrePaciente.add(this.lblNombrePaciente);
+
+		this.panelContenedorTextFieldNombrePaciente = new JPanel();
+		this.panelNombrePaciente.add(this.panelContenedorTextFieldNombrePaciente);
+
+		this.textFieldNombrePaciente = new JTextField();
+		this.panelContenedorTextFieldNombrePaciente.add(this.textFieldNombrePaciente);
+		this.textFieldNombrePaciente.setColumns(10);
+		this.textFieldNombrePaciente.addKeyListener(this);
+
+		this.PanelApellidoPaciente = new JPanel();
+		this.panelAccionesPacientes.add(this.PanelApellidoPaciente);
+		this.PanelApellidoPaciente.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblPaciente = new JPanel();
+		this.PanelApellidoPaciente.add(this.panelContenedorLblPaciente);
+
+		this.lblApellidoPaciente = new JLabel("Apellido");
+		this.panelContenedorLblPaciente.add(this.lblApellidoPaciente);
+
+		this.panelContenedorTextFieldApellidoPaciente = new JPanel();
+		this.PanelApellidoPaciente.add(this.panelContenedorTextFieldApellidoPaciente);
+
+		this.textFieldApellidoPaciente = new JTextField();
+		this.panelContenedorTextFieldApellidoPaciente.add(this.textFieldApellidoPaciente);
+		this.textFieldApellidoPaciente.setColumns(10);
+		this.textFieldApellidoPaciente.addKeyListener(this);
+
+		this.PanelDniPaciente = new JPanel();
+		this.panelAccionesPacientes.add(this.PanelDniPaciente);
+		this.PanelDniPaciente.setLayout(new GridLayout(1, 0, 0, 0));
+
+		this.panelContenedorLblDniPaciente = new JPanel();
+		this.PanelDniPaciente.add(this.panelContenedorLblDniPaciente);
+
+		this.lblDniPaciente = new JLabel("DNI");
+		this.panelContenedorLblDniPaciente.add(this.lblDniPaciente);
+
+		this.panelContenedorTextFieldDniPaciente = new JPanel();
+		this.PanelDniPaciente.add(this.panelContenedorTextFieldDniPaciente);
+
+		this.textFieldDniPaciente = new JTextField();
+		this.panelContenedorTextFieldDniPaciente.add(this.textFieldDniPaciente);
+		this.textFieldDniPaciente.setColumns(10);
+		this.textFieldDniPaciente.addKeyListener(this);
+
+		this.panelDireccionPaciente = new JPanel();
+		this.panelAccionesPacientes.add(this.panelDireccionPaciente);
+		this.panelDireccionPaciente.setLayout(new GridLayout(0, 3, 0, 0));
+
+		this.panelContenedorLblDireccionPaciente = new JPanel();
+		this.panelDireccionPaciente.add(this.panelContenedorLblDireccionPaciente);
+
+		this.lblDireccionPaciente = new JLabel("Direccion");
+		this.panelContenedorLblDireccionPaciente.add(this.lblDireccionPaciente);
+
+		this.panelContenedorTextFieldCallePaciente = new JPanel();
+		this.panelDireccionPaciente.add(this.panelContenedorTextFieldCallePaciente);
+
+		this.textFieldCallePaciente = new JTextField();
+		this.panelContenedorTextFieldCallePaciente.add(this.textFieldCallePaciente);
+		this.textFieldCallePaciente.setColumns(10);
+
+		this.panelContenedorTextFieldNumeroCallePaciente = new JPanel();
+		this.panelDireccionPaciente.add(this.panelContenedorTextFieldNumeroCallePaciente);
+
+		this.textFieldNumeroDeCallePaciente = new JTextField();
+		this.panelContenedorTextFieldNumeroCallePaciente.add(this.textFieldNumeroDeCallePaciente);
+		this.textFieldNumeroDeCallePaciente.setColumns(10);
+
+		this.panelTelefonoPaciente = new JPanel();
+		this.panelAccionesPacientes.add(this.panelTelefonoPaciente);
+		this.panelTelefonoPaciente.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblTelefonoPaciente = new JPanel();
+		this.panelTelefonoPaciente.add(this.panelContenedorLblTelefonoPaciente);
+
+		this.lblTelefonoPaciente = new JLabel("Telefono");
+		this.panelContenedorLblTelefonoPaciente.add(this.lblTelefonoPaciente);
+
+		this.panelContenedorTextFieldTelefonoPaciente = new JPanel();
+		this.panelTelefonoPaciente.add(this.panelContenedorTextFieldTelefonoPaciente);
+
+		this.textFieldTelefonoPaciente = new JTextField();
+		this.panelContenedorTextFieldTelefonoPaciente.add(this.textFieldTelefonoPaciente);
+		this.textFieldTelefonoPaciente.setColumns(10);
+
+		this.panelCiudadPaciente = new JPanel();
+		this.panelAccionesPacientes.add(this.panelCiudadPaciente);
+		this.panelCiudadPaciente.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelContenedorLblCiuadPaciente = new JPanel();
+		this.panelCiudadPaciente.add(this.panelContenedorLblCiuadPaciente);
+
+		this.lblCiudadPaciente = new JLabel("Ciudad");
+		this.panelContenedorLblCiuadPaciente.add(this.lblCiudadPaciente);
+
+		this.panelContenedorTextFieldCiudadPaciente = new JPanel();
+		this.panelCiudadPaciente.add(this.panelContenedorTextFieldCiudadPaciente);
+
+		this.textFieldCiudadPaciente = new JTextField();
+		this.panelContenedorTextFieldCiudadPaciente.add(this.textFieldCiudadPaciente);
+		this.textFieldCiudadPaciente.setColumns(10);
+
+		this.panelNroHistoriaClinica = new JPanel();
+		this.panelAccionesPacientes.add(this.panelNroHistoriaClinica);
+		this.panelNroHistoriaClinica.setLayout(new GridLayout(0, 3, 0, 0));
+
+		this.panelContenedorLblNroDeHistoriaClinicaPaciente = new JPanel();
+		this.panelNroHistoriaClinica.add(this.panelContenedorLblNroDeHistoriaClinicaPaciente);
+
+		this.lblNroDeHistoriaClinicaPaciente = new JLabel("Numero de historia clinica");
+		this.panelContenedorLblNroDeHistoriaClinicaPaciente.add(this.lblNroDeHistoriaClinicaPaciente);
+
+		this.panelContenedorTextFieldNroDeHistoriaClinicaPaciente = new JPanel();
+		this.panelNroHistoriaClinica.add(this.panelContenedorTextFieldNroDeHistoriaClinicaPaciente);
+
+		this.textFieldNroDeHistoriaClinicaPaciente = new JTextField();
+		this.panelContenedorTextFieldNroDeHistoriaClinicaPaciente.add(this.textFieldNroDeHistoriaClinicaPaciente);
+		this.textFieldNroDeHistoriaClinicaPaciente.setColumns(10);
+		this.textFieldNroDeHistoriaClinicaPaciente.addKeyListener(this);
+
+		this.panelContenedorComboBoxRangoEtareo = new JPanel();
+		this.panelNroHistoriaClinica.add(this.panelContenedorComboBoxRangoEtareo);
+
+		this.comboBoxRangoEtareo = new JComboBox();
+		this.comboBoxRangoEtareo.setModel(new DefaultComboBoxModel(new String[] { "Niño", "Joven", "Mayor" }));
+		this.panelContenedorComboBoxRangoEtareo.add(this.comboBoxRangoEtareo);
+
+		this.panelContenedorBtnAgregarPaciente = new JPanel();
+		this.panelAccionesPacientes.add(this.panelContenedorBtnAgregarPaciente);
+
+		this.btnAgregarPaciente = new JButton("Agregar Paciente");
+		this.panelContenedorBtnAgregarPaciente.add(this.btnAgregarPaciente);
+		this.btnAgregarPaciente.setEnabled(false);
 
 		this.panelConfiguraciones = new JPanel();
 		this.tabPanel.addTab("General", null, this.panelConfiguraciones, null);
@@ -964,6 +1260,15 @@ public class VentanaClinica extends JFrame
 			this.btnAgregarMedico.setEnabled(false);
 		}
 
+		int dniPaciente, nroHitoriaClinica;
+		try {
+			dniPaciente = Integer.parseInt(this.textFieldDniPaciente.getText());
+			nroHitoriaClinica = Integer.parseInt(this.textFieldNroDeHistoriaClinicaPaciente.getText());
+			boolean nombreCorrecto, ApellidoCorrecto, dniCorrecto, nroHistoriClinicaCorrecto;
+			
+		} catch (NumberFormatException e1) {
+			this.btnAgregarPaciente.setEnabled(false);
+		}
 	}
 
 	@Override
@@ -1082,6 +1387,6 @@ public class VentanaClinica extends JFrame
 	@Override
 	public void setActionListener(ActionListener a) {
 		this.btnSolReparacion.addActionListener(a);
-		
+
 	}
 }
