@@ -28,14 +28,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import clinica.Ambulancia;
 import medicos.IMedico;
 import pacientes.Paciente;
-import javax.swing.border.BevelBorder;
-import javax.swing.BoxLayout;
-import java.awt.event.ActionEvent;
-import java.awt.CardLayout;
-import net.miginfocom.swing.MigLayout;
 
 public class VentanaClinica extends JFrame
 		implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia, IVistaConfiguraciones {
@@ -1176,7 +1170,7 @@ public class VentanaClinica extends JFrame
 	}
 
 	@Override
-	public String getNombreAsociado() {
+	public String getNombreAsociado(){
 		return this.textFieldNombreAsociado.getText();
 	}
 
@@ -1198,5 +1192,10 @@ public class VentanaClinica extends JFrame
 	@Override
 	public String getNumeroDomicilioAsociado() {
 		return this.textFieldDomicilioNumeroAsociado.getText();
+	}
+
+	@Override
+	public String getDNIAsociado() {
+		return this.textFieldDNIAsociado.getText();
 	}
 }

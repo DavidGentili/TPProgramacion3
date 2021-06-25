@@ -24,4 +24,10 @@ public interface IVistaAmbulancia {
 	public String getCalleDomicilioAsocidado();
 	
 	public String getNumeroDomicilioAsociado();
+	
+	public String getDNIAsociado();
+	
+	public void mostrarCartelsatisfactorio(String mensaje);
+	
+	public void mostrarMensajeError(String mensaje);
 }

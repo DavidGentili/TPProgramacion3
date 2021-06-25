@@ -25,8 +25,6 @@ import exceptions.PacienteNoEncontrado;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
 import pacientes.Paciente;
-import pedidos.Pedido;
-import pedidos.PedidoTranslado;
 import persistencia.PersistirClinica;
 import personas.Domicilio;
 import vista.IVistaAmbulancia;
@@ -81,9 +79,35 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Llama Atencion")) {
+	
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Asociado")) {
+			int telefono, nroCalle, dni;
+			String nombre, apellido, calle;
+			
+			try {
+				nombre = this.ventanaAmbulancia.getNombreAsociado();
+				apellido = this.ventanaAmbulancia.getApellidoAsociado();
+				telefono = Integer.parseInt(this.ventanaAmbulancia.getTelefonoAsociado());
+				calle = this.ventanaAmbulancia.getCalleDomicilioAsocidado();
+				nroCalle = Integer.parseInt(this.ventanaAmbulancia.getNumeroDomicilioAsociado());
+				dni = Integer.parseInt(this.ventanaAmbulancia.getDNIAsociado());
+				if(this.chequeaString(nombre)) 
+					if(this.chequeaString(apellido))
+						if(this.chequeaString(calle)) {
+							this.ventanaAmbulancia.mostrarCartelsatisfactorio("El registro del asociado");							
+						}
+						else
+							this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Calle");
+					else
+						this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Apellido");
+				else
+					this.ventanaAmbulancia.mostrarMensajeError("Error en el campo nombre");
+					
+			}catch(NumberFormatException ex) {
+				this.ventanaAmbulancia.mostrarMensajeError("Formato de los numeros incorrectos");
+			}
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
@@ -114,6 +138,10 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 
 		this.ventanaFacturacion.limpiarCamposFacturacion();
 		this.ventanaMedicos.limpiarCamposMedicos();
+	}
+
+	private boolean chequeaString(String campo) {
+		return (campo.isBlank() || campo.isEmpty() || campo == null)? false:true ;
 	}
 
 	/**
