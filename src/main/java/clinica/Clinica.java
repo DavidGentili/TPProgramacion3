@@ -8,6 +8,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
+import asociado.Asociado;
+import exceptions.AsociadoNoEncontrado;
+import exceptions.AsociadoYaExistente;
 import exceptions.CantidadDeDiasErroneosException;
 import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
@@ -20,6 +23,7 @@ import exceptions.MontoInvalidoException;
 import exceptions.NroHistoriaClinicaNoEncontrado;
 import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
+import exceptions.PacienteYaExistenteException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
 import exceptions.TipoDePacienteIncorrectoException;
@@ -50,6 +54,7 @@ public class Clinica {
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, Paciente> pacientesHist = new HashMap<Integer, Paciente>();
 	private TreeSet<Factura> historial = new TreeSet<Factura>();
+	private HashMap<Integer, Asociado> asociados = new HashMap<Integer, Asociado>();
 
 	private Paciente salaPrivada = null;
 	private ArrayList<Paciente> patio = new ArrayList<Paciente>();
@@ -145,8 +150,6 @@ public class Clinica {
 	public String getCiudad() {
 		return ciudad;
 	}
-	
-	
 
 	/**
 	 * Retonra una paciente segun su numero de historia clinica, si no lo encuentra
@@ -318,6 +321,55 @@ public class Clinica {
 	}
 
 	/**
+	 * Nos permite agregar un paciente a los registros de la clinica
+	 * 
+	 * @param nombre               nombre del paciente
+	 * @param apellido             Apellido del paciente
+	 * @param dni                  Dni del paciente
+	 * @param nroDeHistoriaClinica Nro de historia clinica del paciente
+	 * @param rangoEtareo          Rango etareo del paciente
+	 * @throws PacienteYaExistenteException      Si el paciente que se quiere
+	 *                                           ingresar ya existe
+	 * @throws TipoDePacienteIncorrectoException Si el rango etareo ingresado no
+	 *                                           esta registrado
+	 */
+	public void agregaPaciente(String nombre, String apellido, int dni, int nroDeHistoriaClinica, String rangoEtareo)
+			throws PacienteYaExistenteException, TipoDePacienteIncorrectoException {
+		if (!this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
+			Paciente p = PacienteFactory.getInstance(rangoEtareo, nombre, apellido, dni, nroDeHistoriaClinica);
+			this.pacientesHist.put(nroDeHistoriaClinica, p);
+		} else
+			throw new PacienteYaExistenteException("El paciente que quiere agregar ya existe");
+	}
+
+	/**
+	 * Nos permite agregar un paciente a los registros de la clinica
+	 * 
+	 * @param nombre               nombre del paciente
+	 * @param apellido             Apellido del paciente
+	 * @param dni                  Dni del paciente
+	 * @param telefono             Telefono del paciente
+	 * @param domicilio            Domicilio del paciente
+	 * @param ciudad               Ciudad del paciente
+	 * @param nroDeHistoriaClinica Nro de historia clinica del paciente
+	 * @param rangoEtareo          Rango etareo del paciente
+	 * @throws PacienteYaExistenteException      Si el paciente que se quiere
+	 *                                           ingresar ya existe
+	 * @throws TipoDePacienteIncorrectoException Si el rango etareo ingresado no
+	 *                                           esta registrado
+	 */
+	public void agregaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
+			String ciudad, int nroDeHistoriaClinica, String rangoEtareo)
+			throws PacienteYaExistenteException, TipoDePacienteIncorrectoException {
+		if (!this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
+			Paciente p = PacienteFactory.getInstance(rangoEtareo, nombre, apellido, dni, telefono, direccion, ciudad,
+					nroDeHistoriaClinica);
+			this.pacientesHist.put(nroDeHistoriaClinica, p);
+		} else
+			throw new PacienteYaExistenteException("El paciente que quiere agregar ya existe");
+	}
+
+	/**
 	 * Nos permite ingresar un paciente a la clinica, y colocarlo en la cola de
 	 * espera, siempre y cuando se haya atendido previamente en la misma
 	 * 
@@ -333,6 +385,23 @@ public class Clinica {
 			this.reasignaEspera(p);
 		} else
 			throw new NroHistoriaClinicaNoEncontrado("No se encontro el numero de historia clinica");
+	}
+
+	/**
+	 * Nos permite ingresar un paciente a la clinica, en caso que ese paciente no
+	 * este registrado en la clinica se emite una excepcion
+	 * 
+	 * @param paciente Paciente a ingresar
+	 * @throws NroHistoriaClinicaNoEncontrado Si el paciente no esta registrado en
+	 *                                        la clinica
+	 */
+	public void ingresaPaciente(Paciente paciente, String rangoEtareo) throws NroHistoriaClinicaNoEncontrado {
+		if (this.pacientesHist.containsKey(paciente.getNroHistoriaClinica())) {
+			colaEspera.add(paciente);
+			this.reasignaEspera(paciente);
+		} else
+			throw new NroHistoriaClinicaNoEncontrado(
+					"El paciente ingresado no se encuentra en los registro de la clinica");
 	}
 
 	/**
@@ -389,6 +458,55 @@ public class Clinica {
 		colaEspera.add(p);
 		this.reasignaEspera(p);
 
+	}
+
+	/**
+	 * Se encarga de agregar un Asociado a la estructura de la clinica
+	 * 
+	 * @param asociado Asociado a agregar
+	 * @throws AsociadoYaExistente Si el asociado que se quiere agregar ya se
+	 *                             encuentra en el sistema
+	 */
+	public void agregaAsociado(Asociado asociado) throws AsociadoYaExistente {
+		if (!this.asociados.containsKey(asociado.getDni())) {
+			this.asociados.put(asociado.getDni(), asociado);
+		} else
+			throw new AsociadoYaExistente("El asociado que intenta agregar ya se encuentra");
+	}
+
+	/**
+	 * Se encarga de crear un asociado y agregarlos a la estructura de asociados de
+	 * la clinica
+	 * 
+	 * @param nombre    nombre del asociado
+	 * @param apellido  Apellido del asociado
+	 * @param dni       Dni del asociado
+	 * @param domicilio Domicilio del asociado
+	 * @param telefono  Telefono del asociado
+	 * @throws AsociadoYaExistente Si el asociado que se intenta eliminar no se
+	 *                             encuentra
+	 */
+	public void agregaAsociado(String nombre, String apellido, int dni, Domicilio domicilio, String telefono)
+			throws AsociadoYaExistente {
+		if (!this.asociados.containsKey(dni)) {
+			Asociado asociado = new Asociado(nombre, apellido, dni, telefono, domicilio);
+			this.asociados.put(dni, asociado);
+		} else
+			throw new AsociadoYaExistente("El asociado que intenta agregar ya se encuentra");
+	}
+
+	public void eliminaAsociado(Asociado asociado) throws AsociadoNoEncontrado {
+		if (this.asociados.containsKey(asociado.getDni())) {
+			this.asociados.remove(asociado.getDni());
+		} else
+			throw new AsociadoNoEncontrado("No se encuentra el asociado ingresado");
+	}
+
+	public void eliminaAsociado(int dniDelAsociado) throws AsociadoNoEncontrado {
+		if (this.asociados.containsKey(dniDelAsociado)) {
+			this.asociados.remove(dniDelAsociado);
+		} else
+			throw new AsociadoNoEncontrado("No se encuentra el asociado ingresado");
 	}
 
 	/**
@@ -853,7 +971,7 @@ public class Clinica {
 	public ArrayList<Paciente> getEnAtencion() {
 		return enAtencion;
 	}
-	
+
 	public void agregaAmbulancia() {
 		this.a = new Ambulancia();
 	}

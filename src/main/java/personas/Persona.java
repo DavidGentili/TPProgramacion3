@@ -67,6 +67,27 @@ public class Persona implements Serializable {
 	}
 
 	/**
+	 * crea una instancia de una persona con sus datos basicos <br>
+	 * pre: el nombre y el apellido deben ser distintos de null y de vacio, el DNI
+	 * debe ser un numero positivo
+	 * 
+	 * 
+	 * @param nombre    nombre de la persona
+	 * @param apellido  Apellido de la persona
+	 * @param dni       Dni de la persona
+	 * @param telefono  telefono de la persona
+	 * @param domicilio domicilio de la persona
+	 */
+	public Persona(String nombre, String apellido, int dni, String telefono, Domicilio domicilio) {
+		super();
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+		this.telefono = telefono;
+		this.domicilio = domicilio;
+	}
+
+	/**
 	 * Retorna el telefono de la persona, en caso de no tener retorna null
 	 * 
 	 * @return retorna el telefono o null
@@ -214,5 +235,4 @@ public class Persona implements Serializable {
 		return true;
 	}
 
-	
 }
