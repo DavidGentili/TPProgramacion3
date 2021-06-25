@@ -20,10 +20,10 @@ import exceptions.FechaInvalidaException;
 import exceptions.MedicoNoEncontradoException;
 import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
-import exceptions.NroHistoriaClinicaNoEncontrado;
 import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
 import exceptions.PacienteYaExistenteException;
+import exceptions.PacienteYaIngresadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
 import exceptions.TipoDePacienteIncorrectoException;
@@ -329,31 +329,10 @@ public class Clinica {
 	}
 
 	/**
-	 * Nos permite agregar un paciente a los registros de la clinica
+	 * Nos permite agregar un paciente a los registros de la clinica, e ingresarlos
+	 * a la clinica
 	 * 
-	 * @param nombre               nombre del paciente
-	 * @param apellido             Apellido del paciente
-	 * @param dni                  Dni del paciente
-	 * @param nroDeHistoriaClinica Nro de historia clinica del paciente
-	 * @param rangoEtareo          Rango etareo del paciente
-	 * @throws PacienteYaExistenteException      Si el paciente que se quiere
-	 *                                           ingresar ya existe
-	 * @throws TipoDePacienteIncorrectoException Si el rango etareo ingresado no
-	 *                                           esta registrado
-	 */
-	public void agregaPaciente(String nombre, String apellido, int dni, int nroDeHistoriaClinica, String rangoEtareo)
-			throws PacienteYaExistenteException, TipoDePacienteIncorrectoException {
-		if (!this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
-			Paciente p = PacienteFactory.getInstance(rangoEtareo, nombre, apellido, dni, nroDeHistoriaClinica);
-			this.pacientesHist.put(nroDeHistoriaClinica, p);
-		} else
-			throw new PacienteYaExistenteException("El paciente que quiere agregar ya existe");
-	}
-
-	/**
-	 * Nos permite agregar un paciente a los registros de la clinica
-	 * 
-	 * @param nombre               nombre del paciente
+	 * @param nombre               Nombre del paciente
 	 * @param apellido             Apellido del paciente
 	 * @param dni                  Dni del paciente
 	 * @param telefono             Telefono del paciente
@@ -365,107 +344,93 @@ public class Clinica {
 	 *                                           ingresar ya existe
 	 * @throws TipoDePacienteIncorrectoException Si el rango etareo ingresado no
 	 *                                           esta registrado
+	 * @throws PacienteNoEncontrado              Si cuando se lo quiere ingresar a
+	 *                                           la clinica ya se encuentra dentro
+	 * @throws PacienteYaIngresadoException      El paciente ya se encuente
+	 *                                           ingresado a la clinica
 	 */
 	public void agregaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
-			String ciudad, int nroDeHistoriaClinica, String rangoEtareo)
-			throws PacienteYaExistenteException, TipoDePacienteIncorrectoException {
+			String ciudad, int nroDeHistoriaClinica, String rangoEtareo) throws PacienteYaExistenteException,
+			TipoDePacienteIncorrectoException, PacienteNoEncontrado, PacienteYaIngresadoException {
 		if (!this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
 			Paciente p = PacienteFactory.getInstance(rangoEtareo, nombre, apellido, dni, telefono, direccion, ciudad,
 					nroDeHistoriaClinica);
 			this.pacientesHist.put(nroDeHistoriaClinica, p);
+			this.ingresaPaciente(p);
 		} else
 			throw new PacienteYaExistenteException("El paciente que quiere agregar ya existe");
 	}
 
 	/**
-	 * Nos permite ingresar un paciente a la clinica, y colocarlo en la cola de
-	 * espera, siempre y cuando se haya atendido previamente en la misma
+	 * Nos permite agregar un paciente a los registros de la clinica, e ingresarlos
+	 * a la clinica
 	 * 
-	 * @param nroHistoriaClinica Numero de historia clinica del paciente
-	 * @throws NroHistoriaClinicaNoEncontrado Si el numero de historia clinica
-	 *                                        ingresado no corresponde a ningun
-	 *                                        paciente registrado
+	 * @param nombre               Nombre del paciente
+	 * @param apellido             Apellido del paciente
+	 * @param dni                  Dni del paciente
+	 * @param nroDeHistoriaClinica Nro de historia clinica del paciente
+	 * @param rangoEtareo          Rango etareo del paciente
+	 * @throws PacienteYaExistenteException      Si el paciente que se quiere
+	 *                                           ingresar ya existe
+	 * @throws TipoDePacienteIncorrectoException Si el rango etareo ingresado no
+	 *                                           esta registrado
+	 * @throws PacienteNoEncontrado              Si cuando se lo quiere ingresar a
+	 *                                           la clinica ya se encuentra dentro
+	 * @throws PacienteYaIngresadoException      El paciente ya se encuente
+	 *                                           ingresado a la clinica
 	 */
-	public void ingresaPaciente(int nroHistoriaClinica) throws NroHistoriaClinicaNoEncontrado {
-		if (this.pacientesHist.containsKey(nroHistoriaClinica)) {
-			Paciente p = this.pacientesHist.get(nroHistoriaClinica);
-			colaEspera.add(p);
-			this.reasignaEspera(p);
+	public void agregaPaciente(String nombre, String apellido, int dni, int nroDeHistoriaClinica, String rangoEtareo)
+			throws PacienteYaExistenteException, TipoDePacienteIncorrectoException, PacienteNoEncontrado,
+			PacienteYaIngresadoException {
+		if (!this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
+			Paciente p = PacienteFactory.getInstance(rangoEtareo, nombre, apellido, dni, telefono, direccion, ciudad,
+					nroDeHistoriaClinica);
+			this.pacientesHist.put(nroDeHistoriaClinica, p);
+			this.ingresaPaciente(p);
 		} else
-			throw new NroHistoriaClinicaNoEncontrado("No se encontro el numero de historia clinica");
+			throw new PacienteYaExistenteException("El paciente que quiere agregar ya existe");
 	}
 
 	/**
-	 * Nos permite ingresar un paciente a la clinica, en caso que ese paciente no
-	 * este registrado en la clinica se emite una excepcion
+	 * Se ingresa a la clinica un paciente ya registrado en la clinica
 	 * 
 	 * @param paciente Paciente a ingresar
-	 * @throws NroHistoriaClinicaNoEncontrado Si el paciente no esta registrado en
-	 *                                        la clinica
+	 * @throws PacienteNoEncontrado         si el paciente que se quiere ingresar no
+	 *                                      se encuentra registrado
+	 * @throws PacienteYaIngresadoException si el paciente que se quiere ingresar ya
+	 *                                      esta ingresado
 	 */
-	public void ingresaPaciente(Paciente paciente) throws NroHistoriaClinicaNoEncontrado {
-		if (this.pacientesHist.containsKey(paciente.getNroHistoriaClinica())) {
-			colaEspera.add(paciente);
-			this.reasignaEspera(paciente);
+	public void ingresaPaciente(Paciente paciente) throws PacienteNoEncontrado, PacienteYaIngresadoException {
+		if (!this.pacientesHist.containsKey(paciente.getNroHistoriaClinica())) {
+			if (!this.colaEspera.contains(paciente) && !this.enAtencion.contains(paciente)) {
+				this.colaEspera.add(paciente);
+				this.reasignaEspera(paciente);
+			} else
+				throw new PacienteYaIngresadoException("El paciente ya esta ingresado");
 		} else
-			throw new NroHistoriaClinicaNoEncontrado(
-					"El paciente ingresado no se encuentra en los registro de la clinica");
+			throw new PacienteNoEncontrado("El paciente que quiere ingresar no esta registrado");
 	}
 
 	/**
-	 * Nos permite ingresar un paciente a la clinica, en caso de existir el numero
-	 * de historia clinica, se usa el paciente existente, de lo contrario se crea un
-	 * paciente nuevo y se agrega al sistema
+	 * Se ingresa a la clinica un paciente ya registrado en la clinica.
 	 * 
-	 * @param nombre          Nombre del paciente
-	 * @param apellido        Apellido del paciente
-	 * @param dni             DNI del paciente
-	 * @param historiaClinica Numero de historia clinica del paciente
-	 * @param rangoEtario     Rango Etareo del paciente |Ninio|Joven|Mayor
-	 * @throws TipoDePacienteIncorrectoException Si el tipo de rango etareo
-	 *                                           ingresado no se encuentra
+	 * @param nroHistoriaClinica Numero de historia clinica del paciente que se
+	 *                           quiere ingresar
+	 * @throws PacienteNoEncontrado         si el paciente que se quiere ingresar no
+	 *                                      se encuentra registrado
+	 * @throws PacienteYaIngresadoException si el paciente que se quiere ingresar ya
+	 *                                      esta ingresado
 	 */
-	public void ingresaPaciente(String nombre, String apellido, int dni, int historiaClinica, String rangoEtario)
-			throws TipoDePacienteIncorrectoException {
-		Paciente p = null;
-		if (!this.pacientesHist.containsKey(historiaClinica))
-			p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, historiaClinica);
-		else
-			p = this.pacientesHist.get(historiaClinica);
-		this.pacientesHist.put(p.getNroHistoriaClinica(), p);
-		colaEspera.add(p);
-		this.reasignaEspera(p);
-
-	}
-
-	/**
-	 * Nos permite ingresar un paciente a la clinica, en caso de existir el numero
-	 * de historia clinica, se usa el paciente existente, de lo contrario se crea un
-	 * paciente nuevo y se agrega al sistema
-	 * 
-	 * @param nombre          Nombre del paciente
-	 * @param apellido        Apellido del paciente
-	 * @param dni             DNI del paciente
-	 * @param telefono        Telefono de contacto del paciente
-	 * @param domicilio       Domicilio del paciente
-	 * @param ciudad          Ciudad del paciente
-	 * @param historiaClinica Numero de historia clinica del paciente
-	 * @param rangoEtario     Rango Etareo del paciente |Ninio|Joven|Mayor
-	 * @throws TipoDePacienteIncorrectoException Si el tipo de rango etareo
-	 *                                           ingresado no se encuentra
-	 */
-	public void ingresaPaciente(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
-			String ciudad, int historiaClinica, String rangoEtario) throws TipoDePacienteIncorrectoException {
-		Paciente p = null;
-		if (!this.pacientesHist.containsKey(historiaClinica))
-			p = PacienteFactory.getInstance(rangoEtario, nombre, apellido, dni, telefono, domicilio, ciudad,
-					historiaClinica);
-		else
-			p = this.pacientesHist.get(historiaClinica);
-		this.pacientesHist.put(p.getNroHistoriaClinica(), p);
-		colaEspera.add(p);
-		this.reasignaEspera(p);
-
+	public void ingresaPaciente(int nroHistoriaClinica) throws PacienteNoEncontrado, PacienteYaIngresadoException {
+		if (!this.pacientesHist.containsKey(nroHistoriaClinica)) {
+			Paciente paciente = this.pacientesHist.get(nroHistoriaClinica);
+			if (!this.colaEspera.contains(paciente) && !this.enAtencion.contains(paciente)) {
+				this.colaEspera.add(paciente);
+				this.reasignaEspera(paciente);
+			} else
+				throw new PacienteYaIngresadoException("El paciente ya esta ingresado");
+		} else
+			throw new PacienteNoEncontrado("El paciente que quiere ingresar no esta registrado");
 	}
 
 	/**

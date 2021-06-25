@@ -15,6 +15,8 @@ import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
 import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
+import exceptions.PacienteYaExistenteException;
+import exceptions.PacienteYaIngresadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
 import exceptions.TipoDePacienteIncorrectoException;
@@ -33,8 +35,8 @@ public class Prueba {
 			dom = new Domicilio("Colon", 2350);
 			colon = Clinica.getInstancia("Colon", dom, "2234791040", "Mar del Plata");
 			colon.agregaMedico("Migue", "Sosa", 99999999, 10536, "Cirujano", "Magister", "Permanente");
-			colon.ingresaPaciente("Javier", "Rodriguez", 44444444, 10531, "Joven");
-			colon.ingresaPaciente("Mario", "Martinez", 55555555, 11302, "Ninio");
+			colon.agregaPaciente("Javier", "Rodriguez", 44444444, 10531, "Joven");
+			colon.agregaPaciente("Mario", "Martinez", 55555555, 11302, "Ninio");
 			colon.atiendeSiguiente();
 			colon.agregaConsulta(colon.getPaciente(10531), 10536, 2);
 			colon.agregaInternacion(colon.getPaciente(10531), "habitacion privada", 2);
@@ -49,7 +51,7 @@ public class Prueba {
 				| ContratacionNoRegistradaExceptions | EspecialidadNoRegistradaExceptions
 				| PosgradoNoRegistradoExceptions | MontoInvalidoException | TipoDePacienteIncorrectoException
 				| CantidadDeDiasErroneosException | PacienteNoEncontrado | MedicoNoEncontradoException
-				| TipoDeHabitacionIncorrectaException | PacienteNoAtendido | FechaInvalidaException e) {
+				| TipoDeHabitacionIncorrectaException | PacienteNoAtendido | FechaInvalidaException | PacienteYaExistenteException | PacienteYaIngresadoException e) {
 			System.out.println(e.getMessage());
 		}
 
