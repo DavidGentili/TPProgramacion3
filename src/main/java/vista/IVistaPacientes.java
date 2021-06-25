@@ -16,13 +16,15 @@ public interface IVistaPacientes {
 
 	void actualizaSalaPrivada(String paciente);
 
+	void mostrarMensajeError(String mensaje);
+
 	String getNombrePaciente();
 
 	String getApellidoPaciente();
 
 	int getDniPaciente();
 
-	int getNroDeHistoriaClinicaPaciente();
+	String getNroDeHistoriaClinicaPaciente();
 
 	String getCallePaciente();
 
@@ -33,6 +35,8 @@ public interface IVistaPacientes {
 	String getTelefonoPaciente();
 
 	String getRangoEtareo();
+
+	Paciente getPacienteSeleccionadoEnPaciente();
 
 	void LimpiarCamposPaciente();
 }
