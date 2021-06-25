@@ -34,6 +34,8 @@ import pacientes.Paciente;
 import javax.swing.border.BevelBorder;
 import javax.swing.BoxLayout;
 import java.awt.event.ActionEvent;
+import java.awt.CardLayout;
+import net.miginfocom.swing.MigLayout;
 
 public class VentanaClinica extends JFrame
 		implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia, IVistaConfiguraciones {
@@ -122,16 +124,12 @@ public class VentanaClinica extends JFrame
 	private JComboBox comboBoxContratacion;
 	private JPanel panelContenedorPosgrado;
 	private JComboBox comboBoxPosgrado;
-	private JPanel panelBotonesAmbulancia;
+	private JPanel panelDatosAmbulancia;
 	private JPanel panelListaPacAmbulancia;
 	private JScrollPane scrollPaneListPac;
 	private JList<Paciente> listPacien;
 	private JTextArea textAreaEstadoAmbulancia;
-	private JButton btnLlamaTranslado;
 	private JButton btnSolReparacion;
-	private JButton btnLlamaAtencion;
-	private JPanel panelBtLlama;
-	private JPanel panel_BtAtencion;
 	private JPanel panel_BtReparacion;
 	private DefaultListModel<Paciente> listaPacienteHistoricos = new DefaultListModel<Paciente>();
 	private JPanel panelConfiguraciones;
@@ -202,6 +200,28 @@ public class VentanaClinica extends JFrame
 	private JLabel lblCiudadActualDeLaClinica;
 	private JPanel panelEstadoAmbulancia;
 	private JTextArea textAreaAmbulancia;
+	private JButton btnLlamaAtencion;
+	private JButton btnLlamaTranslado;
+	private JPanel panelCargaAsociado;
+	private JLabel lblNombreAsociado;
+	private JTextField textFieldNombreAsociado;
+	private JLabel lblTelefonoAsociado;
+	private JLabel lblDomicilioAsociado;
+	private JLabel lblDNIAsociado;
+	private JTextField textFieldTelefonoAsociado;
+	private JTextField textFieldDNIAsociado;
+	private JTextField textFieldDomicilioCalleAsociado;
+	private JPanel panelNombreApellidoAsociado;
+	private JPanel panelCamposNombreApellidoAsociado;
+	private JTextField textFieldApellidoAsociado;
+	private JPanel panelDomicilioAsociado;
+	private JPanel panelCampoDomicilioAsociado;
+	private JPanel panelTelefonoAsociado;
+	private JPanel panelCampoTelefonoAsociado;
+	private JTextField textFieldDomicilioNumeroAsociado;
+	private JPanel panelDniAsociado;
+	private JPanel panelCampoDNIAsociado;
+	private JButton btnAgregarAsociado;
 
 	/**
 	 * Create the frame.
@@ -326,29 +346,93 @@ public class VentanaClinica extends JFrame
 		this.tabPanel.addTab("Ambulancia", null, this.panelAmbulancia, null);
 		this.panelAmbulancia.setLayout(new GridLayout(0, 3, 0, 0));
 
-		this.panelBotonesAmbulancia = new JPanel();
-		this.panelAmbulancia.add(this.panelBotonesAmbulancia);
-		this.panelBotonesAmbulancia.setLayout(new GridLayout(3, 0, 0, 0));
-
-		this.panelBtLlama = new JPanel();
-		this.panelBotonesAmbulancia.add(this.panelBtLlama);
-		this.panelBtLlama.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		this.btnLlamaTranslado = new JButton("Llama Translado");
-		this.panelBtLlama.add(this.btnLlamaTranslado);
-
-		this.panel_BtAtencion = new JPanel();
-		this.panelBotonesAmbulancia.add(this.panel_BtAtencion);
-
-		this.btnLlamaAtencion = new JButton("Llama atencion");
-		this.panel_BtAtencion.add(this.btnLlamaAtencion);
+		this.panelDatosAmbulancia = new JPanel();
+		this.panelAmbulancia.add(this.panelDatosAmbulancia);
+		this.panelDatosAmbulancia.setLayout(new BorderLayout(0, 0));
 
 		this.panel_BtReparacion = new JPanel();
-		this.panelBotonesAmbulancia.add(this.panel_BtReparacion);
-
-		this.btnSolReparacion = new JButton("Solicitar Reparacion");
-		this.btnSolReparacion.setActionCommand("Solicitar Reparacion");
-		this.panel_BtReparacion.add(this.btnSolReparacion);
+		this.panelDatosAmbulancia.add(this.panel_BtReparacion, BorderLayout.SOUTH);
+		this.panel_BtReparacion.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		this.btnLlamaAtencion = new JButton("Llama atencion");
+		this.panel_BtReparacion.add(this.btnLlamaAtencion);
+		
+		this.btnLlamaTranslado = new JButton("Llama Translado");
+		this.panel_BtReparacion.add(this.btnLlamaTranslado);
+		
+				this.btnSolReparacion = new JButton("Solicitar Reparacion");
+				this.btnSolReparacion.setActionCommand("Solicitar Reparacion");
+				this.panel_BtReparacion.add(this.btnSolReparacion);
+				
+				this.btnAgregarAsociado = new JButton("Agregar Asociado");
+				this.panel_BtReparacion.add(this.btnAgregarAsociado);
+				
+				this.panelCargaAsociado = new JPanel();
+				this.panelDatosAmbulancia.add(this.panelCargaAsociado, BorderLayout.CENTER);
+				this.panelCargaAsociado.setLayout(new GridLayout(4, 2, 0, 0));
+				
+				this.panelNombreApellidoAsociado = new JPanel();
+				this.panelCargaAsociado.add(this.panelNombreApellidoAsociado);
+				this.panelNombreApellidoAsociado.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+				
+				this.lblNombreAsociado = new JLabel("Nombre y Apellido");
+				this.panelNombreApellidoAsociado.add(this.lblNombreAsociado);
+				
+				this.panelCamposNombreApellidoAsociado = new JPanel();
+				this.panelCargaAsociado.add(this.panelCamposNombreApellidoAsociado);
+				this.panelCamposNombreApellidoAsociado.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+				
+				this.textFieldNombreAsociado = new JTextField();
+				this.panelCamposNombreApellidoAsociado.add(this.textFieldNombreAsociado);
+				this.textFieldNombreAsociado.setColumns(10);
+				
+				this.textFieldApellidoAsociado = new JTextField();
+				this.panelCamposNombreApellidoAsociado.add(this.textFieldApellidoAsociado);
+				this.textFieldApellidoAsociado.setColumns(10);
+				
+				this.panelDomicilioAsociado = new JPanel();
+				this.panelCargaAsociado.add(this.panelDomicilioAsociado);
+				
+				this.lblDomicilioAsociado = new JLabel("Domicilio");
+				this.panelDomicilioAsociado.add(this.lblDomicilioAsociado);
+				
+				this.panelCampoDomicilioAsociado = new JPanel();
+				this.panelCargaAsociado.add(this.panelCampoDomicilioAsociado);
+				
+				this.textFieldDomicilioCalleAsociado = new JTextField();
+				this.panelCampoDomicilioAsociado.add(this.textFieldDomicilioCalleAsociado);
+				this.textFieldDomicilioCalleAsociado.setColumns(10);
+				
+				this.textFieldDomicilioNumeroAsociado = new JTextField();
+				this.textFieldDomicilioNumeroAsociado.setText("");
+				this.panelCampoDomicilioAsociado.add(this.textFieldDomicilioNumeroAsociado);
+				this.textFieldDomicilioNumeroAsociado.setColumns(10);
+				
+				this.panelTelefonoAsociado = new JPanel();
+				this.panelCargaAsociado.add(this.panelTelefonoAsociado);
+				
+				this.lblTelefonoAsociado = new JLabel("Telefono");
+				this.panelTelefonoAsociado.add(this.lblTelefonoAsociado);
+				
+				this.panelCampoTelefonoAsociado = new JPanel();
+				this.panelCargaAsociado.add(this.panelCampoTelefonoAsociado);
+				
+				this.textFieldTelefonoAsociado = new JTextField();
+				this.panelCampoTelefonoAsociado.add(this.textFieldTelefonoAsociado);
+				this.textFieldTelefonoAsociado.setColumns(10);
+				
+				this.panelDniAsociado = new JPanel();
+				this.panelCargaAsociado.add(this.panelDniAsociado);
+				
+				this.lblDNIAsociado = new JLabel("DNI");
+				this.panelDniAsociado.add(this.lblDNIAsociado);
+				
+				this.panelCampoDNIAsociado = new JPanel();
+				this.panelCargaAsociado.add(this.panelCampoDNIAsociado);
+				
+				this.textFieldDNIAsociado = new JTextField();
+				this.panelCampoDNIAsociado.add(this.textFieldDNIAsociado);
+				this.textFieldDNIAsociado.setColumns(10);
 
 		this.panelListaPacAmbulancia = new JPanel();
 		this.panelAmbulancia.add(this.panelListaPacAmbulancia);
