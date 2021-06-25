@@ -26,13 +26,13 @@ public class ConversorDTO {
 		nueva.setDireccion(clinica.getDireccion());
 		nueva.setTelefono(clinica.getTelefono());
 		nueva.setCiudad(clinica.getCiudad());
-		nueva.setA(clinica.getA());
 		nueva.setMedicos(clinica.getMedicos());
 		nueva.setPacientesHist(clinica.getPacientesHist());
 		nueva.setHistorial(clinica.getHistorial());
 		nueva.setSalaPrivada(clinica.getSalaPrivada());
 		nueva.setColaEspera(clinica.getColaEspera());
 		nueva.setEnAtencion(clinica.getEnAtencion());
+		nueva.setAsociados(clinica.getAsociados());
 
 		nueva.setSueldoBasicoMedico(Clinica.getSueldoBasicoMedico());
 		nueva.setCostoBasicohabitacionCompartida(Clinica.getCostoHabitacionCompartida());
@@ -51,13 +51,13 @@ public class ConversorDTO {
 	public static void DTOtoClinica(ClinicaDTO clinicaDTO) {
 		Clinica clinica = Clinica.getInstancia(clinicaDTO.getNombre(), clinicaDTO.getDireccion(),
 				clinicaDTO.getTelefono(), clinicaDTO.getCiudad());
-		clinica.setA(clinicaDTO.getA());
 		clinica.setMedicos(clinicaDTO.getMedicos());
 		clinica.setPacientesHist(clinicaDTO.getPacientesHist());
 		clinica.setHistorial(clinicaDTO.getHistorial());
 		clinica.setSalaPrivada(clinicaDTO.getSalaPrivada());
 		clinica.setColaEspera(clinicaDTO.getColaEspera());
 		clinica.setEnAtencion(clinicaDTO.getEnAtencion());
+		clinica.setAsociados(clinicaDTO.getAsociados());
 
 		Factura.setNumero(clinicaDTO.getNumeroTotalDeFacturas());
 

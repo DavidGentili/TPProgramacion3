@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
+import asociado.Asociado;
 import clinica.Ambulancia;
 import clinica.Factura;
 import medicos.IMedico;
@@ -18,7 +19,6 @@ public class ClinicaDTO implements Serializable {
 	private Domicilio direccion;
 	private String telefono;
 	private String ciudad;
-	private transient Ambulancia a;
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, Paciente> pacientesHist = new HashMap<Integer, Paciente>();
 	private TreeSet<Factura> historial = new TreeSet<Factura>();
@@ -26,6 +26,7 @@ public class ClinicaDTO implements Serializable {
 	private ArrayList<Paciente> patio = new ArrayList<Paciente>();
 	private LinkedList<Paciente> colaEspera = new LinkedList<Paciente>();
 	private ArrayList<Paciente> enAtencion = new ArrayList<Paciente>();
+	private HashMap<Integer, Asociado> asociados = new HashMap<Integer, Asociado>();
 
 	private double SueldoBasicoMedico;
 	private double CostoBasicoHabitacionPrivada;
@@ -67,14 +68,6 @@ public class ClinicaDTO implements Serializable {
 
 	public void setCiudad(String ciudad) {
 		this.ciudad = ciudad;
-	}
-
-	public Ambulancia getA() {
-		return a;
-	}
-
-	public void setA(Ambulancia a) {
-		this.a = a;
 	}
 
 	public HashMap<Integer, IMedico> getMedicos() {
@@ -171,6 +164,14 @@ public class ClinicaDTO implements Serializable {
 
 	public void setNumeroTotalDeFacturas(int numeroTotalDeFacturas) {
 		NumeroTotalDeFacturas = numeroTotalDeFacturas;
+	}
+	
+	public HashMap<Integer, Asociado> getAsociados() {
+		return asociados;
+	}
+
+	public void setAsociados(HashMap<Integer, Asociado> asociados) {
+		this.asociados = asociados;
 	}
 
 }
