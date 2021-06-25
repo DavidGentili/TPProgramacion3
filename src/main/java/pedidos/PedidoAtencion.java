@@ -1,12 +1,11 @@
 package pedidos;
 
-import clinica.Ambulancia;
-import personas.Domicilio;
+import asociado.Asociado;
 
 public class PedidoAtencion extends Pedido {
 
-	public PedidoAtencion(String nombre, String apellido,int dni,Domicilio domicilio) {
-		super(nombre, apellido,dni,domicilio);
+	public PedidoAtencion(Asociado asociado) {
+		super(asociado);
 	}
 
 	@Override

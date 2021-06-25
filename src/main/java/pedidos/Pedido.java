@@ -1,21 +1,15 @@
 package pedidos;
 
+import asociado.Asociado;
 import clinica.Ambulancia;
-import personas.Domicilio;
 
 public abstract class Pedido extends Thread {
-	protected String nombre;
-	protected String apellido;
-	protected int dni;
-	protected Domicilio domicilio;
+	protected Asociado asociado;
 	protected static Ambulancia a = Ambulancia.getInstance();
 
-	public Pedido(String nombre, String apellido, int dni, Domicilio domicilio) {
+	public Pedido(Asociado asociado) {
 		super();
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.dni=dni;
-		this.domicilio=domicilio;
+		this.asociado = asociado;
 	}
 
 	public void devuelveAmbulancia() {

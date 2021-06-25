@@ -83,8 +83,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		
 		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
 			Paciente p = this.ventanaAmbulancia.getPacienteAmbulancia();
-			Pedido pedido = new PedidoTranslado(p.getNombre(), p.getApellido(), this.clinica.getA());
-			pedido.start();
+			
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Restaurar Clinica")) {
