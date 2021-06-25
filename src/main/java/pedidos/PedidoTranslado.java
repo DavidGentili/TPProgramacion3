@@ -10,7 +10,7 @@ public class PedidoTranslado extends Pedido {
 
 	@Override
 	public void efectuaPedido() {
-		this.a.llamanTranslado();
+		//this.a.llamanTranslado();
 	}
 	
 	

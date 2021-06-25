@@ -15,7 +15,7 @@ public abstract class Pedido extends Thread {
 	}
 	
 	public void devuelveAmbulancia() {
-		a.devuelveAmbulancia();
+		//a.devuelveAmbulancia();
 	}
 	
 	public abstract void efectuaPedido();

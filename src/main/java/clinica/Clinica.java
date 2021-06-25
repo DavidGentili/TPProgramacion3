@@ -980,4 +980,22 @@ public class Clinica {
 		return enAtencion;
 	}
 
+	/**
+	 * Retorna un HashMap con los asociados de la clinica
+	 * 
+	 * @return HashMap de asociados
+	 */
+	public HashMap<Integer, Asociado> getAsociados() {
+		return asociados;
+	}
+
+	/**
+	 * Determina un HashMap con los asociados de la clinica
+	 * 
+	 * @param asociados HashMap de asociados
+	 */
+	public void setAsociados(HashMap<Integer, Asociado> asociados) {
+		this.asociados = asociados;
+	}
+
 }
