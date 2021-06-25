@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import asociado.Asociado;
 import medicos.IMedico;
 import pacientes.Paciente;
 
@@ -121,11 +122,11 @@ public class VentanaClinica extends JFrame
 	private JPanel panelDatosAmbulancia;
 	private JPanel panelListaPacAmbulancia;
 	private JScrollPane scrollPaneListPac;
-	private JList<Paciente> listPacien;
+	private JList<Asociado> listPacien;
 	private JTextArea textAreaEstadoAmbulancia;
 	private JButton btnSolReparacion;
 	private JPanel panel_BtReparacion;
-	private DefaultListModel<Paciente> listaPacienteHistoricos = new DefaultListModel<Paciente>();
+	private DefaultListModel<Asociado> listaPacienteHistoricos = new DefaultListModel<Asociado>();
 	private JPanel panelConfiguraciones;
 	private JPanel panelCondicionesActuales;
 	private JPanel panelDatosActualClinica;
@@ -438,7 +439,7 @@ public class VentanaClinica extends JFrame
 		this.scrollPaneListPac = new JScrollPane();
 		this.panelListaPacAmbulancia.add(this.scrollPaneListPac, BorderLayout.CENTER);
 
-		this.listPacien = new JList<Paciente>(listaPacienteHistoricos);
+		this.listPacien = new JList<Asociado>(listaPacienteHistoricos);
 		this.scrollPaneListPac.setViewportView(this.listPacien);
 		
 		this.panelEstadoAmbulancia = new JPanel();
@@ -1048,7 +1049,7 @@ public class VentanaClinica extends JFrame
 	}
 
 	@Override
-	public void actualizaHistoricosAmbulancia(Iterator<Paciente> historicos) {
+	public void actualizaAsociados(Iterator<Asociado> historicos) {
 		this.listaPacienteHistoricos.clear();
 		while (historicos.hasNext()) {
 			this.listaPacienteHistoricos.addElement(historicos.next());
@@ -1058,7 +1059,7 @@ public class VentanaClinica extends JFrame
 	}
 
 	@Override
-	public Paciente getPacienteAmbulancia() {
+	public Asociado getAsociadoAmbulancia() {
 		return this.listPacien.getSelectedValue();
 	}
 

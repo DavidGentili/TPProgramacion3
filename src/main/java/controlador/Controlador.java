@@ -9,7 +9,9 @@ import java.util.GregorianCalendar;
 import java.util.Observable;
 import java.util.Observer;
 
+import asociado.Asociado;
 import clinica.Clinica;
+import exceptions.AsociadoYaExistente;
 import exceptions.CantidadDeDiasErroneosException;
 import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
@@ -24,7 +26,6 @@ import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
-import pacientes.Paciente;
 import persistencia.PersistirClinica;
 import personas.Domicilio;
 import vista.IVistaAmbulancia;
@@ -49,16 +50,18 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaAmbulancia = ventanaAmbulancia;
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
-		this.ventanaAmbulancia.setActionListener(this);
+		this.ventanaAmbulancia.setActionListener(this);	
 		this.ventanaFacturacion.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getIteratorEnAtencion());
 		this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
-		this.ventanaAmbulancia.actualizaHistoricosAmbulancia(this.clinica.getIteratorPacientesHistoricos());
+		this.ventanaAmbulancia.actualizaAsociados(this.clinica.getIteratorAsociados());
 		this.ventanaConfiguraciones.setActionListenerConfiguraciones(this);
 		this.ventanaConfiguraciones.SetWindowListenerConfiguraciones(this);
 		this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
 		actualizarDatosConfiguracion();
 		actualizarValoresConfiguracion();
+		
+		
 	}
 
 	@Override
@@ -83,20 +86,23 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Asociado")) {
-			int telefono, nroCalle, dni;
-			String nombre, apellido, calle;
+			int  nroCalle, dni;
+			String telefono, nombre, apellido, calle;
 			
 			try {
 				nombre = this.ventanaAmbulancia.getNombreAsociado();
 				apellido = this.ventanaAmbulancia.getApellidoAsociado();
-				telefono = Integer.parseInt(this.ventanaAmbulancia.getTelefonoAsociado());
+				telefono = this.ventanaAmbulancia.getTelefonoAsociado();
 				calle = this.ventanaAmbulancia.getCalleDomicilioAsocidado();
 				nroCalle = Integer.parseInt(this.ventanaAmbulancia.getNumeroDomicilioAsociado());
 				dni = Integer.parseInt(this.ventanaAmbulancia.getDNIAsociado());
 				if(this.chequeaString(nombre)) 
 					if(this.chequeaString(apellido))
 						if(this.chequeaString(calle)) {
-							this.ventanaAmbulancia.mostrarCartelsatisfactorio("El registro del asociado");							
+							this.ventanaAmbulancia.mostrarCartelsatisfactorio("El registro del asociado");
+							Domicilio aux = new Domicilio(calle, nroCalle);
+							this.clinica.agregaAsociado(nombre, apellido, dni, aux, telefono);
+							this.ventanaAmbulancia.actualizaAsociados(this.clinica.getIteratorAsociados());
 						}
 						else
 							this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Calle");
@@ -107,11 +113,15 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 					
 			}catch(NumberFormatException ex) {
 				this.ventanaAmbulancia.mostrarMensajeError("Formato de los numeros incorrectos");
+			} catch (DomicilioInvalido e1) {
+				this.ventanaAmbulancia.mostrarMensajeError(e1.getMessage());
+			}catch(AsociadoYaExistente e2) {
+				this.ventanaAmbulancia.mostrarMensajeError(e2.getMessage());
 			}
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
-			Paciente p = this.ventanaAmbulancia.getPacienteAmbulancia();
+			Asociado p = this.ventanaAmbulancia.getAsociadoAmbulancia();
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Restaurar Clinica")) {

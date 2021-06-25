@@ -3,15 +3,16 @@ package vista;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
 
+import asociado.Asociado;
 import pacientes.Paciente;
 
 public interface IVistaAmbulancia {
 	
-	public void actualizaHistoricosAmbulancia(Iterator<Paciente> historicos);
+	public void actualizaAsociados(Iterator<Asociado> historicos);
 	
 	public void actualizaEstadoAmbulancia(String estado);
 	
-	public Paciente getPacienteAmbulancia();
+	public Asociado getAsociadoAmbulancia();
 	
 	public void setActionListener(ActionListener a);
 
