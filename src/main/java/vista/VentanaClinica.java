@@ -41,8 +41,8 @@ import java.awt.Dimension;
 import javax.swing.border.LineBorder;
 import java.awt.CardLayout;
 
-public class VentanaClinica extends JFrame
-		implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia, IVistaConfiguraciones {
+public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia,
+		IVistaPacientes, IVistaConfiguraciones {
 
 	private JPanel contentPane;
 	private JTabbedPane tabPanel;
@@ -134,7 +134,7 @@ public class VentanaClinica extends JFrame
 	private JTextArea textAreaEstadoAmbulancia;
 	private JButton btnSolReparacion;
 	private JPanel panel_BtReparacion;
-	private DefaultListModel<Asociado> listaPacienteHistoricos = new DefaultListModel<Asociado>();
+	private DefaultListModel<Asociado> listaAsociados = new DefaultListModel<Asociado>();
 	private JPanel panelConfiguraciones;
 	private JPanel panelCondicionesActuales;
 	private JPanel panelDatosActualClinica;
@@ -289,6 +289,8 @@ public class VentanaClinica extends JFrame
 	private JPanel panelDniAsociado;
 	private JPanel panelCampoDNIAsociado;
 	private JButton btnAgregarAsociado;
+	private DefaultListModel listaPacientesHistoricos;
+	private DefaultListModel listaColaDeEspera;
 
 	/**
 	 * Create the frame.
@@ -511,7 +513,7 @@ public class VentanaClinica extends JFrame
 		this.scrollPaneListPac = new JScrollPane();
 		this.panelListaPacAmbulancia.add(this.scrollPaneListPac, BorderLayout.CENTER);
 
-		this.listPacien = new JList<Asociado>(listaPacienteHistoricos);
+		this.listPacien = new JList<Asociado>(listaAsociados);
 		this.scrollPaneListPac.setViewportView(this.listPacien);
 
 		this.panelEstadoAmbulancia = new JPanel();
@@ -1360,9 +1362,9 @@ public class VentanaClinica extends JFrame
 
 	@Override
 	public void actualizaAsociados(Iterator<Asociado> historicos) {
-		this.listaPacienteHistoricos.clear();
+		this.listaAsociados.clear();
 		while (historicos.hasNext()) {
-			this.listaPacienteHistoricos.addElement(historicos.next());
+			this.listaAsociados.addElement(historicos.next());
 		}
 		this.repaint();
 
@@ -1509,5 +1511,88 @@ public class VentanaClinica extends JFrame
 	@Override
 	public String getDNIAsociado() {
 		return this.textFieldDNIAsociado.getText();
+	}
+
+	@Override
+	public void SetActionListenerPacientes(ActionListener listener) {
+
+	}
+
+	@Override
+	public void actualizaListaEnAtencion(Iterator<Paciente> lista) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actualizaColaDeEspera(Iterator<Paciente> lista) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actualizaPacientesHistoricos(Iterator<Paciente> lista) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void actualizaSalaPrivada(String paciente) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String getNombrePaciente() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getApellidoPaciente() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getDniPaciente() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getNroDeHistoriaClinicaPaciente() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getCallePaciente() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getNroDeCallePaciente() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCiudadPaciente() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getTelefonoPaciente() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void LimpiarCamposPaciente() {
+		// TODO Auto-generated method stub
+
 	}
 }
