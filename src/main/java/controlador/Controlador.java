@@ -78,12 +78,16 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		}
 		if (e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
-
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("Llama Atencion")) {
+		}
+		
+		if (e.getActionCommand().equalsIgnoreCase("Agregar Asociado")) {
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
 			Paciente p = this.ventanaAmbulancia.getPacienteAmbulancia();
-			
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Restaurar Clinica")) {

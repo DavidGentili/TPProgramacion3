@@ -15,4 +15,13 @@ public interface IVistaAmbulancia {
 	
 	public void setActionListener(ActionListener a);
 
+	public String getNombreAsociado();
+	
+	public String getApellidoAsociado();
+	
+	public String getTelefonoAsociado();
+	
+	public String getCalleDomicilioAsocidado();
+	
+	public String getNumeroDomicilioAsociado();
 }

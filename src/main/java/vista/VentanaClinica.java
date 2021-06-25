@@ -355,9 +355,11 @@ public class VentanaClinica extends JFrame
 		this.panel_BtReparacion.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		this.btnLlamaAtencion = new JButton("Llama atencion");
+		this.btnLlamaAtencion.setActionCommand("Llama atencion");
 		this.panel_BtReparacion.add(this.btnLlamaAtencion);
 		
 		this.btnLlamaTranslado = new JButton("Llama Translado");
+		this.btnLlamaTranslado.setActionCommand("Llama Translado");
 		this.panel_BtReparacion.add(this.btnLlamaTranslado);
 		
 				this.btnSolReparacion = new JButton("Solicitar Reparacion");
@@ -365,6 +367,7 @@ public class VentanaClinica extends JFrame
 				this.panel_BtReparacion.add(this.btnSolReparacion);
 				
 				this.btnAgregarAsociado = new JButton("Agregar Asociado");
+				this.btnAgregarAsociado.setActionCommand("Agregar Asociado");
 				this.panel_BtReparacion.add(this.btnAgregarAsociado);
 				
 				this.panelCargaAsociado = new JPanel();
@@ -1166,6 +1169,34 @@ public class VentanaClinica extends JFrame
 	@Override
 	public void setActionListener(ActionListener a) {
 		this.btnSolReparacion.addActionListener(a);
+		this.btnAgregarAsociado.addActionListener(a);
+		this.btnLlamaAtencion.addActionListener(a);
+		this.btnLlamaTranslado.addActionListener(a);
 		
+	}
+
+	@Override
+	public String getNombreAsociado() {
+		return this.textFieldNombreAsociado.getText();
+	}
+
+	@Override
+	public String getApellidoAsociado() {
+		return this.textFieldApellidoAsociado.getText();
+	}
+
+	@Override
+	public String getTelefonoAsociado() {
+		return this.textFieldTelefonoAsociado.getText();
+	}
+
+	@Override
+	public String getCalleDomicilioAsocidado() {
+		return this.textFieldDomicilioCalleAsociado.getText();
+	}
+
+	@Override
+	public String getNumeroDomicilioAsociado() {
+		return this.textFieldDomicilioNumeroAsociado.getText();
 	}
 }
