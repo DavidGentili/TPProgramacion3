@@ -258,8 +258,6 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JTextField textFieldCiudadPaciente;
 	private JPanel panelContenedorLblCiuadPaciente;
 	private JPanel panelContenedorTextFieldCiudadPaciente;
-	private JPanel panelContenedorBtnAgregarPaciente;
-	private JButton btnAgregarPaciente;
 	private JLabel lblNroDeHistoriaClinicaPaciente;
 	private JTextField textFieldNroDeHistoriaClinicaPaciente;
 	private JPanel panelContenedorComboBoxRangoEtareo;
@@ -291,6 +289,11 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JButton btnAgregarAsociado;
 	private DefaultListModel<Paciente> listaPacientesHistoricos = new DefaultListModel<Paciente>();
 	private DefaultListModel<Paciente> listaColaDeEspera = new DefaultListModel<Paciente>();
+	private JPanel panelContenedorBotonesPaciente;
+	private JPanel panelContenedorBtnAgregarPaciente;
+	private JButton btnAgregarPaciente;
+	private JButton btnIngresaPaciente;
+	private JPanel panelContenedorBtnIngresaPaciente;
 
 	/**
 	 * Create the frame.
@@ -931,12 +934,23 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.comboBoxRangoEtareo.setModel(new DefaultComboBoxModel(new String[] { "Niño", "Joven", "Mayor" }));
 		this.panelContenedorComboBoxRangoEtareo.add(this.comboBoxRangoEtareo);
 
+		this.panelContenedorBotonesPaciente = new JPanel();
+		this.panelAccionesPacientes.add(this.panelContenedorBotonesPaciente);
+		this.panelContenedorBotonesPaciente.setLayout(new GridLayout(0, 2, 0, 0));
+
 		this.panelContenedorBtnAgregarPaciente = new JPanel();
-		this.panelAccionesPacientes.add(this.panelContenedorBtnAgregarPaciente);
+		this.panelContenedorBotonesPaciente.add(this.panelContenedorBtnAgregarPaciente);
 
 		this.btnAgregarPaciente = new JButton("Agregar Paciente");
-		this.panelContenedorBtnAgregarPaciente.add(this.btnAgregarPaciente);
 		this.btnAgregarPaciente.setEnabled(false);
+		this.panelContenedorBtnAgregarPaciente.add(this.btnAgregarPaciente);
+
+		this.panelContenedorBtnIngresaPaciente = new JPanel();
+		this.panelContenedorBotonesPaciente.add(this.panelContenedorBtnIngresaPaciente);
+
+		this.btnIngresaPaciente = new JButton("Ingresa Paciente");
+		this.btnIngresaPaciente.setEnabled(false);
+		this.panelContenedorBtnIngresaPaciente.add(this.btnIngresaPaciente);
 
 		this.panelConfiguraciones = new JPanel();
 		this.tabPanel.addTab("General", null, this.panelConfiguraciones, null);
@@ -1362,6 +1376,14 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		} catch (NumberFormatException e1) {
 			this.btnAgregarPaciente.setEnabled(false);
 		}
+		try {
+			nroHitoriaClinica = Integer.parseInt(this.textFieldNroDeHistoriaClinicaPaciente.getText());
+			if (nroHitoriaClinica > 0)
+				this.btnIngresaPaciente.setEnabled(true);
+		} catch (NumberFormatException e1) {
+			this.btnIngresaPaciente.setEnabled(false);
+		}
+
 	}
 
 	@Override
