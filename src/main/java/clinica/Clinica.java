@@ -191,7 +191,7 @@ public class Clinica {
 	 * 
 	 * @return Medicos registrados en la clinica
 	 */
-	public Iterator getIteratorMedicos() {
+	public Iterator<IMedico> getIteratorMedicos() {
 		ArrayList<IMedico> aux = new ArrayList<IMedico>();
 		for (Integer i : this.medicos.keySet()) {
 			aux.add(this.medicos.get(i));
@@ -204,7 +204,7 @@ public class Clinica {
 	 * 
 	 * @return los pacientes registrados en la clinica
 	 */
-	public Iterator getIteratorPacientesHistoricos() {
+	public Iterator<Paciente> getIteratorPacientesHistoricos() {
 		ArrayList<Paciente> aux = new ArrayList<Paciente>();
 		for (Integer i : this.pacientesHist.keySet()) {
 			aux.add(this.pacientesHist.get(i));
@@ -217,7 +217,7 @@ public class Clinica {
 	 * 
 	 * @return las facturas generadas
 	 */
-	public Iterator getIteratorFacturas() {
+	public Iterator<Factura> getIteratorFacturas() {
 		return this.historial.iterator();
 	}
 
@@ -235,7 +235,7 @@ public class Clinica {
 	 * 
 	 * @return los pacientes del patio
 	 */
-	public Iterator getIteratorPatio() {
+	public Iterator<Paciente> getIteratorPatio() {
 		return this.patio.iterator();
 	}
 
@@ -244,8 +244,16 @@ public class Clinica {
 	 * 
 	 * @return los pacientes en atencion
 	 */
-	public Iterator getIteratorEnAtencion() {
+	public Iterator<Paciente> getIteratorEnAtencion() {
 		return this.enAtencion.iterator();
+	}
+
+	public Iterator<Asociado> getIteratorAsociados() {
+		ArrayList<Asociado> aux = new ArrayList<Asociado>();
+		for (Integer i : this.asociados.keySet()) {
+			aux.add(this.asociados.get(i));
+		}
+		return aux.iterator();
 	}
 
 	/**
