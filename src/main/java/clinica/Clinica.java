@@ -403,7 +403,7 @@ public class Clinica {
 	 * @throws NroHistoriaClinicaNoEncontrado Si el paciente no esta registrado en
 	 *                                        la clinica
 	 */
-	public void ingresaPaciente(Paciente paciente, String rangoEtareo) throws NroHistoriaClinicaNoEncontrado {
+	public void ingresaPaciente(Paciente paciente) throws NroHistoriaClinicaNoEncontrado {
 		if (this.pacientesHist.containsKey(paciente.getNroHistoriaClinica())) {
 			colaEspera.add(paciente);
 			this.reasignaEspera(paciente);

@@ -70,7 +70,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JList<Paciente> listPacientesEnFacturacion;
 	private JList<IMedico> listMedicosEnFacturacion;
 	private DefaultListModel<IMedico> listaMedicos = new DefaultListModel<IMedico>();
-	private DefaultListModel<Paciente> ListaPacientesEnAtencion = new DefaultListModel<Paciente>();
+	private DefaultListModel<Paciente> listaPacientesEnAtencion = new DefaultListModel<Paciente>();
 	private JPanel panelBtnFacturar;
 	private JPanel panelContenedorFacturar;
 	private JButton btnFacturar;
@@ -289,8 +289,8 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JPanel panelDniAsociado;
 	private JPanel panelCampoDNIAsociado;
 	private JButton btnAgregarAsociado;
-	private DefaultListModel listaPacientesHistoricos;
-	private DefaultListModel listaColaDeEspera;
+	private DefaultListModel<Paciente> listaPacientesHistoricos = new DefaultListModel<Paciente>();
+	private DefaultListModel<Paciente> listaColaDeEspera = new DefaultListModel<Paciente>();
 
 	/**
 	 * Create the frame.
@@ -317,7 +317,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.scrollPaneListPacientes = new JScrollPane();
 		this.panelListas.add(this.scrollPaneListPacientes);
 
-		this.listPacientesEnFacturacion = new JList<Paciente>(this.ListaPacientesEnAtencion);
+		this.listPacientesEnFacturacion = new JList<Paciente>(this.listaPacientesEnAtencion);
 		this.scrollPaneListPacientes.setViewportView(this.listPacientesEnFacturacion);
 
 		this.lblPacientesEnAtencion = new JLabel("Pacientes en atencion");
@@ -739,7 +739,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.panelContenedorListaPacientesHistoricos.add(this.lblTituloPacientesHistoricosEnPacientes,
 				BorderLayout.NORTH);
 
-		this.listPacientesHistoricosEnPacientes = new JList();
+		this.listPacientesHistoricosEnPacientes = new JList(this.listaPacientesHistoricos);
 		this.panelContenedorListaPacientesHistoricos.add(this.listPacientesHistoricosEnPacientes, BorderLayout.CENTER);
 
 		this.PanelContenedorListaPacientesEnAtencion = new JPanel();
@@ -752,7 +752,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.PanelContenedorListaPacientesEnAtencion.add(this.lblTituloPacientesEnAtencionEnPacientes,
 				BorderLayout.NORTH);
 
-		this.listPacientesEnAtencionEnPacientes = new JList();
+		this.listPacientesEnAtencionEnPacientes = new JList(this.listaPacientesEnAtencion);
 		this.PanelContenedorListaPacientesEnAtencion.add(this.listPacientesEnAtencionEnPacientes, BorderLayout.CENTER);
 
 		this.PanelContenedorListaDeEspera = new JPanel();
@@ -764,7 +764,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.lblTituloPacientesEnEsperaEnPacientes.setHorizontalAlignment(SwingConstants.CENTER);
 		this.PanelContenedorListaDeEspera.add(this.lblTituloPacientesEnEsperaEnPacientes, BorderLayout.NORTH);
 
-		this.listPacientesEnEsperaEnPacientes = new JList();
+		this.listPacientesEnEsperaEnPacientes = new JList(this.listaColaDeEspera);
 		this.PanelContenedorListaDeEspera.add(this.listPacientesEnEsperaEnPacientes, BorderLayout.CENTER);
 
 		this.PanelContenedorTiposDeEspera = new JPanel();
@@ -1186,9 +1186,9 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 
 	@Override
 	public void actualizaListaPacientesEnAtencion(Iterator<Paciente> lista) {
-		this.ListaPacientesEnAtencion.clear();
+		this.listaPacientesEnAtencion.clear();
 		while (lista.hasNext())
-			this.ListaPacientesEnAtencion.addElement(lista.next());
+			this.listaPacientesEnAtencion.addElement(lista.next());
 		this.repaint();
 
 	}
@@ -1353,8 +1353,12 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		try {
 			dniPaciente = Integer.parseInt(this.textFieldDniPaciente.getText());
 			nroHitoriaClinica = Integer.parseInt(this.textFieldNroDeHistoriaClinicaPaciente.getText());
-			boolean nombreCorrecto, ApellidoCorrecto, dniCorrecto, nroHistoriClinicaCorrecto;
-
+			boolean nombreCorrecto, apellidoCorrecto, dniCorrecto, nroHistoriClinicaCorrecto, condicionAgregaPaciente;
+			nombreCorrecto = !this.getNombrePaciente().isBlank() && !this.getNombrePaciente().isEmpty();
+			apellidoCorrecto = !this.getApellidoPaciente().isBlank() && !this.getApellidoPaciente().isEmpty();
+			condicionAgregaPaciente = nombreCorrecto && apellidoCorrecto && dniPaciente > 0 && nroHitoriaClinica > 0;
+			if (condicionAgregaPaciente)
+				this.btnAgregarPaciente.setEnabled(true);
 		} catch (NumberFormatException e1) {
 			this.btnAgregarPaciente.setEnabled(false);
 		}
@@ -1515,84 +1519,103 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 
 	@Override
 	public void SetActionListenerPacientes(ActionListener listener) {
-
+		this.btnAgregarPaciente.addActionListener(listener);
+		this.btnAtiendeSiguiente.addActionListener(listener);
 	}
 
 	@Override
 	public void actualizaListaEnAtencion(Iterator<Paciente> lista) {
-		// TODO Auto-generated method stub
+		this.listaPacientesEnAtencion.clear();
+		while (lista.hasNext())
+			this.listaPacientesEnAtencion.addElement(lista.next());
+		this.repaint();
 
 	}
 
 	@Override
 	public void actualizaColaDeEspera(Iterator<Paciente> lista) {
-		// TODO Auto-generated method stub
+		this.listaColaDeEspera.clear();
+		while (lista.hasNext())
+			this.listaColaDeEspera.addElement(lista.next());
+		this.repaint();
 
 	}
 
 	@Override
 	public void actualizaPacientesHistoricos(Iterator<Paciente> lista) {
-		// TODO Auto-generated method stub
+		this.listaPacientesHistoricos.clear();
+		while (lista.hasNext())
+			this.listaPacientesHistoricos.addElement(lista.next());
+		this.repaint();
 
 	}
 
 	@Override
 	public void actualizaSalaPrivada(String paciente) {
-		// TODO Auto-generated method stub
+		this.lblPacienteSalaDeEsperaprivadaEnPacientes.setText(paciente);
 
 	}
 
 	@Override
 	public String getNombrePaciente() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.textFieldNombrePaciente.getText();
 	}
 
 	@Override
 	public String getApellidoPaciente() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.textFieldApellidoPaciente.getText();
 	}
 
 	@Override
 	public int getDniPaciente() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Integer.parseInt(this.textFieldDniPaciente.getText());
 	}
 
 	@Override
 	public int getNroDeHistoriaClinicaPaciente() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Integer.parseInt(this.textFieldNroDeHistoriaClinicaPaciente.getText());
 	}
 
 	@Override
 	public String getCallePaciente() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.textFieldCallePaciente.getText();
 	}
 
 	@Override
 	public String getNroDeCallePaciente() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.textFieldNumeroDeCallePaciente.getText();
 	}
 
 	@Override
 	public String getCiudadPaciente() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.textFieldCiudadPaciente.getText();
 	}
 
 	@Override
 	public String getTelefonoPaciente() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.textFieldTelefonoPaciente.getText();
 	}
 
 	@Override
 	public void LimpiarCamposPaciente() {
-		// TODO Auto-generated method stub
+		this.listPacientesEnAtencionEnPacientes.clearSelection();
+		this.listPacientesEnEsperaEnPacientes.clearSelection();
+		this.listPacientesHistoricosEnPacientes.clearSelection();
+
+		this.textFieldNombrePaciente.setText("");
+		this.textFieldApellidoPaciente.setText("");
+		this.textFieldDniPaciente.setText("");
+		this.textFieldCallePaciente.setText("");
+		this.textFieldNumeroDeCallePaciente.setText("");
+		this.textFieldCiudadPaciente.setText("");
+		this.textFieldTelefonoPaciente.setText("");
+		this.textFieldNroDeHistoriaClinicaPaciente.setText("");
 
 	}
+
+	@Override
+	public String getRangoEtareo() {
+		return (String) this.comboBoxRangoEtareo.getSelectedItem();
+	}
+
 }
