@@ -72,7 +72,7 @@ public class Clinica {
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.ciudad = ciudad;
-		this.a = new Ambulancia();
+		this.a = Ambulancia.getInstance();
 	}
 
 	/**
@@ -248,11 +248,6 @@ public class Clinica {
 		return this.enAtencion.iterator();
 	}
 
-	/**
-	 * Retorna un iterator de asociados a la clinica
-	 * 
-	 * @return Iterator<Asociado>
-	 */
 	public Iterator<Asociado> getIteratorAsociados() {
 		ArrayList<Asociado> aux = new ArrayList<Asociado>();
 		for (Integer i : this.asociados.keySet()) {
@@ -829,7 +824,7 @@ public class Clinica {
 	 * @return Ambulancia de la clinica
 	 */
 	public Ambulancia getA() {
-		return a;
+		return this.a;
 	}
 
 	/**
@@ -983,29 +978,6 @@ public class Clinica {
 	 */
 	public ArrayList<Paciente> getEnAtencion() {
 		return enAtencion;
-	}
-
-	public void agregaAmbulancia() {
-		this.a = new Ambulancia();
-	}
-
-	/**
-	 * Retorna un Hashmap con los asociados de la clinica, con su Dni como
-	 * identificador
-	 * 
-	 * @return Coleccion de asociados
-	 */
-	public HashMap<Integer, Asociado> getAsociados() {
-		return asociados;
-	}
-
-	/**
-	 * Determina un HashMap de asociados
-	 * 
-	 * @param asociados Un HashMap con asociados, con su Dni como identificador
-	 */
-	public void setAsociados(HashMap<Integer, Asociado> asociados) {
-		this.asociados = asociados;
 	}
 
 }
