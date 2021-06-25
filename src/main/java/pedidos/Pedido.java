@@ -14,6 +14,7 @@ public abstract class Pedido extends Thread {
 
 	public void devuelveAmbulancia() {
 		this.a.vuelveaClinica();
+		System.out.println("Estoy devolviendo la ambulancia");
 	}
 
 	public abstract void efectuaPedido();
@@ -28,7 +29,7 @@ public abstract class Pedido extends Thread {
 			e.printStackTrace();
 		}
 
-		this.a.vuelveaClinica();
+		this.devuelveAmbulancia();
 	}
 
 }

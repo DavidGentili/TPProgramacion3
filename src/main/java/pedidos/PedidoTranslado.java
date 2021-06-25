@@ -13,6 +13,7 @@ public class PedidoTranslado extends Pedido {
 	@Override
 	public void efectuaPedido() {
 		this.a.solicitaTranslado();
+		System.out.println("Estoy solicitando un transaldo\n"+this.a.informaEstado());
 	}
 
 }

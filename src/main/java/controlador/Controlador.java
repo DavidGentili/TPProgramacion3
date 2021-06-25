@@ -58,10 +58,9 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaConfiguraciones.setActionListenerConfiguraciones(this);
 		this.ventanaConfiguraciones.SetWindowListenerConfiguraciones(this);
 		this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
+		this.clinica.getA().addObserver(this);
 		actualizarDatosConfiguracion();
-		actualizarValoresConfiguracion();
-		
-		
+		actualizarValoresConfiguracion();		
 	}
 
 	@Override
@@ -79,10 +78,13 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		}
 		if (e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
+			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
+			a.SolicitarTraslado();
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Llama Atencion")) {
-	
+			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
+			a.SolicitarAtencionADomicilio();
 		}
 		
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Asociado")) {

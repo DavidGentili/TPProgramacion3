@@ -1,5 +1,7 @@
 package asociado;
 
+import pedidos.Pedido;
+import pedidos.PedidoTranslado;
 import personas.Domicilio;
 import personas.Persona;
 
@@ -25,7 +27,8 @@ public class Asociado extends Persona {
 	}
 
 	public void SolicitarTraslado() {
-
+		Pedido p = new PedidoTranslado(this);
+		p.start();
 	}
 
 	public void SolicitarAtencionADomicilio() {

@@ -5,7 +5,6 @@ import java.util.Observable;
 import estados.DisponibleState;
 import estados.IState;
 
-@SuppressWarnings("deprecation")
 public class Ambulancia extends Observable {
 	private static Ambulancia instancia = null;
 	private IState estado;
@@ -42,11 +41,13 @@ public class Ambulancia extends Observable {
 		this.estado.vuelveaClinica();
 		setChanged();
 		notifyObservers(this.estado.reportaEstado());
+		notifyAll();
 	}
 
 	public synchronized void solicitaTranslado() {
 		while (!this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica."))
 			try {
+				this.setChanged();
 				this.notifyObservers("Imposible transladar al paciente a clinica. La ambulancia se encuentra "
 						+ this.estado.reportaEstado());
 				wait();
@@ -56,6 +57,7 @@ public class Ambulancia extends Observable {
 		this.estado.solicitaTranslado();
 		this.setChanged();
 		this.notifyObservers(this.estado.reportaEstado());
+		notifyAll();
 	}
 
 	public synchronized void solicitaAtencion() {
