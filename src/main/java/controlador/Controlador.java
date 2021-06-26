@@ -92,50 +92,26 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		}
 		if (e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
 			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
-			a.SolicitarTraslado();
+			if(a==null)
+				this.ventanaAmbulancia.mostrarMensajeError("Debe seleccionar un Asociado para realizar esta accion");
+			else
+				a.SolicitarTraslado();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Llama Atencion")) {
 			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
-			a.SolicitarAtencionADomicilio();
+			if(a==null)
+				this.ventanaAmbulancia.mostrarMensajeError("Debe seleccionar un Asociado para realizar esta accion");
+			else
+				a.SolicitarAtencionADomicilio();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Asociado")) {
-			int nroCalle, dni;
-			String telefono, nombre, apellido, calle;
-
-			try {
-				nombre = this.ventanaAmbulancia.getNombreAsociado();
-				apellido = this.ventanaAmbulancia.getApellidoAsociado();
-				telefono = this.ventanaAmbulancia.getTelefonoAsociado();
-				calle = this.ventanaAmbulancia.getCalleDomicilioAsocidado();
-				nroCalle = Integer.parseInt(this.ventanaAmbulancia.getNumeroDomicilioAsociado());
-				dni = Integer.parseInt(this.ventanaAmbulancia.getDNIAsociado());
-				if (this.chequeaString(nombre))
-					if (this.chequeaString(apellido))
-						if (this.chequeaString(calle)) {
-							this.ventanaAmbulancia.mostrarCartelsatisfactorio("El registro del asociado");
-							Domicilio aux = new Domicilio(calle, nroCalle);
-							this.clinica.agregaAsociado(nombre, apellido, dni, aux, telefono);
-							this.ventanaAmbulancia.actualizaAsociados(this.clinica.getIteratorAsociados());
-						} else
-							this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Calle");
-					else
-						this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Apellido");
-				else
-					this.ventanaAmbulancia.mostrarMensajeError("Error en el campo nombre");
-
-			} catch (NumberFormatException ex) {
-				this.ventanaAmbulancia.mostrarMensajeError("Formato de los numeros incorrectos");
-			} catch (DomicilioInvalido e1) {
-				this.ventanaAmbulancia.mostrarMensajeError(e1.getMessage());
-			} catch (AsociadoYaExistente e2) {
-				this.ventanaAmbulancia.mostrarMensajeError(e2.getMessage());
-			}
+			this.agregaAsociado();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
-			Asociado p = this.ventanaAmbulancia.getAsociadoAmbulancia();
+			this.clinica.getA().solicitaReparacion();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Restaurar Clinica")) {
@@ -489,6 +465,40 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 	public void update(Observable o, Object arg) {
 		this.ventanaAmbulancia.actualizaEstadoAmbulancia((String) arg);
 
+	}
+	
+	public void agregaAsociado() {
+		int nroCalle, dni;
+		String telefono, nombre, apellido, calle;
+
+		try {
+			nombre = this.ventanaAmbulancia.getNombreAsociado();
+			apellido = this.ventanaAmbulancia.getApellidoAsociado();
+			telefono = this.ventanaAmbulancia.getTelefonoAsociado();
+			calle = this.ventanaAmbulancia.getCalleDomicilioAsocidado();
+			nroCalle = Integer.parseInt(this.ventanaAmbulancia.getNumeroDomicilioAsociado());
+			dni = Integer.parseInt(this.ventanaAmbulancia.getDNIAsociado());
+			if (this.chequeaString(nombre))
+				if (this.chequeaString(apellido))
+					if (this.chequeaString(calle)) {
+						this.ventanaAmbulancia.mostrarCartelsatisfactorio("El registro del asociado");
+						Domicilio aux = new Domicilio(calle, nroCalle);
+						this.clinica.agregaAsociado(nombre, apellido, dni, aux, telefono);
+						this.ventanaAmbulancia.actualizaAsociados(this.clinica.getIteratorAsociados());
+					} else
+						this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Calle");
+				else
+					this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Apellido");
+			else
+				this.ventanaAmbulancia.mostrarMensajeError("Error en el campo nombre");
+
+		} catch (NumberFormatException ex) {
+			this.ventanaAmbulancia.mostrarMensajeError("Formato de los numeros incorrectos");
+		} catch (DomicilioInvalido e1) {
+			this.ventanaAmbulancia.mostrarMensajeError(e1.getMessage());
+		} catch (AsociadoYaExistente e2) {
+			this.ventanaAmbulancia.mostrarMensajeError(e2.getMessage());
+		}
 	}
 
 }

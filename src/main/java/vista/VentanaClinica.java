@@ -194,8 +194,6 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JPanel panelContenedorLblNuevaCiudadDeLaClinica;
 	private JPanel panelContenedorTextFieldNuevaCiudadDeLaClinica;
 	private JLabel lblCiudadActualDeLaClinica;
-	private JPanel panelEstadoAmbulancia;
-	private JTextArea textAreaAmbulancia;
 
 	private JPanel panelMedicosEnMedicos;
 	private JList<IMedico> listMedicosEnMedicos;
@@ -287,6 +285,8 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JButton btnAgregarPaciente;
 	private JButton btnIngresaPaciente;
 	private JPanel panelContenedorBtnIngresaPaciente;
+	private JScrollPane scrollPaneEstadoAmbulancia;
+	private JTextArea textAreaAmbulancia;
 
 	/**
 	 * Create the frame.
@@ -511,13 +511,12 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 
 		this.listPacien = new JList<Asociado>(listaAsociados);
 		this.scrollPaneListPac.setViewportView(this.listPacien);
-
-		this.panelEstadoAmbulancia = new JPanel();
-		this.panelAmbulancia.add(this.panelEstadoAmbulancia);
-		this.panelEstadoAmbulancia.setLayout(new BorderLayout(0, 0));
-
+		
+		this.scrollPaneEstadoAmbulancia = new JScrollPane();
+		this.panelAmbulancia.add(this.scrollPaneEstadoAmbulancia);
+		
 		this.textAreaAmbulancia = new JTextArea();
-		this.panelEstadoAmbulancia.add(this.textAreaAmbulancia);
+		this.scrollPaneEstadoAmbulancia.setViewportView(this.textAreaAmbulancia);
 
 		this.scrollPaneMedicos = new JScrollPane();
 		this.tabPanel.addTab("Medicos", null, this.scrollPaneMedicos, null);
