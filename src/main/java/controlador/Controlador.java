@@ -13,6 +13,7 @@ import asociado.Asociado;
 import clinica.Clinica;
 import exceptions.AsociadoYaExistente;
 import exceptions.CantidadDeDiasErroneosException;
+import exceptions.ColaDeEsperaVaciaException;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.DomicilioInvalido;
 import exceptions.EspecialidadNoIndicadaException;
@@ -23,9 +24,11 @@ import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
 import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
+import exceptions.PacienteYaExistenteException;
 import exceptions.PacienteYaIngresadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
+import exceptions.TipoDePacienteIncorrectoException;
 import pacientes.Paciente;
 import persistencia.PersistirClinica;
 import personas.Domicilio;
@@ -67,6 +70,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
 		actualizarDatosConfiguracion();
 		actualizarValoresConfiguracion();
+		this.actualizaVentanaPacientes();
 
 	}
 
@@ -157,10 +161,27 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 
 		if (e.getActionCommand().equalsIgnoreCase("Ingresa Paciente")) {
 			this.ingresarPaciente();
+			this.actualizaVentanaPacientes();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Paciente")) {
-			this.agregaPaciente();
+			try {
+				this.agregaPaciente();
+				this.actualizaVentanaPacientes();
+			} catch (PacienteYaExistenteException | TipoDePacienteIncorrectoException | PacienteNoEncontrado
+					| PacienteYaIngresadoException e1) {
+				ventanaPacientes.mostrarMensajeError(e1.getMessage());
+			}
+		}
+
+		if (e.getActionCommand().equalsIgnoreCase("Atender Siguiente")) {
+			try {
+				clinica.atiendeSiguiente();
+			} catch (ColaDeEsperaVaciaException e1) {
+				ventanaPacientes.mostrarMensajeError(e1.getMessage());
+			}
+
+			this.actualizaVentanaPacientes();
 		}
 
 		this.ventanaFacturacion.limpiarCamposFacturacion();
@@ -432,8 +453,42 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		}
 	}
 
-	public void agregaPaciente() {
+	public void agregaPaciente() throws PacienteYaExistenteException, TipoDePacienteIncorrectoException,
+			PacienteNoEncontrado, PacienteYaIngresadoException {
+		String nombre = ventanaPacientes.getNombrePaciente();
+		String apellido = ventanaPacientes.getApellidoPaciente();
+		int dni = ventanaPacientes.getDniPaciente();
+		String telefono = ventanaPacientes.getTelefonoPaciente();
+		String ciudad = ventanaPacientes.getCiudadPaciente();
+		String rangoEtareo = ventanaPacientes.getRangoEtareo();
 
+		try {
+			int nroHistClin = Integer.parseInt(ventanaPacientes.getNroDeHistoriaClinicaPaciente());
+			try {
+				Domicilio aux = new Domicilio(ventanaPacientes.getCallePaciente(),
+						Integer.parseInt(ventanaPacientes.getNroDeCallePaciente()));
+				if (this.datosSecundariosCorrectos(telefono, ciudad))
+					clinica.agregaPaciente(nombre, apellido, dni, telefono, aux, ciudad, nroHistClin, rangoEtareo);
+				else
+					clinica.agregaPaciente(nombre, apellido, dni, nroHistClin, rangoEtareo);
+			} catch (NumberFormatException | DomicilioInvalido e1) {
+				clinica.agregaPaciente(nombre, apellido, dni, nroHistClin, rangoEtareo);
+			}
+		} catch (NumberFormatException e) {
+			ventanaPacientes.mostrarMensajeError("El numero de historia clinica debe ser un entero positivo");
+		}
+
+	}
+
+	private void actualizaVentanaPacientes() {
+		this.ventanaPacientes.actualizaColaDeEspera(clinica.getIteratorColaDeEspera());
+		this.ventanaPacientes.actualizaListaEnAtencion(clinica.getIteratorEnAtencion());
+		this.ventanaPacientes.actualizaPacientesHistoricos(clinica.getIteratorPacientesHistoricos());
+		if (clinica.getSalaPrivada() != null)
+			this.ventanaPacientes.actualizaSalaPrivada(clinica.getSalaPrivada().toString());
+		else
+			this.ventanaPacientes.actualizaSalaPrivada("");
+		this.ventanaPacientes.LimpiarCamposPaciente();
 	}
 
 	@Override
