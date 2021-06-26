@@ -1,6 +1,5 @@
 package medicos;
 
-import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoIndicadaException;
 import exceptions.EspecialidadNoRegistradaExceptions;
@@ -19,7 +18,7 @@ public class MedicoFactory {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param nombre       Nombre del medico
 	 * @param apellido     apellido del medico
 	 * @param dni          DNI del medico
@@ -28,14 +27,13 @@ public class MedicoFactory {
 	 * @param posgrado     Posgrado del Medico
 	 * @param contratacion Contratacion del Medico
 	 * @return una instancia del medico, con sus respectivas especialidades,
-	 *         posgrados y atributos
-	 * @throws ContratacionNoIndicadaExceptions   si la contratacion no esta
-	 *                                            indicada
+	 *         posgrados y atributos indicada
 	 * @throws ContratacionNoRegistradaExceptions si la contratacion no esta
 	 *                                            registrada
 	 * @throws EspecialidadNoRegistradaExceptions si la especialidad no esta
 	 *                                            registrada
 	 * @throws PosgradoNoRegistradoExceptions     si el posgrado no esta registrado
+	 * @throws EspecialidadNoIndicadaException    si no se indico la especialidad
 	 */
 	public static IMedico getInstancia(String nombre, String apellido, int dni, int matricula, String especialidad,
 			String posgrado, String contratacion) throws ContratacionNoRegistradaExceptions,
@@ -70,9 +68,7 @@ public class MedicoFactory {
 	 * @param posgrado     Posgrado del Medico
 	 * @param contratacion Contratacion del Medico
 	 * @return una instancia del medico, con sus respectivas especialidades,
-	 *         posgrados y atributos
-	 * @throws ContratacionNoIndicadaExceptions   si la contratacion no esta
-	 *                                            indicada
+	 *         posgrados y atributos indicada
 	 * @throws ContratacionNoRegistradaExceptions si la contratacion no esta
 	 *                                            registrada
 	 * @throws EspecialidadNoRegistradaExceptions si la especialidad no esta
@@ -83,8 +79,8 @@ public class MedicoFactory {
 	 */
 	public static IMedico getInstancia(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
-			throws ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
-			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
+			throws ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions,
+			PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
 		IMedico respuesta = null;
 		if (especialidad != null) {
 			IMedico medicoEspecializado = null;

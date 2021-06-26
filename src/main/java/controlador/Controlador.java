@@ -13,7 +13,6 @@ import asociado.Asociado;
 import clinica.Clinica;
 import exceptions.AsociadoYaExistente;
 import exceptions.CantidadDeDiasErroneosException;
-import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.DomicilioInvalido;
 import exceptions.EspecialidadNoIndicadaException;
@@ -83,7 +82,12 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 			this.RealizarFacturacion();
 		}
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Medico")) {
-			this.agregaMedico();
+			try {
+				this.agregaMedico();
+			} catch (MedicoYaAgregadoException | ContratacionNoRegistradaExceptions | EspecialidadNoRegistradaExceptions
+					| PosgradoNoRegistradoExceptions | EspecialidadNoIndicadaException e1) {
+				ventanaMedicos.mostrarMensajeError(e1.getMessage());
+			}
 			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		}
 		if (e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
@@ -219,33 +223,42 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 
 	/**
 	 * Se encarga de solicitarle los datos a la ventana mediante la interface
-	 * IVentanaMedico <br>
+	 * IVentanaMedico y agrega el medico con los datos que tenga<br>
 	 * Pre: El nombre debe ser distinto de vacio y de nulo <br>
 	 * el apellido debe ser distinto de vacio y de nulo <br>
 	 * El Dni debe ser un entero positivo <br>
 	 * La matricula debe ser un entero positivo
+	 * 
+	 * @throws EspecialidadNoIndicadaException    Si la especialidad no esta
+	 *                                            indicada
+	 * @throws PosgradoNoRegistradoExceptions     Si el posgrado no esta registrado
+	 * @throws EspecialidadNoRegistradaExceptions Si la especialidad no esta
+	 *                                            registrada
+	 * @throws ContratacionNoRegistradaExceptions Si la contratacion no esta
+	 *                                            registrada
+	 * @throws MedicoYaAgregadoException          si el medico ya esta agregado
 	 */
-	private void agregaMedico() {
-
+	private void agregaMedico() throws MedicoYaAgregadoException, ContratacionNoRegistradaExceptions,
+			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
+		String nombre = ventanaMedicos.getNombreMedico();
+		String apellido = ventanaMedicos.getApellidoMedico();
+		int dni = ventanaMedicos.getDniMedico();
+		String telefono = ventanaMedicos.getTelefonoMedico();
+		String ciudad = ventanaMedicos.getCiudadMedico();
+		int matricula = ventanaMedicos.getMatricula();
+		String especialidad = ventanaMedicos.getEspecialidad();
+		String posgrado = ventanaMedicos.getPosgrado();
+		String contratacion = ventanaMedicos.getContratacion();
 		try {
-			if (this.datosSecundariosCorrectos(ventanaMedicos.getTelefonoMedico(), ventanaMedicos.getCiudadMedico())) {
-				Domicilio aux = new Domicilio(ventanaMedicos.getCalleMedico(),
-						Integer.parseInt(ventanaMedicos.getNumeroDeDomicilioMedico()));
-				this.clinica.agregaMedico(ventanaMedicos.getNombreMedico(), ventanaMedicos.getApellidoMedico(),
-						ventanaMedicos.getDniMedico(), ventanaMedicos.getTelefonoMedico(), aux,
-						ventanaMedicos.getCiudadMedico(), ventanaMedicos.getMatricula(),
-						ventanaMedicos.getEspecialidad(), ventanaMedicos.getPosgrado(),
-						ventanaMedicos.getContratacion());
-
-			} else
-				this.clinica.agregaMedico(ventanaMedicos.getNombreMedico(), ventanaMedicos.getApellidoMedico(),
-						ventanaMedicos.getDniMedico(), ventanaMedicos.getMatricula(), ventanaMedicos.getEspecialidad(),
-						ventanaMedicos.getPosgrado(), ventanaMedicos.getContratacion());
-
-		} catch (MedicoYaAgregadoException | ContratacionNoIndicadaExceptions | ContratacionNoRegistradaExceptions
-				| EspecialidadNoRegistradaExceptions | PosgradoNoRegistradoExceptions | EspecialidadNoIndicadaException
-				| DomicilioInvalido e) {
-			ventanaMedicos.mostrarMensajeError(e.getMessage());
+			Domicilio aux = new Domicilio(ventanaMedicos.getCalleMedico(),
+					Integer.parseInt(ventanaMedicos.getNumeroDeDomicilioMedico()));
+			if (this.datosSecundariosCorrectos(telefono, ciudad))
+				this.clinica.agregaMedico(nombre, apellido, dni, telefono, aux, ciudad, matricula, especialidad,
+						posgrado, contratacion);
+			else
+				this.clinica.agregaMedico(nombre, apellido, dni, matricula, especialidad, posgrado, contratacion);
+		} catch (NumberFormatException | DomicilioInvalido e) {
+			this.clinica.agregaMedico(nombre, apellido, dni, matricula, especialidad, posgrado, contratacion);
 		}
 	}
 
@@ -255,7 +268,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 	 * 
 	 * @param telefono Telefono de la persona
 	 * @param ciudad   Ciudad de la persona
-	 * @return true si los datos son coherentes con su contexto
+	 * @return si los datos son coherentes con su contexto
 	 */
 	private boolean datosSecundariosCorrectos(String telefono, String ciudad) {
 		int numeroDeTelefono;
