@@ -12,7 +12,6 @@ import asociado.Asociado;
 import exceptions.AsociadoNoEncontrado;
 import exceptions.AsociadoYaExistente;
 import exceptions.CantidadDeDiasErroneosException;
-import exceptions.ContratacionNoIndicadaExceptions;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoIndicadaException;
 import exceptions.EspecialidadNoRegistradaExceptions;
@@ -271,7 +270,6 @@ public class Clinica {
 	 * @param contratacion Contratacion del medico |Temporario|Permanente|
 	 * @throws MedicoYaAgregadoException          Si la matricula que se quiere
 	 *                                            agregar ya existe en el sistema
-	 * @throws ContratacionNoIndicadaExceptions   Si no se indico la contratacion
 	 * @throws ContratacionNoRegistradaExceptions Si la contratacion indicada no
 	 *                                            esta registrada
 	 * @throws EspecialidadNoRegistradaExceptions Si la especialidad indicada no
@@ -283,8 +281,8 @@ public class Clinica {
 	 */
 	public void agregaMedico(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
 			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
-			throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
-			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
+			throws MedicoYaAgregadoException, ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions,
+			PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
 		IMedico medico;
 		if (!medicos.containsKey(matricula)) {
 			medico = MedicoFactory.getInstancia(nombre, apellido, dni, telefono, domicilio, ciudad, matricula,
@@ -306,7 +304,6 @@ public class Clinica {
 	 * @param contratacion Contratacion del medico |Temporario|Permanente|
 	 * @throws MedicoYaAgregadoException          Si la matricula que se quiere
 	 *                                            agregar ya existe en el sistema
-	 * @throws ContratacionNoIndicadaExceptions   Si no se indico la contratacion
 	 * @throws ContratacionNoRegistradaExceptions Si la contratacion indicada no
 	 *                                            esta registrada
 	 * @throws EspecialidadNoRegistradaExceptions Si la especialidad indicada no
@@ -317,8 +314,7 @@ public class Clinica {
 	 *                                            especialidad
 	 */
 	public void agregaMedico(String nombre, String apellido, int dni, int matricula, String especialidad,
-			String posgrado, String contratacion)
-			throws MedicoYaAgregadoException, ContratacionNoIndicadaExceptions, ContratacionNoRegistradaExceptions,
+			String posgrado, String contratacion) throws MedicoYaAgregadoException, ContratacionNoRegistradaExceptions,
 			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
 		IMedico medico;
 		if (!medicos.containsKey(matricula)) {
@@ -655,8 +651,9 @@ public class Clinica {
 	public String reporteActividadMedica(IMedico medico, GregorianCalendar inicio, GregorianCalendar fin) {
 		Iterator<Factura> itFacturas = this.historial.iterator();
 		double acum = 0, valor;
-		GregorianCalendar fecha = new GregorianCalendar(2000, 0, 1);// Se pone una fecha previa para evitar un hacer una
-																	// comparacion con un null en la primera iteracion
+		GregorianCalendar fecha = new GregorianCalendar(2000, 0, 1);
+		// Se pone una fecha previa para evitar un hacer una comparacion con un null en
+		// la primera iteracion
 		SimpleDateFormat sdf = new SimpleDateFormat("dd'/'MM'/'yy");
 		Prestacion prestaciones;
 		Factura factura;
