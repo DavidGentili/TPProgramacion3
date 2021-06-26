@@ -393,7 +393,7 @@ public class Clinica {
 	public void agregaPaciente(String nombre, String apellido, int dni, int nroDeHistoriaClinica, String rangoEtareo)
 			throws PacienteYaExistenteException, TipoDePacienteIncorrectoException, PacienteNoEncontrado,
 			PacienteYaIngresadoException {
-		if (this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
+		if (!this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
 			Paciente p = PacienteFactory.getInstance(rangoEtareo, nombre, apellido, dni, telefono, direccion, ciudad,
 					nroDeHistoriaClinica);
 			this.pacientesHist.put(nroDeHistoriaClinica, p);
@@ -452,7 +452,7 @@ public class Clinica {
 	 *                             encuentra en el sistema
 	 */
 	public void agregaAsociado(Asociado asociado) throws AsociadoYaExistente {
-		if (this.asociados.containsKey(asociado.getDni())) {
+		if (!this.asociados.containsKey(asociado.getDni())) {
 			this.asociados.put(asociado.getDni(), asociado);
 		} else
 			throw new AsociadoYaExistente("El asociado que intenta agregar ya se encuentra");
@@ -472,7 +472,7 @@ public class Clinica {
 	 */
 	public void agregaAsociado(String nombre, String apellido, int dni, Domicilio domicilio, String telefono)
 			throws AsociadoYaExistente {
-		if (this.asociados.containsKey(dni)) {
+		if (!this.asociados.containsKey(dni)) {
 			Asociado asociado = new Asociado(nombre, apellido, dni, telefono, domicilio);
 			this.asociados.put(dni, asociado);
 		} else
@@ -681,7 +681,7 @@ public class Clinica {
 		while (itFacturas.hasNext()) {
 			factura = itFacturas.next();
 			if (factura.getFecha().compareTo(inicio) >= 0 && factura.getFecha().compareTo(fin) <= 0) {
-				Iterator<Prestacion> itPrestaciones = factura.getPrestaciones();
+				Iterator<Prestacion> itPrestaciones = factura.getIteratorPrestaciones();
 				while (itPrestaciones.hasNext()) {
 					prestaciones = itPrestaciones.next();
 					if (prestaciones.getDescripcion().equalsIgnoreCase(medico.getApellido())) {

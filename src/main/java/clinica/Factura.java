@@ -1,5 +1,6 @@
 package clinica;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -14,13 +15,20 @@ import prestaciones.Prestacion;
  * 
  *
  */
-public class Factura implements Comparable {
+public class Factura implements Comparable, Serializable {
 	private static int numero = 0;
 	private int nroFactura;
 	private GregorianCalendar fecha;
 	private Paciente paciente;
 	private double importeTotal = 0;
 	private ArrayList<Prestacion> prestaciones = new ArrayList<Prestacion>();
+
+	/**
+	 * Constructor vacio
+	 */
+	public Factura() {
+
+	}
 
 	/**
 	 * retorna una factura con la fecha y el numero de factura, tambien clona las
@@ -38,6 +46,15 @@ public class Factura implements Comparable {
 		for (int i = 0; i < prestaciones.size(); i++) {
 			prestaciones.set(i, (Prestacion) aux.get(i).clone());
 		}
+	}
+
+	/**
+	 * Retorna el numero de la factura
+	 * 
+	 * @return Numero de factura
+	 */
+	public int getNroFactura() {
+		return nroFactura;
 	}
 
 	/**
@@ -73,12 +90,21 @@ public class Factura implements Comparable {
 	}
 
 	/**
-	 * Retorna las prestaciones que se cobraron
+	 * Retorna en un Iterator las prestaciones que se cobraron
 	 * 
 	 * @return prestaciones que se cobraron
 	 */
-	public Iterator<Prestacion> getPrestaciones() {
+	public Iterator<Prestacion> getIteratorPrestaciones() {
 		return prestaciones.iterator();
+	}
+
+	/**
+	 * Retorna en un ArrayList las prestaciones de la factura
+	 * 
+	 * @return
+	 */
+	public ArrayList<Prestacion> getPrestaciones() {
+		return this.prestaciones;
 	}
 
 	/**
@@ -121,6 +147,26 @@ public class Factura implements Comparable {
 	public int compareTo(Object o) {
 		Factura otra = (Factura) o;
 		return this.fecha.compareTo(otra.fecha);
+	}
+
+	public void setNroFactura(int nroFactura) {
+		this.nroFactura = nroFactura;
+	}
+
+	public void setFecha(GregorianCalendar fecha) {
+		this.fecha = fecha;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
+	}
+
+	public void setImporteTotal(double importeTotal) {
+		this.importeTotal = importeTotal;
+	}
+
+	public void setPrestaciones(ArrayList<Prestacion> prestaciones) {
+		this.prestaciones = prestaciones;
 	}
 
 }

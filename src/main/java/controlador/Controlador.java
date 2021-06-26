@@ -57,7 +57,6 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaPacientes = ventanaPacientes;
 		this.clinica = Clinica.getInstancia();
 
-		System.out.println(this.clinica);
 		this.ventanaPacientes.SetActionListenerPacientes(this);
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
@@ -68,7 +67,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaAmbulancia.actualizaAsociados(this.clinica.getIteratorAsociados());
 		this.ventanaConfiguraciones.setActionListenerConfiguraciones(this);
 		this.ventanaConfiguraciones.SetWindowListenerConfiguraciones(this);
-		this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
+		// this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
 		actualizarDatosConfiguracion();
 		actualizarValoresConfiguracion();
 		this.actualizaVentanaPacientes();
@@ -77,7 +76,6 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.getActionCommand());
 
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Atencion Medica")
 				|| e.getActionCommand().equalsIgnoreCase("Agregar Internacion")) {
