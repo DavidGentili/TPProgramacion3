@@ -11,6 +11,7 @@ public class PedidoAtencion extends Pedido {
 	@Override
 	public void efectuaPedido() {
 		this.a.solicitaAtencion();
+		System.out.println("Estoy pidiemdo atencion");
 	}
 
 }

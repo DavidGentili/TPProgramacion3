@@ -420,7 +420,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.panel_BtReparacion.setLayout(new GridLayout(0, 2, 0, 0));
 
 		this.btnLlamaAtencion = new JButton("Llama atencion");
-		this.btnLlamaAtencion.setActionCommand("Llama atencion");
+		this.btnLlamaAtencion.setActionCommand("Llama Atencion");
 		this.panel_BtReparacion.add(this.btnLlamaAtencion);
 
 		this.btnLlamaTranslado = new JButton("Llama Translado");

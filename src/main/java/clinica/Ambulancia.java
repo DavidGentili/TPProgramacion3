@@ -76,6 +76,7 @@ public class Ambulancia extends Observable {
 		this.estado.solicitaAtencion();
 		this.setChanged();
 		this.notifyObservers(this.estado.reportaEstado());
+		notifyAll();
 
 	}
 
@@ -93,6 +94,7 @@ public class Ambulancia extends Observable {
 		this.estado.solicitaReparacion();
 		this.setChanged();
 		this.notifyObservers(this.estado.reportaEstado());
+		notifyAll();
 
 	}
 
