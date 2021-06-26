@@ -33,4 +33,16 @@ public class DisponibleState implements IState {
 	public void vuelveaClinica() {
 	}
 
+	@Override
+	public void vuelveAtencion() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void vuelveReparacion() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

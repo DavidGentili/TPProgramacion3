@@ -30,7 +30,18 @@ public class AtendiendoState implements IState {
 
 	@Override
 	public void vuelveaClinica() {
-		this.a.setEstado(new TransladandoState(this.a));
+	}
+
+	@Override
+	public void vuelveAtencion() {
+		this.a.setEstado(new RegresandoDeDomicilioState(a));
+		
+	}
+
+	@Override
+	public void vuelveReparacion() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

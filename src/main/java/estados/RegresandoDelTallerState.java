@@ -32,4 +32,16 @@ public class RegresandoDelTallerState implements IState {
 		this.a.setEstado(new DisponibleState(this.a));
 	}
 
+	@Override
+	public void vuelveAtencion() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void vuelveReparacion() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

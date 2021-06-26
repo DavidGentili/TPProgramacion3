@@ -10,6 +10,10 @@ public interface IState {
 	
 	public void solicitaAtencion();
 	
+	public void vuelveAtencion();
+	
+	public void vuelveReparacion();
+	
 	public void vuelveaClinica();
 
 }

@@ -12,10 +12,7 @@ public abstract class Pedido extends Thread {
 		this.asociado = asociado;
 	}
 
-	public void devuelveAmbulancia() {
-		this.a.vuelveaClinica();
-		System.out.println("Estoy devolviendo la ambulancia");
-	}
+	public abstract void devuelveAmbulancia();
 
 	public abstract void efectuaPedido();
 

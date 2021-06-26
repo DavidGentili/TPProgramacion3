@@ -61,11 +61,9 @@ public class Ambulancia extends Observable {
 	}
 
 	public synchronized void solicitaAtencion() {
-		while (this.estado.reportaEstado().equals("Transladando paciente a la clinica.")
-				|| this.estado.reportaEstado().equals("Atendiendo a un paciente en su domicilio.")
-				|| this.estado.reportaEstado().equals("En el taller.")
-				|| this.estado.reportaEstado().equals("Regresando del taller.")) {
+		while (!this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica.")) {
 			try {
+				setChanged();
 				this.notifyObservers(
 						"Imposible ir al domicilio. La ambulancia se encuentra " + this.estado.reportaEstado());
 				wait();
@@ -84,6 +82,7 @@ public class Ambulancia extends Observable {
 		while (!this.estado.reportaEstado().equals("Disponible en la clinica.")) {
 			try {
 				if (!this.estado.reportaEstado().equals("En el taller."))
+					setChanged();
 					this.notifyObservers(
 							"Imposible reparar la ambulancia. La misma se encuentra " + this.estado.reportaEstado());
 				wait();
@@ -97,5 +96,20 @@ public class Ambulancia extends Observable {
 		notifyAll();
 
 	}
-
+	
+	public synchronized void vueltaAtencion() {
+		while(!this.estado.reportaEstado().equalsIgnoreCase("Atendiendo a un paciente en su domicilio."))
+			try {
+				setChanged();
+				this.notifyObservers(
+							"No puede volver de atender un paciente que nunca visito");
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		this.estado.vuelveAtencion();
+		setChanged();
+		notifyObservers(this.estado.reportaEstado());
+//		notifyAll();
+		}
 }

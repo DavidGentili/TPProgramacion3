@@ -32,4 +32,16 @@ public class EnElTallerState implements IState {
 		this.a.setEstado(new RegresandoDelTallerState(this.a));
 	}
 
+	@Override
+	public void vuelveAtencion() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void vuelveReparacion() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

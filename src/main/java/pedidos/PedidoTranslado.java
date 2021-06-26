@@ -16,4 +16,11 @@ public class PedidoTranslado extends Pedido {
 		System.out.println("Estoy solicitando un transaldo\n"+this.a.informaEstado());
 	}
 
+	@Override
+	public void devuelveAmbulancia() {
+		this.a.vuelveaClinica();
+		System.out.println("La ambulancia regresa con un paciente");
+		
+	}
+
 }
