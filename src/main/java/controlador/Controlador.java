@@ -57,6 +57,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaPacientes = ventanaPacientes;
 		this.clinica = Clinica.getInstancia();
 
+		System.out.println(this.clinica);
 		this.ventanaPacientes.SetActionListenerPacientes(this);
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
@@ -76,6 +77,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println(e.getActionCommand());
 
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Atencion Medica")
 				|| e.getActionCommand().equalsIgnoreCase("Agregar Internacion")) {

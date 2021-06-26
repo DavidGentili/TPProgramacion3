@@ -393,7 +393,7 @@ public class Clinica {
 	public void agregaPaciente(String nombre, String apellido, int dni, int nroDeHistoriaClinica, String rangoEtareo)
 			throws PacienteYaExistenteException, TipoDePacienteIncorrectoException, PacienteNoEncontrado,
 			PacienteYaIngresadoException {
-		if (!this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
+		if (this.pacientesHist.containsKey(nroDeHistoriaClinica)) {
 			Paciente p = PacienteFactory.getInstance(rangoEtareo, nombre, apellido, dni, telefono, direccion, ciudad,
 					nroDeHistoriaClinica);
 			this.pacientesHist.put(nroDeHistoriaClinica, p);
@@ -412,7 +412,7 @@ public class Clinica {
 	 *                                      esta ingresado
 	 */
 	public void ingresaPaciente(Paciente paciente) throws PacienteNoEncontrado, PacienteYaIngresadoException {
-		if (!this.pacientesHist.containsKey(paciente.getNroHistoriaClinica())) {
+		if (this.pacientesHist.containsKey(paciente.getNroHistoriaClinica())) {
 			if (!this.colaEspera.contains(paciente) && !this.enAtencion.contains(paciente)) {
 				this.colaEspera.add(paciente);
 				this.reasignaEspera(paciente);
@@ -433,7 +433,7 @@ public class Clinica {
 	 *                                      esta ingresado
 	 */
 	public void ingresaPaciente(int nroHistoriaClinica) throws PacienteNoEncontrado, PacienteYaIngresadoException {
-		if (!this.pacientesHist.containsKey(nroHistoriaClinica)) {
+		if (this.pacientesHist.containsKey(nroHistoriaClinica)) {
 			Paciente paciente = this.pacientesHist.get(nroHistoriaClinica);
 			if (!this.colaEspera.contains(paciente) && !this.enAtencion.contains(paciente)) {
 				this.colaEspera.add(paciente);
@@ -452,7 +452,7 @@ public class Clinica {
 	 *                             encuentra en el sistema
 	 */
 	public void agregaAsociado(Asociado asociado) throws AsociadoYaExistente {
-		if (!this.asociados.containsKey(asociado.getDni())) {
+		if (this.asociados.containsKey(asociado.getDni())) {
 			this.asociados.put(asociado.getDni(), asociado);
 		} else
 			throw new AsociadoYaExistente("El asociado que intenta agregar ya se encuentra");
@@ -472,7 +472,7 @@ public class Clinica {
 	 */
 	public void agregaAsociado(String nombre, String apellido, int dni, Domicilio domicilio, String telefono)
 			throws AsociadoYaExistente {
-		if (!this.asociados.containsKey(dni)) {
+		if (this.asociados.containsKey(dni)) {
 			Asociado asociado = new Asociado(nombre, apellido, dni, telefono, domicilio);
 			this.asociados.put(dni, asociado);
 		} else
