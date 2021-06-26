@@ -10,13 +10,12 @@ public class PedidoReparacion extends Pedido {
 
 	@Override
 	public void efectuaPedido() {
-		// TODO Auto-generated method stub
-
+		this.a.solicitaReparacion();
 	}
 
 	@Override
 	public void devuelveAmbulancia() {
-		// TODO Auto-generated method stub
+		this.a.vueltaTaller();
 		
 	}
 

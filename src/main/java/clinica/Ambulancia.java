@@ -12,10 +12,10 @@ public class Ambulancia extends Observable {
 	private Ambulancia() {
 		this.estado = new DisponibleState(this);
 	}
-	
+
 	public static Ambulancia getInstance() {
-		if(Ambulancia.instancia==null)
-			 Ambulancia.instancia= new Ambulancia();
+		if (Ambulancia.instancia == null)
+			Ambulancia.instancia = new Ambulancia();
 		return Ambulancia.instancia;
 	}
 
@@ -29,6 +29,7 @@ public class Ambulancia extends Observable {
 
 	/**
 	 * La ambulancia retorna su estado
+	 * 
 	 * @return
 	 */
 	public String informaEstado() {
@@ -36,10 +37,13 @@ public class Ambulancia extends Observable {
 	}
 
 	/**
-	 * Este metodo intenta que la ambulancia regrese a la clinica, solo se ejecutara si su estado es distinto que disponible
+	 * Este metodo intenta que la ambulancia regrese a la clinica, solo se ejecutara
+	 * si su estado es distinto que disponible
 	 */
 	public synchronized void vuelveaClinica() {
-		while (this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica."))
+		while (this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica.")
+				|| this.estado.reportaEstado().equalsIgnoreCase("Atendiendo a un paciente en su domicilio.")
+				|| this.estado.reportaEstado().equals("En el taller."))
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -52,7 +56,8 @@ public class Ambulancia extends Observable {
 	}
 
 	/**
-	 * Se le solicita a la ambulancia un translado, el cual solo podra efectuarse si la clinica esta disponible
+	 * Se le solicita a la ambulancia un translado, el cual solo podra efectuarse si
+	 * la clinica esta disponible
 	 */
 	public synchronized void solicitaTranslado() {
 		while (!this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica."))
@@ -71,7 +76,8 @@ public class Ambulancia extends Observable {
 	}
 
 	/**
-	 * Se le solicita a la ambulancia una atencion en domicilio, el cual solo podra efectuarse si la ambulancia esta disponible
+	 * Se le solicita a la ambulancia una atencion en domicilio, el cual solo podra
+	 * efectuarse si la ambulancia esta disponible
 	 */
 	public synchronized void solicitaAtencion() {
 		while (!this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica.")) {
@@ -92,15 +98,15 @@ public class Ambulancia extends Observable {
 	}
 
 	/**
-	 * Se le solicita a la ambulancia una reparacion, solo se ejecuta si la ambulancia esta disponible
+	 * Se le solicita a la ambulancia una reparacion, solo se ejecuta si la
+	 * ambulancia esta disponible
 	 */
 	public synchronized void solicitaReparacion() {
 		while (!this.estado.reportaEstado().equals("Disponible en la clinica.")) {
 			try {
-				if (!this.estado.reportaEstado().equals("En el taller."))
-					setChanged();
-					this.notifyObservers(
-							"Imposible reparar la ambulancia. La misma se encuentra " + this.estado.reportaEstado());
+				setChanged();
+				this.notifyObservers(
+						"Imposible reparar la ambulancia. La misma se encuentra " + this.estado.reportaEstado());
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -112,16 +118,16 @@ public class Ambulancia extends Observable {
 		notifyAll();
 
 	}
-	
+
 	/**
-	 * Se le solicita a la ambulancia que regrese de una atencion, el cual solo podra efectuarse si la ambulancia esta atendiendo un paciente
+	 * Se le solicita a la ambulancia que regrese de una atencion, el cual solo
+	 * podra efectuarse si la ambulancia esta atendiendo un paciente
 	 */
 	public synchronized void vueltaAtencion() {
-		while(!this.estado.reportaEstado().equalsIgnoreCase("Atendiendo a un paciente en su domicilio."))
+		while (!this.estado.reportaEstado().equalsIgnoreCase("Atendiendo a un paciente en su domicilio."))
 			try {
 				setChanged();
-				this.notifyObservers(
-							"No puede volver de atender un paciente que nunca visito");
+				this.notifyObservers("No puede volver de atender un paciente que nunca visito");
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -129,6 +135,21 @@ public class Ambulancia extends Observable {
 		this.estado.vuelveAtencion();
 		setChanged();
 		notifyObservers(this.estado.reportaEstado());
-//		notifyAll();
-		}
+		notifyAll();
+	}
+
+	public synchronized void vueltaTaller() {
+		while (!this.estado.reportaEstado().equalsIgnoreCase("En el taller."))
+			try {
+				setChanged();
+				this.notifyObservers("No puede volver del taller si nunca fui");
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		this.estado.vuelveReparacion();
+		setChanged();
+		notifyObservers(this.estado.reportaEstado());
+		notifyAll();
+	}
 }

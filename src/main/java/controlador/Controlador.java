@@ -30,6 +30,7 @@ import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
 import exceptions.TipoDePacienteIncorrectoException;
 import pacientes.Paciente;
+import pedidos.Temporizador;
 import persistencia.PersistirClinica;
 import personas.Domicilio;
 import vista.IVistaAmbulancia;
@@ -57,6 +58,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaPacientes = ventanaPacientes;
 		this.clinica = Clinica.getInstancia();
 
+		this.clinica.getA().addObserver(this);
 		this.ventanaPacientes.SetActionListenerPacientes(this);
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
@@ -67,11 +69,12 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaAmbulancia.actualizaAsociados(this.clinica.getIteratorAsociados());
 		this.ventanaConfiguraciones.setActionListenerConfiguraciones(this);
 		this.ventanaConfiguraciones.SetWindowListenerConfiguraciones(this);
-		// this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
+//		 this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
 		actualizarDatosConfiguracion();
 		actualizarValoresConfiguracion();
 		this.actualizaVentanaPacientes();
-
+		Temporizador t = new Temporizador();
+		t.start();
 	}
 
 	@Override
@@ -114,7 +117,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
-			this.clinica.getA().solicitaReparacion();
+			this.clinica.solicitaReparacionAmbulancia();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Restaurar Clinica")) {

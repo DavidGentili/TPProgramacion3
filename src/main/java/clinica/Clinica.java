@@ -33,6 +33,8 @@ import medicos.Medico;
 import medicos.MedicoFactory;
 import pacientes.Paciente;
 import pacientes.PacienteFactory;
+import pedidos.Pedido;
+import pedidos.PedidoReparacion;
 import personas.Domicilio;
 import prestaciones.Consulta;
 import prestaciones.Prestacion;
@@ -978,4 +980,13 @@ public class Clinica {
 		this.asociados = asociados;
 	}
 
+	/**
+	 * Solicita a la ambulancia que sea reparada
+	 */
+	public void solicitaReparacionAmbulancia() {
+		Pedido p = new PedidoReparacion(null);
+		p.start();
+	}
+
+	
 }

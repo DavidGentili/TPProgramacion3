@@ -14,7 +14,7 @@ public class Temporizador extends Thread {
 
 	protected void espera() {
 		try {
-			sleep(3000);
+			sleep(10000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -29,7 +29,7 @@ public class EnElTallerState implements IState {
 
 	@Override
 	public void vuelveaClinica() {
-		this.a.setEstado(new RegresandoDelTallerState(this.a));
+		
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class EnElTallerState implements IState {
 
 	@Override
 	public void vuelveReparacion() {
-		// TODO Auto-generated method stub
+		this.a.setEstado(new RegresandoDelTallerState(this.a));
 		
 	}
 
