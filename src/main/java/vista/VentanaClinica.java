@@ -24,22 +24,15 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import asociado.Asociado;
 import medicos.IMedico;
 import pacientes.Paciente;
-import javax.swing.border.BevelBorder;
-import javax.swing.BoxLayout;
-import java.awt.event.ActionEvent;
-import javax.swing.ListModel;
-import javax.swing.border.SoftBevelBorder;
-import javax.swing.UIManager;
-import java.awt.Dimension;
-import javax.swing.border.LineBorder;
-import java.awt.CardLayout;
 
 public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaMedicos, KeyListener, IVistaAmbulancia,
 		IVistaPacientes, IVistaConfiguraciones {
@@ -215,11 +208,11 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JPanel PanelContenedorListaDeEspera;
 	private JPanel PanelContenedorTiposDeEspera;
 	private JLabel lblTituloPacientesHistoricosEnPacientes;
-	private JList listPacientesHistoricosEnPacientes;
+	private JList<Paciente> listPacientesHistoricosEnPacientes;
 	private JLabel lblTituloPacientesEnAtencionEnPacientes;
-	private JList listPacientesEnAtencionEnPacientes;
+	private JList<Paciente> listPacientesEnAtencionEnPacientes;
 	private JLabel lblTituloPacientesEnEsperaEnPacientes;
-	private JList listPacientesEnEsperaEnPacientes;
+	private JList<Paciente> listPacientesEnEsperaEnPacientes;
 	private JPanel panelSalaDeEsperaPrivada;
 	private JPanel panel_1;
 	private JButton btnAtiendeSiguiente;
@@ -742,7 +735,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.panelContenedorListaPacientesHistoricos.add(this.lblTituloPacientesHistoricosEnPacientes,
 				BorderLayout.NORTH);
 
-		this.listPacientesHistoricosEnPacientes = new JList(this.listaPacientesHistoricos);
+		this.listPacientesHistoricosEnPacientes = new JList<Paciente>(this.listaPacientesHistoricos);
 		this.panelContenedorListaPacientesHistoricos.add(this.listPacientesHistoricosEnPacientes, BorderLayout.CENTER);
 
 		this.PanelContenedorListaPacientesEnAtencion = new JPanel();
@@ -755,7 +748,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.PanelContenedorListaPacientesEnAtencion.add(this.lblTituloPacientesEnAtencionEnPacientes,
 				BorderLayout.NORTH);
 
-		this.listPacientesEnAtencionEnPacientes = new JList(this.listaPacientesEnAtencion);
+		this.listPacientesEnAtencionEnPacientes = new JList<Paciente>(this.listaPacientesEnAtencion);
 		this.PanelContenedorListaPacientesEnAtencion.add(this.listPacientesEnAtencionEnPacientes, BorderLayout.CENTER);
 
 		this.PanelContenedorListaDeEspera = new JPanel();
@@ -767,7 +760,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.lblTituloPacientesEnEsperaEnPacientes.setHorizontalAlignment(SwingConstants.CENTER);
 		this.PanelContenedorListaDeEspera.add(this.lblTituloPacientesEnEsperaEnPacientes, BorderLayout.NORTH);
 
-		this.listPacientesEnEsperaEnPacientes = new JList(this.listaColaDeEspera);
+		this.listPacientesEnEsperaEnPacientes = new JList<Paciente>(this.listaColaDeEspera);
 		this.PanelContenedorListaDeEspera.add(this.listPacientesEnEsperaEnPacientes, BorderLayout.CENTER);
 
 		this.PanelContenedorTiposDeEspera = new JPanel();
@@ -949,7 +942,6 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.panelContenedorBotonesPaciente.add(this.panelContenedorBtnIngresaPaciente);
 
 		this.btnIngresaPaciente = new JButton("Ingresa Paciente");
-		this.btnIngresaPaciente.setEnabled(false);
 		this.panelContenedorBtnIngresaPaciente.add(this.btnIngresaPaciente);
 
 		this.panelConfiguraciones = new JPanel();
@@ -1376,14 +1368,6 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		} catch (NumberFormatException e1) {
 			this.btnAgregarPaciente.setEnabled(false);
 		}
-		try {
-			nroHitoriaClinica = Integer.parseInt(this.textFieldNroDeHistoriaClinicaPaciente.getText());
-			if (nroHitoriaClinica > 0)
-				this.btnIngresaPaciente.setEnabled(true);
-		} catch (NumberFormatException e1) {
-			this.btnIngresaPaciente.setEnabled(false);
-		}
-
 	}
 
 	@Override
@@ -1542,6 +1526,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	@Override
 	public void SetActionListenerPacientes(ActionListener listener) {
 		this.btnAgregarPaciente.addActionListener(listener);
+		this.btnIngresaPaciente.addActionListener(listener);
 		this.btnAtiendeSiguiente.addActionListener(listener);
 	}
 
@@ -1594,8 +1579,8 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	}
 
 	@Override
-	public int getNroDeHistoriaClinicaPaciente() {
-		return Integer.parseInt(this.textFieldNroDeHistoriaClinicaPaciente.getText());
+	public String getNroDeHistoriaClinicaPaciente() {
+		return this.textFieldNroDeHistoriaClinicaPaciente.getText();
 	}
 
 	@Override
@@ -1633,6 +1618,10 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.textFieldTelefonoPaciente.setText("");
 		this.textFieldNroDeHistoriaClinicaPaciente.setText("");
 
+	}
+
+	public Paciente getPacienteSeleccionadoEnPaciente() {
+		return this.listPacientesHistoricosEnPacientes.getSelectedValue();
 	}
 
 	@Override

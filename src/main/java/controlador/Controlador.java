@@ -24,33 +24,41 @@ import exceptions.MedicoYaAgregadoException;
 import exceptions.MontoInvalidoException;
 import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
+import exceptions.PacienteYaIngresadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
+import pacientes.Paciente;
 import persistencia.PersistirClinica;
 import personas.Domicilio;
 import vista.IVistaAmbulancia;
 import vista.IVistaConfiguraciones;
 import vista.IVistaFacturacion;
 import vista.IVistaMedicos;
+import vista.IVistaPacientes;
 
 public class Controlador implements ActionListener, WindowListener, Observer {
 	IVistaFacturacion ventanaFacturacion;
 	IVistaMedicos ventanaMedicos;
 	IVistaAmbulancia ventanaAmbulancia;
+	IVistaPacientes ventanaPacientes;
 	IVistaConfiguraciones ventanaConfiguraciones;
 	Clinica clinica;
 
 	public Controlador(IVistaFacturacion ventanaFacturacion, IVistaMedicos ventanaMedicos,
-			IVistaAmbulancia ventanaAmbulancia, IVistaConfiguraciones ventanaConfiguraciones) {
+			IVistaAmbulancia ventanaAmbulancia, IVistaPacientes ventanaPacientes,
+			IVistaConfiguraciones ventanaConfiguraciones) {
 		PersistirClinica.restaurarClinica();
 		this.ventanaFacturacion = ventanaFacturacion;
 		this.ventanaMedicos = ventanaMedicos;
-		this.ventanaConfiguraciones = ventanaConfiguraciones;
-		this.clinica = Clinica.getInstancia();
 		this.ventanaAmbulancia = ventanaAmbulancia;
+		this.ventanaConfiguraciones = ventanaConfiguraciones;
+		this.ventanaPacientes = ventanaPacientes;
+		this.clinica = Clinica.getInstancia();
+
+		this.ventanaPacientes.SetActionListenerPacientes(this);
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
-		this.ventanaAmbulancia.setActionListener(this);	
+		this.ventanaAmbulancia.setActionListener(this);
 		this.ventanaFacturacion.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getIteratorEnAtencion());
 		this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
@@ -60,12 +68,13 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
 		this.clinica.getA().addObserver(this);
 		actualizarDatosConfiguracion();
-		actualizarValoresConfiguracion();		
+		actualizarValoresConfiguracion();
+
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) { // cuando hagamos el modulo de agregar pacientes, llamar al actualiza
-													// Lista pacientes del la pestaña ambulancia
+	public void actionPerformed(ActionEvent e) {
+
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Atencion Medica")
 				|| e.getActionCommand().equalsIgnoreCase("Agregar Internacion")) {
 			this.agregaPrestacion(e.getActionCommand());
@@ -81,16 +90,16 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
 			a.SolicitarTraslado();
 		}
-		
+
 		if (e.getActionCommand().equalsIgnoreCase("Llama Atencion")) {
 			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
 			a.SolicitarAtencionADomicilio();
 		}
-		
+
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Asociado")) {
-			int  nroCalle, dni;
+			int nroCalle, dni;
 			String telefono, nombre, apellido, calle;
-			
+
 			try {
 				nombre = this.ventanaAmbulancia.getNombreAsociado();
 				apellido = this.ventanaAmbulancia.getApellidoAsociado();
@@ -98,34 +107,33 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 				calle = this.ventanaAmbulancia.getCalleDomicilioAsocidado();
 				nroCalle = Integer.parseInt(this.ventanaAmbulancia.getNumeroDomicilioAsociado());
 				dni = Integer.parseInt(this.ventanaAmbulancia.getDNIAsociado());
-				if(this.chequeaString(nombre)) 
-					if(this.chequeaString(apellido))
-						if(this.chequeaString(calle)) {
+				if (this.chequeaString(nombre))
+					if (this.chequeaString(apellido))
+						if (this.chequeaString(calle)) {
 							this.ventanaAmbulancia.mostrarCartelsatisfactorio("El registro del asociado");
 							Domicilio aux = new Domicilio(calle, nroCalle);
 							this.clinica.agregaAsociado(nombre, apellido, dni, aux, telefono);
 							this.ventanaAmbulancia.actualizaAsociados(this.clinica.getIteratorAsociados());
-						}
-						else
+						} else
 							this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Calle");
 					else
 						this.ventanaAmbulancia.mostrarMensajeError("Error en el campo Apellido");
 				else
 					this.ventanaAmbulancia.mostrarMensajeError("Error en el campo nombre");
-					
-			}catch(NumberFormatException ex) {
+
+			} catch (NumberFormatException ex) {
 				this.ventanaAmbulancia.mostrarMensajeError("Formato de los numeros incorrectos");
 			} catch (DomicilioInvalido e1) {
 				this.ventanaAmbulancia.mostrarMensajeError(e1.getMessage());
-			}catch(AsociadoYaExistente e2) {
+			} catch (AsociadoYaExistente e2) {
 				this.ventanaAmbulancia.mostrarMensajeError(e2.getMessage());
 			}
 		}
-		
+
 		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
 			Asociado p = this.ventanaAmbulancia.getAsociadoAmbulancia();
 		}
-		
+
 		if (e.getActionCommand().equalsIgnoreCase("Restaurar Clinica")) {
 			PersistirClinica.restaurarClinica();
 			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
@@ -146,14 +154,21 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		if (e.getActionCommand().equalsIgnoreCase("Actualizar valores")) {
 			actualizarValoresClinica();
 		}
-		
+
+		if (e.getActionCommand().equalsIgnoreCase("Ingresa Paciente")) {
+			this.ingresarPaciente();
+		}
+
+		if (e.getActionCommand().equalsIgnoreCase("Agregar Paciente")) {
+			this.agregaPaciente();
+		}
 
 		this.ventanaFacturacion.limpiarCamposFacturacion();
 		this.ventanaMedicos.limpiarCamposMedicos();
 	}
 
 	private boolean chequeaString(String campo) {
-		return (campo.isBlank() || campo.isEmpty() || campo == null)? false:true ;
+		return (campo.isBlank() || campo.isEmpty() || campo == null) ? false : true;
 	}
 
 	/**
@@ -376,6 +391,42 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 			throw new NumberFormatException();
 	}
 
+	/**
+	 * Se encarga de ingresar un paciente a la clinica, primero usa el seleccionado
+	 * por lista, si ninguno esta seleccionado por lista, utilza el numero de
+	 * historia clinica ingresado. Si no logra por ninguno de los dos medios obtener
+	 * la informacion retorna un mensaje de error
+	 */
+	private void ingresarPaciente() {
+		Paciente paciente = this.ventanaPacientes.getPacienteSeleccionadoEnPaciente();
+		if (paciente != null) {
+			try {
+				this.clinica.ingresaPaciente(paciente);
+			} catch (PacienteNoEncontrado | PacienteYaIngresadoException e) {
+				this.ventanaPacientes.mostrarMensajeError(e.getMessage());
+			}
+		} else {
+			try {
+				int historiaClinica = Integer.parseInt(this.ventanaPacientes.getNroDeHistoriaClinicaPaciente());
+				if (historiaClinica > 0)
+					try {
+						this.clinica.ingresaPaciente(historiaClinica);
+					} catch (PacienteNoEncontrado | PacienteYaIngresadoException e) {
+						this.ventanaPacientes.mostrarMensajeError(e.getMessage());
+					}
+				else
+					this.ventanaPacientes.mostrarMensajeError("El numero de historia Clinica debe ser positivo");
+			} catch (NumberFormatException e) {
+				this.ventanaPacientes.mostrarMensajeError(
+						"Debe seleccionar un paciente del historial o ingresar un numero de historia clinica valido");
+			}
+		}
+	}
+
+	public void agregaPaciente() {
+
+	}
+
 	@Override
 	public void windowOpened(WindowEvent e) {
 		// TODO Auto-generated method stub
@@ -424,7 +475,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		this.ventanaAmbulancia.actualizaEstadoAmbulancia((String) arg);
-		
+
 	}
 
 }
