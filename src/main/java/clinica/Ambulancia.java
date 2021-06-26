@@ -27,10 +27,17 @@ public class Ambulancia extends Observable {
 		this.estado = estado;
 	}
 
+	/**
+	 * La ambulancia retorna su estado
+	 * @return
+	 */
 	public String informaEstado() {
 		return this.estado.reportaEstado();
 	}
 
+	/**
+	 * Este metodo intenta que la ambulancia regrese a la clinica, solo se ejecutara si su estado es distinto que disponible
+	 */
 	public synchronized void vuelveaClinica() {
 		while (this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica."))
 			try {
@@ -44,6 +51,9 @@ public class Ambulancia extends Observable {
 		notifyAll();
 	}
 
+	/**
+	 * Se le solicita a la ambulancia un translado, el cual solo podra efectuarse si la clinica esta disponible
+	 */
 	public synchronized void solicitaTranslado() {
 		while (!this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica."))
 			try {
@@ -60,6 +70,9 @@ public class Ambulancia extends Observable {
 		notifyAll();
 	}
 
+	/**
+	 * Se le solicita a la ambulancia una atencion en domicilio, el cual solo podra efectuarse si la ambulancia esta disponible
+	 */
 	public synchronized void solicitaAtencion() {
 		while (!this.estado.reportaEstado().equalsIgnoreCase("Disponible en la clinica.")) {
 			try {
@@ -78,6 +91,9 @@ public class Ambulancia extends Observable {
 
 	}
 
+	/**
+	 * Se le solicita a la ambulancia una reparacion, solo se ejecuta si la ambulancia esta disponible
+	 */
 	public synchronized void solicitaReparacion() {
 		while (!this.estado.reportaEstado().equals("Disponible en la clinica.")) {
 			try {
@@ -97,6 +113,9 @@ public class Ambulancia extends Observable {
 
 	}
 	
+	/**
+	 * Se le solicita a la ambulancia que regrese de una atencion, el cual solo podra efectuarse si la ambulancia esta atendiendo un paciente
+	 */
 	public synchronized void vueltaAtencion() {
 		while(!this.estado.reportaEstado().equalsIgnoreCase("Atendiendo a un paciente en su domicilio."))
 			try {
