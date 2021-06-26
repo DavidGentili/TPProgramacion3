@@ -47,7 +47,6 @@ public class Factura implements Comparable {
 		StringBuilder sb = new StringBuilder();
 		double acumulador = 0;
 		SimpleDateFormat sdf = new SimpleDateFormat(" dd'/'MM'/'YY");
-
 		sb.append("Nro:" + this.nroFactura + "	Fecha" + sdf.format(this.fecha.getTime()) + "\n");
 		sb.append("|     Prestacion     |   Valor  |  Cantidad  |  Subtotal  |\n");
 		Iterator it = prestaciones.iterator();
