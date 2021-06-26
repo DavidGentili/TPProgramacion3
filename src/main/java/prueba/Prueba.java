@@ -4,6 +4,7 @@ import java.util.GregorianCalendar;
 
 import clinica.Clinica;
 import exceptions.CantidadDeDiasErroneosException;
+import exceptions.ColaDeEsperaVaciaException;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.DomicilioInvalido;
 import exceptions.EspecialidadNoIndicadaException;
@@ -49,7 +50,7 @@ public class Prueba {
 				| EspecialidadNoRegistradaExceptions | PosgradoNoRegistradoExceptions | MontoInvalidoException
 				| TipoDePacienteIncorrectoException | CantidadDeDiasErroneosException | PacienteNoEncontrado
 				| MedicoNoEncontradoException | TipoDeHabitacionIncorrectaException | PacienteNoAtendido
-				| FechaInvalidaException | PacienteYaExistenteException | PacienteYaIngresadoException e) {
+				| FechaInvalidaException | PacienteYaExistenteException | PacienteYaIngresadoException | ColaDeEsperaVaciaException e) {
 			System.out.println(e.getMessage());
 		}
 

@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import asociado.Asociado;
-import clinica.Ambulancia;
 import clinica.Factura;
 import medicos.IMedico;
 import pacientes.Paciente;

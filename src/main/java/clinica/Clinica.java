@@ -12,6 +12,7 @@ import asociado.Asociado;
 import exceptions.AsociadoNoEncontrado;
 import exceptions.AsociadoYaExistente;
 import exceptions.CantidadDeDiasErroneosException;
+import exceptions.ColaDeEsperaVaciaException;
 import exceptions.ContratacionNoRegistradaExceptions;
 import exceptions.EspecialidadNoIndicadaException;
 import exceptions.EspecialidadNoRegistradaExceptions;
@@ -247,6 +248,20 @@ public class Clinica {
 		return this.enAtencion.iterator();
 	}
 
+	/**
+	 * Se retorna un Iterator con los pacientes en la cola de espera
+	 * 
+	 * @return Pacientes en la cola de espera
+	 */
+	public Iterator<Paciente> getIteratorColaDeEspera() {
+		return this.colaEspera.iterator();
+	}
+
+	/**
+	 * Retorna un Iterator los asociados a la clinica
+	 * 
+	 * @return Asociados a la clinica
+	 */
 	public Iterator<Asociado> getIteratorAsociados() {
 		ArrayList<Asociado> aux = new ArrayList<Asociado>();
 		for (Integer i : this.asociados.keySet()) {
@@ -397,7 +412,7 @@ public class Clinica {
 	 *                                      esta ingresado
 	 */
 	public void ingresaPaciente(Paciente paciente) throws PacienteNoEncontrado, PacienteYaIngresadoException {
-		if (!this.pacientesHist.containsKey(paciente.getNroHistoriaClinica())) {
+		if (this.pacientesHist.containsKey(paciente.getNroHistoriaClinica())) {
 			if (!this.colaEspera.contains(paciente) && !this.enAtencion.contains(paciente)) {
 				this.colaEspera.add(paciente);
 				this.reasignaEspera(paciente);
@@ -418,7 +433,7 @@ public class Clinica {
 	 *                                      esta ingresado
 	 */
 	public void ingresaPaciente(int nroHistoriaClinica) throws PacienteNoEncontrado, PacienteYaIngresadoException {
-		if (!this.pacientesHist.containsKey(nroHistoriaClinica)) {
+		if (this.pacientesHist.containsKey(nroHistoriaClinica)) {
 			Paciente paciente = this.pacientesHist.get(nroHistoriaClinica);
 			if (!this.colaEspera.contains(paciente) && !this.enAtencion.contains(paciente)) {
 				this.colaEspera.add(paciente);
@@ -506,14 +521,17 @@ public class Clinica {
 	 * @throws IndexOutOfBoundsException : Si la cola de espera esta vacia
 	 */
 
-	public void atiendeSiguiente() throws IndexOutOfBoundsException {
-		Paciente aux = this.colaEspera.removeFirst();
-		if (this.salaPrivada == aux)
-			this.salaPrivada = null;
-		else {
-			this.patio.remove(aux);
-		}
-		this.enAtencion.add(aux);
+	public void atiendeSiguiente() throws ColaDeEsperaVaciaException {
+		if (!this.colaEspera.isEmpty()) {
+			Paciente aux = this.colaEspera.removeFirst();
+			if (this.salaPrivada == aux)
+				this.salaPrivada = null;
+			else {
+				this.patio.remove(aux);
+			}
+			this.enAtencion.add(aux);
+		} else
+			throw new ColaDeEsperaVaciaException("No hay pacientes esperando para ser atendidos");
 	}
 
 	/**
@@ -663,7 +681,7 @@ public class Clinica {
 		while (itFacturas.hasNext()) {
 			factura = itFacturas.next();
 			if (factura.getFecha().compareTo(inicio) >= 0 && factura.getFecha().compareTo(fin) <= 0) {
-				Iterator<Prestacion> itPrestaciones = factura.getPrestaciones();
+				Iterator<Prestacion> itPrestaciones = factura.getIteratorPrestaciones();
 				while (itPrestaciones.hasNext()) {
 					prestaciones = itPrestaciones.next();
 					if (prestaciones.getDescripcion().equalsIgnoreCase(medico.getApellido())) {

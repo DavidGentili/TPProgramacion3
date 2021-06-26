@@ -1,5 +1,8 @@
 package persistencia;
 
+import java.util.Iterator;
+import java.util.TreeSet;
+
 import clinica.Clinica;
 import clinica.Factura;
 import exceptions.MontoInvalidoException;
@@ -67,7 +70,6 @@ public class ConversorDTO {
 			Clinica.setCostoHabitacionCompartida(clinicaDTO.getCostoBasicohabitacionCompartida());
 			Clinica.setCostoTerapiaIntensiva(clinicaDTO.getCostoBasicoTerapiaIntensiva());
 		} catch (MontoInvalidoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
