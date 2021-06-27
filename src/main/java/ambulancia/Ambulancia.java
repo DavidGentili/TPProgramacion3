@@ -7,32 +7,36 @@ public class Ambulancia extends Observable implements IState {
 	private IState estado;
 	private boolean disponible = false;
 
-	public void setDisponible(boolean disponible) {
-		this.disponible = disponible;
-	}
-
 	private Ambulancia() {
 		this.estado = new DisponibleState(this);
 	}
 
+	/**
+	 * Retorna una instancia de la ambulancia, si no esta incializada, invoca al
+	 * constructor y retorna la instancia
+	 * 
+	 * @return
+	 */
 	public static Ambulancia getInstance() {
 		if (Ambulancia.instancia == null)
 			Ambulancia.instancia = new Ambulancia();
 		return Ambulancia.instancia;
 	}
 
-	public IState getEstado() {
-		return estado;
-	}
-
-	public void setEstado(IState estado) {
+	/**
+	 * Permite modificar el estado de la ambulancia
+	 * 
+	 * @param nuevo estado de la ambulancia
+	 */
+	protected void setEstado(IState estado) {
 		this.estado = estado;
 	}
 
 	/**
-	 * La ambulancia retorna su estado
+	 * La ambulancia retorna su estado, transmitiendo la responsabilidad a su
+	 * variable IState
 	 * 
-	 * @return
+	 * @return string que descrobe el estado actual de la ambulancia
 	 */
 	@Override
 	public String reportaEstado() {
@@ -44,6 +48,12 @@ public class Ambulancia extends Observable implements IState {
 	 * si su estado es distinto que disponible
 	 */
 	public synchronized void solicitaRetorno() {
+		if (!disponible) {
+			this.estado.solicitaRetorno();
+			setChanged();
+			notifyObservers(this.estado.reportaEstado());
+			notifyAll();
+		}
 		while (disponible) {
 			try {
 				wait();
@@ -51,10 +61,7 @@ public class Ambulancia extends Observable implements IState {
 				e.printStackTrace();
 			}
 		}
-		this.estado.solicitaRetorno();
-		setChanged();
-		notifyObservers(this.estado.reportaEstado());
-		notifyAll();
+
 	}
 
 	/**
@@ -125,4 +132,12 @@ public class Ambulancia extends Observable implements IState {
 
 	}
 
+	/**
+	 * Permite definir el estado de disponibilidad de la ambulancia
+	 * 
+	 * @param disponible nuevo estado de disponibilidad
+	 */
+	public void setDisponible(boolean disponible) {
+		this.disponible = disponible;
+	}
 }
