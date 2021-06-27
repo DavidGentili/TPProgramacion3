@@ -11,6 +11,10 @@ import exceptions.MedicoNoEncontradoException;
 import exceptions.PacienteNoAtendido;
 import exceptions.PacienteNoEncontrado;
 import exceptions.TipoDeHabitacionIncorrectaException;
+import habitaciones.HabitacionCompartida;
+import habitaciones.HabitacionPrivada;
+import habitaciones.TerapiaIntensiva;
+import pacientes.Paciente;
 import vista.IVistaFacturacion;
 
 public class ControladorFacturacion implements ActionListener {
@@ -57,8 +61,8 @@ public class ControladorFacturacion implements ActionListener {
 						numero);
 				this.ventanaFacturacion.mostrarCartelsatisfactorio("agregar una consulta");
 			} else {
-				this.clinica.agregaInternacion(this.ventanaFacturacion.getPaciente(),
-						this.ventanaFacturacion.getHabitacion(), numero);
+				agregarInternacion(this.ventanaFacturacion.getPaciente(),
+						Integer.parseInt(this.ventanaFacturacion.getCantidad()));
 				this.ventanaFacturacion.mostrarCartelsatisfactorio("agregar una internacion");
 			}
 		} catch (NumberFormatException e1) {
@@ -84,6 +88,19 @@ public class ControladorFacturacion implements ActionListener {
 		} catch (PacienteNoEncontrado | PacienteNoAtendido | FechaInvalidaException e) {
 			this.ventanaFacturacion.mostrarMensajeError(e.getMessage());
 		}
+	}
+
+	public void agregarInternacion(Paciente paciente, int cantidad)
+			throws CantidadDeDiasErroneosException, PacienteNoEncontrado, TipoDeHabitacionIncorrectaException {
+		String tipoHabitacion = this.ventanaFacturacion.getHabitacion();
+		if (tipoHabitacion.equalsIgnoreCase("Habitacion Privada")) {
+			clinica.agregaInternacion(paciente, new HabitacionPrivada(), cantidad);
+		} else if (tipoHabitacion.equalsIgnoreCase("Habitacion Compartida")) {
+			clinica.agregaInternacion(paciente, new HabitacionCompartida(), cantidad);
+		} else if (tipoHabitacion.equalsIgnoreCase("Terapia Intensiva")) {
+			clinica.agregaInternacion(paciente, new TerapiaIntensiva(), cantidad);
+		} else
+			throw new TipoDeHabitacionIncorrectaException("Debe seleccionar un tipo correcto de habitacion");
 	}
 
 }

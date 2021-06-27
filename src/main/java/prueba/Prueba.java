@@ -20,6 +20,7 @@ import exceptions.PacienteYaIngresadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
 import exceptions.TipoDePacienteIncorrectoException;
+import habitaciones.HabitacionPrivada;
 import personas.Domicilio;
 
 public class Prueba {
@@ -39,7 +40,7 @@ public class Prueba {
 			colon.agregaPaciente("Mario", "Martinez", 55555555, 11302, "Ninio");
 			colon.atiendeSiguiente();
 			colon.agregaConsulta(colon.getPaciente(10531), 10536, 2);
-			colon.agregaInternacion(colon.getPaciente(10531), "habitacion privada", 2);
+			colon.agregaInternacion(colon.getPaciente(10531), new HabitacionPrivada(), 2);
 
 			System.out.println(colon.facturaPaciente(colon.getPaciente(10531), new GregorianCalendar(2021, 5, 15)));
 
@@ -49,8 +50,8 @@ public class Prueba {
 		} catch (DomicilioInvalido | MedicoYaAgregadoException | ContratacionNoRegistradaExceptions
 				| EspecialidadNoRegistradaExceptions | PosgradoNoRegistradoExceptions | MontoInvalidoException
 				| TipoDePacienteIncorrectoException | CantidadDeDiasErroneosException | PacienteNoEncontrado
-				| MedicoNoEncontradoException | TipoDeHabitacionIncorrectaException | PacienteNoAtendido
-				| FechaInvalidaException | PacienteYaExistenteException | PacienteYaIngresadoException | ColaDeEsperaVaciaException e) {
+				| MedicoNoEncontradoException | PacienteNoAtendido | FechaInvalidaException
+				| PacienteYaExistenteException | PacienteYaIngresadoException | ColaDeEsperaVaciaException e) {
 			System.out.println(e.getMessage());
 		}
 

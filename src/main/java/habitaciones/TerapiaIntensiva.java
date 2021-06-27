@@ -6,11 +6,11 @@ package habitaciones;
  *
  */
 
-class TerapiaIntensiva implements IHabitacion {
+public class TerapiaIntensiva implements IHabitacion {
 
 	private static double costoTerapiaIntensiva = 0;
 
-	protected TerapiaIntensiva() {
+	public TerapiaIntensiva() {
 		super();
 	}
 

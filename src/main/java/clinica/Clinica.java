@@ -29,7 +29,10 @@ import exceptions.PacienteYaIngresadoException;
 import exceptions.PosgradoNoRegistradoExceptions;
 import exceptions.TipoDeHabitacionIncorrectaException;
 import exceptions.TipoDePacienteIncorrectoException;
-import habitaciones.Internacion;
+import habitaciones.HabitacionCompartida;
+import habitaciones.HabitacionPrivada;
+import habitaciones.IHabitacion;
+import habitaciones.TerapiaIntensiva;
 import medicos.IMedico;
 import medicos.Medico;
 import medicos.MedicoFactory;
@@ -621,11 +624,13 @@ public class Clinica {
 	 * @throws PacienteNoEncontrado                - Si el paciente no se encuentra
 	 *                                             en la lista de EnAtencion
 	 */
-	public void agregaInternacion(Paciente paciente, String tipo, int cantidad)
-			throws TipoDeHabitacionIncorrectaException, CantidadDeDiasErroneosException, PacienteNoEncontrado {
+	public void agregaInternacion(Paciente paciente, IHabitacion habitacion, int cantidad)
+			throws CantidadDeDiasErroneosException, PacienteNoEncontrado {
 		if (cantidad >= 0) {
 			if (this.enAtencion.contains(paciente)) {
-				paciente.agregaPrestacion(Internacion.getInstancia().getPrestacion(cantidad, tipo));
+				Prestacion nueva = new Prestacion(habitacion.toString(), habitacion.getCostoMinimo(), cantidad,
+						habitacion.calculaCosto(cantidad));
+				paciente.agregaPrestacion(nueva);
 			} else
 				throw new PacienteNoEncontrado("debe seleccionar un paciente correcto de la lista de 'en atendidos'");
 		} else
@@ -723,7 +728,7 @@ public class Clinica {
 	 */
 	public static void setCostoHabitacionCompartida(double monto) throws MontoInvalidoException {
 		if (monto >= 0)
-			Internacion.setCostoHabitacionCompartida(monto);
+			HabitacionCompartida.setCostoHabitacionCompartida(monto);
 		else
 			throw new MontoInvalidoException("El monto de la habitacion Compartida no puede ser negativo");
 	}
@@ -736,7 +741,7 @@ public class Clinica {
 	 */
 	public static void setCostoHabitacionPrivada(double monto) throws MontoInvalidoException {
 		if (monto >= 0)
-			Internacion.setCostoHabitacionPrivada(monto);
+			HabitacionPrivada.setCostoHabitacionPrivada(monto);
 		else
 			throw new MontoInvalidoException("El monto de la habitacion Privada no puede ser negativo");
 	}
@@ -749,7 +754,7 @@ public class Clinica {
 	 */
 	public static void setCostoTerapiaIntensiva(double monto) throws MontoInvalidoException {
 		if (monto >= 0)
-			Internacion.setCostoTerapiaIntensiva(monto);
+			TerapiaIntensiva.setCostoTerapiaIntensiva(monto);
 		else
 			throw new MontoInvalidoException("El monto de la Terapia Intensiva no puede ser negativo");
 	}
@@ -773,7 +778,7 @@ public class Clinica {
 	 * @return el costo basico de la habitacion compartida
 	 */
 	public static double getCostoHabitacionCompartida() {
-		return Internacion.getCostoHabitacionCompartida();
+		return HabitacionCompartida.getCostoHabitacionCompartida();
 	}
 
 	/**
@@ -782,7 +787,7 @@ public class Clinica {
 	 * @return el costo basico de la habitacion privada
 	 */
 	public static double getCostoHabitacionPrivada() {
-		return Internacion.getCostoHabitacionPrivada();
+		return HabitacionPrivada.getCostoHabitacionPrivada();
 	}
 
 	/**
@@ -791,7 +796,7 @@ public class Clinica {
 	 * @return el costo basico de la terapia intensiva
 	 */
 	public static double getCostoTerapiaIntensiva() {
-		return Internacion.getCostoTerapiaIntensiva();
+		return TerapiaIntensiva.getCostoTerapiaIntensiva();
 	}
 
 	/**

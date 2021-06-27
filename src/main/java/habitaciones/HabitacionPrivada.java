@@ -6,10 +6,10 @@ package habitaciones;
  *
  */
 
-class HabitacionPrivada implements IHabitacion {
+public class HabitacionPrivada implements IHabitacion {
 	private static double costoHabitacionPrivada = 0;
 
-	protected HabitacionPrivada() {
+	public HabitacionPrivada() {
 		super();
 	}
 
