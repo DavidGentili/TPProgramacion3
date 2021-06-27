@@ -5,7 +5,7 @@ import java.util.Observable;
 public class Ambulancia extends Observable implements IState {
 	private static Ambulancia instancia = null;
 	private IState estado;
-	private boolean disponible;
+	private boolean disponible = false;
 
 	public void setDisponible(boolean disponible) {
 		this.disponible = disponible;
@@ -44,12 +44,13 @@ public class Ambulancia extends Observable implements IState {
 	 * si su estado es distinto que disponible
 	 */
 	public synchronized void solicitaRetorno() {
-		while (!disponible)
+		while (disponible) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}
 		this.estado.solicitaRetorno();
 		setChanged();
 		notifyObservers(this.estado.reportaEstado());
@@ -61,15 +62,17 @@ public class Ambulancia extends Observable implements IState {
 	 * la clinica esta disponible
 	 */
 	public synchronized void solicitaTranslado() {
-		while (disponible)
-			try {
-				this.setChanged();
-				this.notifyObservers("Imposible transladar al paciente a clinica. La ambulancia se encuentra "
-						+ this.estado.reportaEstado());
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		if (!disponible) {
+			this.setChanged();
+			this.notifyObservers("Imposible transladar al paciente a clinica en este momento");
+			while (!disponible) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
+		}
 		this.estado.solicitaTranslado();
 		this.setChanged();
 		this.notifyObservers(this.estado.reportaEstado());
@@ -81,14 +84,15 @@ public class Ambulancia extends Observable implements IState {
 	 * efectuarse si la ambulancia esta disponible
 	 */
 	public synchronized void solicitaAtencion() {
-		while (disponible) {
-			try {
-				setChanged();
-				this.notifyObservers(
-						"Imposible ir al domicilio. La ambulancia se encuentra " + this.estado.reportaEstado());
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		if (!disponible) {
+			this.setChanged();
+			this.notifyObservers("Imposible realizar una atencion en el domicilio en este momento");
+			while (!disponible) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		this.estado.solicitaAtencion();
@@ -103,14 +107,15 @@ public class Ambulancia extends Observable implements IState {
 	 * ambulancia esta disponible
 	 */
 	public synchronized void solicitaReparacion() {
-		while (disponible) {
-			try {
-				setChanged();
-				this.notifyObservers(
-						"Imposible reparar la ambulancia. La misma se encuentra " + this.estado.reportaEstado());
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		if (!disponible) {
+			this.setChanged();
+			this.notifyObservers("Imposible reparar la ambulancia en este momento.");
+			while (!disponible) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		this.estado.solicitaReparacion();

@@ -28,7 +28,8 @@ public class EnElTallerState implements IState {
 
 	@Override
 	public void solicitaRetorno() {
-		
+		this.a.setEstado(new RegresandoDelTallerState(a));
+
 	}
 
 }

@@ -28,7 +28,8 @@ public class AtendiendoState implements IState {
 
 	@Override
 	public void solicitaRetorno() {
-		
+		this.a.setEstado(new RegresandoDeDomicilioState(a));
+
 	}
 
 }

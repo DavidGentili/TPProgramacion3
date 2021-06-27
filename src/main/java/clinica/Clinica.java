@@ -485,7 +485,7 @@ public class Clinica {
 	}
 
 	public void eliminaAsociado(Asociado asociado) throws AsociadoNoEncontrado {
-		if (this.asociados.containsKey(asociado.getDni())) {
+		if (this.asociados.containsValue(asociado)) {
 			this.asociados.remove(asociado.getDni());
 		} else
 			throw new AsociadoNoEncontrado("No se encuentra el asociado ingresado");
@@ -965,11 +965,24 @@ public class Clinica {
 		this.asociados = asociados;
 	}
 
+	/**
+	 * Inicia la simulacion de la ambulancia
+	 */
 	public void iniciarSimulacionAmbulancia() {
 		this.temporizador = new Temporizador();
 		temporizador.start();
 	}
 
+	public void terminaSimulacionAmbulancia() {
+		this.temporizador.setEncendido(false);
+	}
+
+	/**
+	 * Realiza un pedido de atencion a domicilio por parte de un asociado
+	 * 
+	 * @param asociado Asociado que realiza el pedido
+	 * @throws AsociadoNoEncontrado Si el asociado no se encuentra registrado
+	 */
 	public void realizarPedidoAtencion(Asociado asociado) throws AsociadoNoEncontrado {
 		if (this.asociados.containsValue(asociado)) {
 			asociado.SolicitarAtencionADomicilio();
@@ -977,6 +990,12 @@ public class Clinica {
 			throw new AsociadoNoEncontrado("El asociado ingresado no se encuentra registrado");
 	}
 
+	/**
+	 * Realiza un pedido de traslado por parte de un asociado
+	 * 
+	 * @param asociado Asociado que realiza el pedido
+	 * @throws AsociadoNoEncontrado Si el asociado no se encuentra registrado
+	 */
 	public void realizarPedidoTraslado(Asociado asociado) throws AsociadoNoEncontrado {
 		if (this.asociados.containsValue(asociado)) {
 			asociado.SolicitarTraslado();
@@ -984,6 +1003,9 @@ public class Clinica {
 			throw new AsociadoNoEncontrado("El asociado ingresado no se encuentra registrado");
 	}
 
+	/**
+	 * el operario de la clinica realiza un pedido de reparacion
+	 */
 	public void realizarPedidoDeReparacion() {
 		this.operario.SolicitarReparacion();
 	}

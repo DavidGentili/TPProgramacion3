@@ -12,6 +12,7 @@ import java.util.Observer;
 import ambulancia.Ambulancia;
 import asociado.Asociado;
 import clinica.Clinica;
+import exceptions.AsociadoNoEncontrado;
 import exceptions.AsociadoYaExistente;
 import exceptions.CantidadDeDiasErroneosException;
 import exceptions.ColaDeEsperaVaciaException;
@@ -71,6 +72,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaConfiguraciones.setActionListenerConfiguraciones(this);
 		this.ventanaConfiguraciones.SetWindowListenerConfiguraciones(this);
 //		 this.ventanaAmbulancia.actualizaEstadoAmbulancia(this.clinica.getA().informaEstado());
+		clinica.iniciarSimulacionAmbulancia();
 		actualizarDatosConfiguracion();
 		actualizarValoresConfiguracion();
 		this.actualizaVentanaPacientes();
@@ -96,19 +98,31 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 			this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		}
 		if (e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
-			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
-			if (a == null)
+			Asociado asociado = this.ventanaAmbulancia.getAsociadoAmbulancia();
+			if (asociado != null) {
+				try {
+					clinica.realizarPedidoTraslado(asociado);
+				} catch (AsociadoNoEncontrado e1) {
+					this.ventanaAmbulancia.mostrarMensajeError(e1.getMessage());
+				}
+			} else
 				this.ventanaAmbulancia.mostrarMensajeError("Debe seleccionar un Asociado para realizar esta accion");
-			else
-				a.SolicitarTraslado();
+		}
+
+		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
+			this.clinica.realizarPedidoDeReparacion();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Llama Atencion")) {
-			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
-			if (a == null)
+			Asociado asociado = this.ventanaAmbulancia.getAsociadoAmbulancia();
+			if (asociado != null) {
+				try {
+					clinica.realizarPedidoAtencion(asociado);
+				} catch (AsociadoNoEncontrado e1) {
+					this.ventanaAmbulancia.mostrarMensajeError(e1.getMessage());
+				}
+			} else
 				this.ventanaAmbulancia.mostrarMensajeError("Debe seleccionar un Asociado para realizar esta accion");
-			else
-				a.SolicitarAtencionADomicilio();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Asociado")) {
@@ -159,6 +173,18 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 			}
 
 			this.actualizaVentanaPacientes();
+		}
+
+		if (e.getActionCommand().equalsIgnoreCase("Eliminar Asociado")) {
+			if (ventanaAmbulancia.getAsociadoAmbulancia() != null) {
+				try {
+					clinica.eliminaAsociado(ventanaAmbulancia.getAsociadoAmbulancia());
+					ventanaAmbulancia.actualizaAsociados(clinica.getIteratorAsociados());
+				} catch (AsociadoNoEncontrado e1) {
+					ventanaAmbulancia.mostrarMensajeError(e1.getMessage());
+				}
+			} else
+				ventanaAmbulancia.mostrarMensajeError("Debe seleccionar un asociado a elminar");
 		}
 
 		this.ventanaFacturacion.limpiarCamposFacturacion();
@@ -482,6 +508,8 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		} catch (IOException e1) {
 			System.out.println(e1.getMessage());
 		}
+
+		this.clinica.terminaSimulacionAmbulancia();
 	}
 
 	@Override
@@ -533,7 +561,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 			if (this.chequeaString(nombre))
 				if (this.chequeaString(apellido))
 					if (this.chequeaString(calle)) {
-						this.ventanaAmbulancia.mostrarCartelsatisfactorio("El registro del asociado");
+						//this.ventanaAmbulancia.mostrarCartelsatisfactorio("El registro del asociado");
 						Domicilio aux = new Domicilio(calle, nroCalle);
 						this.clinica.agregaAsociado(nombre, apellido, dni, aux, telefono);
 						this.ventanaAmbulancia.actualizaAsociados(this.clinica.getIteratorAsociados());
