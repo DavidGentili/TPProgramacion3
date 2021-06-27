@@ -1500,6 +1500,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.textFieldCostoCompartida.setText("");
 		this.textFieldCostoPrivada.setText("");
 		this.textFieldCostoTerapia.setText("");
+		this.textFieldSueldoBasicoMedicos.setText("");
 
 	}
 
