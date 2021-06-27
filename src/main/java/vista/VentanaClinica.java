@@ -540,7 +540,8 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.scrollPaneEstadoAmbulancia = new JScrollPane();
 		this.panelAmbulancia.add(this.scrollPaneEstadoAmbulancia);
 
-		this.textAreaAmbulancia = new JTextArea();
+		this.textAreaAmbulancia = new JTextArea("La ambulancia esta disponible en la clinica");
+		this.textAreaAmbulancia.setEditable(false);
 		this.scrollPaneEstadoAmbulancia.setViewportView(this.textAreaAmbulancia);
 
 		this.scrollPaneMedicos = new JScrollPane();
@@ -1504,7 +1505,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 
 	@Override
 	public void actualizaEstadoAmbulancia(String estado) {
-		this.textAreaAmbulancia.append(estado + "\n");
+		this.textAreaAmbulancia.append("\n" + estado);
 	}
 
 	@Override

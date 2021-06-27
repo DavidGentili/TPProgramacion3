@@ -28,7 +28,8 @@ public class RegresandoDelTallerState implements IState {
 
 	@Override
 	public void solicitaRetorno() {
-		
+		this.a.setEstado(new DisponibleState(a));
+
 	}
 
 }

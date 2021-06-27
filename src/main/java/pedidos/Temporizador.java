@@ -34,9 +34,13 @@ public class Temporizador extends Thread {
 	private static long tiempoRandom() {
 		long numero;
 		do {
-			numero = (long) (5000 * Math.random());
-		} while (numero > 1000);
+			numero = (long) (10000 * Math.random());
+		} while (numero > 4000);
 		return numero;
+	}
+
+	public void setEncendido(boolean encendido) {
+		this.encendido = encendido;
 	}
 
 }
