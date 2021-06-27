@@ -12,7 +12,7 @@ import personas.Persona;
  * interface IMedico
  *
  */
-public class Medico extends Persona implements IMedico, Serializable {
+public abstract class Medico extends Persona implements IMedico, Serializable {
 
 	protected int matricula;
 	protected static double sueldoBasico;
