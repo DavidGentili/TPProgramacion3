@@ -1,22 +1,19 @@
 package pedidos;
 
+import ambulancia.Ambulancia;
 import asociado.Asociado;
 
-public class PedidoReparacion extends Pedido {
+public class PedidoReparacion extends Thread {
 
-	public PedidoReparacion(Asociado asociado) {
-		super(asociado);
+	Ambulancia ambulancia = Ambulancia.getInstance();
+
+	public PedidoReparacion() {
+
 	}
 
 	@Override
-	public void efectuaPedido() {
-		this.a.solicitaReparacion();
-	}
-
-	@Override
-	public void devuelveAmbulancia() {
-		this.a.vueltaTaller();
-		
+	public void run() {
+		this.ambulancia.solicitaReparacion();
 	}
 
 }

@@ -13,9 +13,4 @@ public class PedidoAtencion extends Pedido {
 		this.a.solicitaAtencion();
 	}
 
-	@Override
-	public void devuelveAmbulancia() {
-		this.a.vueltaAtencion();		
-	}
-
 }
