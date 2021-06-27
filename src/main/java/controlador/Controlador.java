@@ -63,7 +63,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaPacientes.SetActionListenerPacientes(this);
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
-		this.ventanaAmbulancia.setActionListener(this);
+		this.ventanaAmbulancia.setActionListenerAmbulancia(this);
 		this.ventanaFacturacion.actualizaListaMedicos(this.clinica.getIteratorMedicos());
 		this.ventanaFacturacion.actualizaListaPacientesEnAtencion(this.clinica.getIteratorEnAtencion());
 		this.ventanaMedicos.actualizaListaMedicos(this.clinica.getIteratorMedicos());

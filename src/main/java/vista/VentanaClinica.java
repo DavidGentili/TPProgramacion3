@@ -125,8 +125,7 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JScrollPane scrollPaneListPac;
 	private JList<Asociado> listPacien;
 	private JTextArea textAreaEstadoAmbulancia;
-	private JButton btnSolReparacion;
-	private JPanel panel_BtReparacion;
+	private JPanel panelBtnFuncionesAmbulancia;
 	private DefaultListModel<Asociado> listaAsociados = new DefaultListModel<Asociado>();
 	private JPanel panelConfiguraciones;
 	private JPanel panelCondicionesActuales;
@@ -255,9 +254,6 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JComboBox comboBoxRangoEtareo;
 	private JPanel panelContenedorLblNroDeHistoriaClinicaPaciente;
 	private JPanel panelContenedorTextFieldNroDeHistoriaClinicaPaciente;
-
-	private JButton btnLlamaAtencion;
-	private JButton btnLlamaTranslado;
 	private JPanel panelCargaAsociado;
 	private JLabel lblNombreAsociado;
 	private JTextField textFieldNombreAsociado;
@@ -277,7 +273,6 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JTextField textFieldDomicilioNumeroAsociado;
 	private JPanel panelDniAsociado;
 	private JPanel panelCampoDNIAsociado;
-	private JButton btnAgregarAsociado;
 	private DefaultListModel<Paciente> listaPacientesHistoricos = new DefaultListModel<Paciente>();
 	private DefaultListModel<Paciente> listaColaDeEspera = new DefaultListModel<Paciente>();
 	private JPanel panelContenedorBotonesPaciente;
@@ -287,6 +282,16 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	private JPanel panelContenedorBtnIngresaPaciente;
 	private JScrollPane scrollPaneEstadoAmbulancia;
 	private JTextArea textAreaAmbulancia;
+	private JPanel panelBtnAsociados;
+	private JButton btnAgregarAsociado;
+	private JPanel panelBtnAmbulancia;
+	private JButton btnLlamaAtencion;
+	private JButton btnLlamaTranslado;
+	private JButton btnSolReparacion;
+	private JLabel label;
+	private JPanel panelBtnAgregaAsociado;
+	private JButton btnEliminarAsociado;
+	private JPanel panelBtnEliminarAsociado;
 
 	/**
 	 * Create the frame.
@@ -415,25 +420,45 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 		this.panelAmbulancia.add(this.panelDatosAmbulancia);
 		this.panelDatosAmbulancia.setLayout(new BorderLayout(0, 0));
 
-		this.panel_BtReparacion = new JPanel();
-		this.panelDatosAmbulancia.add(this.panel_BtReparacion, BorderLayout.SOUTH);
-		this.panel_BtReparacion.setLayout(new GridLayout(0, 2, 0, 0));
+		this.panelBtnFuncionesAmbulancia = new JPanel();
+		this.panelDatosAmbulancia.add(this.panelBtnFuncionesAmbulancia, BorderLayout.SOUTH);
+		this.panelBtnFuncionesAmbulancia.setLayout(new GridLayout(0, 1, 0, 0));
+
+		this.panelBtnAsociados = new JPanel();
+		this.panelBtnFuncionesAmbulancia.add(this.panelBtnAsociados);
+		this.panelBtnAsociados.setLayout(new GridLayout(0, 2, 0, 0));
+
+		this.panelBtnAgregaAsociado = new JPanel();
+		this.panelBtnAsociados.add(this.panelBtnAgregaAsociado);
+
+		this.btnAgregarAsociado = new JButton("Agregar Asociado");
+		this.panelBtnAgregaAsociado.add(this.btnAgregarAsociado);
+		this.btnAgregarAsociado.setActionCommand("Agregar Asociado");
+
+		this.panelBtnEliminarAsociado = new JPanel();
+		this.panelBtnAsociados.add(this.panelBtnEliminarAsociado);
+
+		this.btnEliminarAsociado = new JButton("Eliminar Asociado");
+		this.panelBtnEliminarAsociado.add(this.btnEliminarAsociado);
+
+		this.panelBtnAmbulancia = new JPanel();
+		this.panelBtnFuncionesAmbulancia.add(this.panelBtnAmbulancia);
+		this.panelBtnAmbulancia.setLayout(new GridLayout(0, 2, 0, 0));
 
 		this.btnLlamaAtencion = new JButton("Llama atencion");
 		this.btnLlamaAtencion.setActionCommand("Llama Atencion");
-		this.panel_BtReparacion.add(this.btnLlamaAtencion);
+		this.panelBtnAmbulancia.add(this.btnLlamaAtencion);
 
 		this.btnLlamaTranslado = new JButton("Llama Translado");
 		this.btnLlamaTranslado.setActionCommand("Llama Translado");
-		this.panel_BtReparacion.add(this.btnLlamaTranslado);
+		this.panelBtnAmbulancia.add(this.btnLlamaTranslado);
 
 		this.btnSolReparacion = new JButton("Solicitar Reparacion");
 		this.btnSolReparacion.setActionCommand("Solicitar Reparacion");
-		this.panel_BtReparacion.add(this.btnSolReparacion);
+		this.panelBtnAmbulancia.add(this.btnSolReparacion);
 
-		this.btnAgregarAsociado = new JButton("Agregar Asociado");
-		this.btnAgregarAsociado.setActionCommand("Agregar Asociado");
-		this.panel_BtReparacion.add(this.btnAgregarAsociado);
+		this.label = new JLabel("");
+		this.panelBtnAmbulancia.add(this.label);
 
 		this.panelCargaAsociado = new JPanel();
 		this.panelDatosAmbulancia.add(this.panelCargaAsociado, BorderLayout.CENTER);
@@ -511,10 +536,10 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 
 		this.listPacien = new JList<Asociado>(listaAsociados);
 		this.scrollPaneListPac.setViewportView(this.listPacien);
-		
+
 		this.scrollPaneEstadoAmbulancia = new JScrollPane();
 		this.panelAmbulancia.add(this.scrollPaneEstadoAmbulancia);
-		
+
 		this.textAreaAmbulancia = new JTextArea();
 		this.scrollPaneEstadoAmbulancia.setViewportView(this.textAreaAmbulancia);
 
@@ -1483,9 +1508,9 @@ public class VentanaClinica extends JFrame implements IVistaFacturacion, IVistaM
 	}
 
 	@Override
-	public void setActionListener(ActionListener a) {
+	public void setActionListenerAmbulancia(ActionListener a) {
 		this.btnSolReparacion.addActionListener(a);
-
+		this.btnEliminarAsociado.addActionListener(a);
 		this.btnAgregarAsociado.addActionListener(a);
 		this.btnLlamaAtencion.addActionListener(a);
 		this.btnLlamaTranslado.addActionListener(a);

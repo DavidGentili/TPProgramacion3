@@ -14,7 +14,7 @@ public interface IVistaAmbulancia {
 	
 	public Asociado getAsociadoAmbulancia();
 	
-	public void setActionListener(ActionListener a);
+	public void setActionListenerAmbulancia(ActionListener a);
 
 	public String getNombreAsociado();
 	
