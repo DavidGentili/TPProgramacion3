@@ -1,14 +1,12 @@
-package estados;
-
-import clinica.Ambulancia;
+package ambulancia;
 
 public class AtendiendoState implements IState {
 
 	private Ambulancia a;
 
 	public AtendiendoState(Ambulancia a) {
-		super();
 		this.a = a;
+		this.a.setDisponible(false);
 	}
 
 	@Override
@@ -29,18 +27,7 @@ public class AtendiendoState implements IState {
 	}
 
 	@Override
-	public void vuelveaClinica() {
-	}
-
-	@Override
-	public void vuelveAtencion() {
-		this.a.setEstado(new RegresandoDeDomicilioState(a));
-		
-	}
-
-	@Override
-	public void vuelveReparacion() {
-		// TODO Auto-generated method stub
+	public void solicitaRetorno() {
 		
 	}
 

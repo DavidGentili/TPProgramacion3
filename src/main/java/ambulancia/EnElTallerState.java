@@ -1,6 +1,4 @@
-package estados;
-
-import clinica.Ambulancia;
+package ambulancia;
 
 public class EnElTallerState implements IState {
 
@@ -8,6 +6,7 @@ public class EnElTallerState implements IState {
 
 	public EnElTallerState(Ambulancia a) {
 		this.a = a;
+		this.a.setDisponible(false);
 	}
 
 	@Override
@@ -28,19 +27,7 @@ public class EnElTallerState implements IState {
 	}
 
 	@Override
-	public void vuelveaClinica() {
-		
-	}
-
-	@Override
-	public void vuelveAtencion() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void vuelveReparacion() {
-		this.a.setEstado(new RegresandoDelTallerState(this.a));
+	public void solicitaRetorno() {
 		
 	}
 

@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
+import ambulancia.Ambulancia;
 import asociado.Asociado;
 import exceptions.AsociadoNoEncontrado;
 import exceptions.AsociadoYaExistente;
@@ -35,6 +36,7 @@ import pacientes.Paciente;
 import pacientes.PacienteFactory;
 import pedidos.Pedido;
 import pedidos.PedidoReparacion;
+import pedidos.Temporizador;
 import personas.Domicilio;
 import prestaciones.Consulta;
 import prestaciones.Prestacion;
@@ -51,7 +53,8 @@ public class Clinica {
 	private Domicilio direccion;
 	private String telefono;
 	private String ciudad;
-	private Ambulancia a;
+	private Ambulancia ambulancia;
+	private Temporizador temporizador;
 
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, Paciente> pacientesHist = new HashMap<Integer, Paciente>();
@@ -74,7 +77,7 @@ public class Clinica {
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.ciudad = ciudad;
-		this.a = Ambulancia.getInstance();
+		this.ambulancia = Ambulancia.getInstance();
 	}
 
 	/**
@@ -801,24 +804,6 @@ public class Clinica {
 	}
 
 	/**
-	 * Retorna la ambulancia de la clinica
-	 * 
-	 * @return Ambulancia de la clinica
-	 */
-	public Ambulancia getA() {
-		return this.a;
-	}
-
-	/**
-	 * Determina la ambulancia de la clinica
-	 * 
-	 * @param a Ambulancia de la clinica
-	 */
-	public void setA(Ambulancia a) {
-		this.a = a;
-	}
-
-	/**
 	 * Retonra el un HashMap con los pacientes historicos
 	 * 
 	 * @return Pacientes historicos
@@ -980,13 +965,23 @@ public class Clinica {
 		this.asociados = asociados;
 	}
 
-	/**
-	 * Solicita a la ambulancia que sea reparada
-	 */
-	public void solicitaReparacionAmbulancia() {
-		Pedido p = new PedidoReparacion(null);
-		p.start();
+	public void iniciarSimulacionAmbulancia() {
+		this.temporizador = new Temporizador();
+		temporizador.start();
 	}
 
-	
+	public void realizarPedidoAtencion(Asociado asociado) throws AsociadoNoEncontrado {
+		if (this.asociados.containsValue(asociado)) {
+			asociado.SolicitarAtencionADomicilio();
+		} else
+			throw new AsociadoNoEncontrado("El asociado ingresado no se encuentra registrado");
+	}
+
+	public void realizarPedidoTraslado(Asociado asociado) throws AsociadoNoEncontrado {
+		if (this.asociados.containsValue(asociado)) {
+			asociado.SolicitarTraslado();
+		} else
+			throw new AsociadoNoEncontrado("El asociado ingresado no se encuentra registrado");
+	}
+
 }

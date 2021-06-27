@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.Observable;
 import java.util.Observer;
 
+import ambulancia.Ambulancia;
 import asociado.Asociado;
 import clinica.Clinica;
 import exceptions.AsociadoYaExistente;
@@ -58,7 +59,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaPacientes = ventanaPacientes;
 		this.clinica = Clinica.getInstancia();
 
-		this.clinica.getA().addObserver(this);
+		Ambulancia.getInstance().addObserver(this);
 		this.ventanaPacientes.SetActionListenerPacientes(this);
 		this.ventanaFacturacion.setActionListenerFacturacion(this);
 		this.ventanaMedicos.setActionListenerMedicos(this);
@@ -73,8 +74,6 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		actualizarDatosConfiguracion();
 		actualizarValoresConfiguracion();
 		this.actualizaVentanaPacientes();
-		Temporizador t = new Temporizador();
-		t.start();
 	}
 
 	@Override
@@ -98,7 +97,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		}
 		if (e.getActionCommand().equalsIgnoreCase("Llama Translado")) {
 			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
-			if(a==null)
+			if (a == null)
 				this.ventanaAmbulancia.mostrarMensajeError("Debe seleccionar un Asociado para realizar esta accion");
 			else
 				a.SolicitarTraslado();
@@ -106,7 +105,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 
 		if (e.getActionCommand().equalsIgnoreCase("Llama Atencion")) {
 			Asociado a = this.ventanaAmbulancia.getAsociadoAmbulancia();
-			if(a==null)
+			if (a == null)
 				this.ventanaAmbulancia.mostrarMensajeError("Debe seleccionar un Asociado para realizar esta accion");
 			else
 				a.SolicitarAtencionADomicilio();
@@ -114,10 +113,6 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 
 		if (e.getActionCommand().equalsIgnoreCase("Agregar Asociado")) {
 			this.agregaAsociado();
-		}
-
-		if (e.getActionCommand().equalsIgnoreCase("Solicitar Reparacion")) {
-			this.clinica.solicitaReparacionAmbulancia();
 		}
 
 		if (e.getActionCommand().equalsIgnoreCase("Restaurar Clinica")) {
@@ -523,7 +518,7 @@ public class Controlador implements ActionListener, WindowListener, Observer {
 		this.ventanaAmbulancia.actualizaEstadoAmbulancia((String) arg);
 
 	}
-	
+
 	public void agregaAsociado() {
 		int nroCalle, dni;
 		String telefono, nombre, apellido, calle;
