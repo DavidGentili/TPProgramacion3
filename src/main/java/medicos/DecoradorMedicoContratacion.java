@@ -13,11 +13,7 @@ import personas.Domicilio;
  */
 public abstract class DecoradorMedicoContratacion implements IMedico, Serializable {
 
-	/**
-	 * representa un medico con su respectiva especialidad.
-	 * 
-	 * @aggregation composite
-	 */
+	
 	protected IMedico encapsulado;
 
 	/**

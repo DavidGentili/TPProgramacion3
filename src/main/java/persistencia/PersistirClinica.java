@@ -3,12 +3,18 @@ package persistencia;
 import java.io.IOException;
 import java.io.Serializable;
 
+/**
+ * Es una clase que utiliza dos metodos estaticos, para persistir y recuperar la
+ * instancia actual de la clinica
+ *
+ */
 public class PersistirClinica {
 
 	/**
-	 * Se encarga de
+	 * Se encarga de almacenar los valores que se necesitan persistir en clinica en
+	 * un archivo binario
 	 * 
-	 * @throws IOException
+	 * @throws IOException Si hay algun error al abrir o cerrar el archivo
 	 */
 	public static void almacenarClinica() throws IOException {
 		ClinicaDTO nueva = ConversorDTO.clinicaToDTO();

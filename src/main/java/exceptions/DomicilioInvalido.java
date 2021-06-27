@@ -7,6 +7,10 @@ package exceptions;
  */
 public class DomicilioInvalido extends Exception {
 
+	/**
+	 * Es una Excepcion que se lanza cuando el domicilio que se quiere ingresar es
+	 * invalido
+	 */
 	public DomicilioInvalido() {
 		// TODO Auto-generated constructor stub
 	}

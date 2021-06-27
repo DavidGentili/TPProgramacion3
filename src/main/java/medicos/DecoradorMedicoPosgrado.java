@@ -20,11 +20,7 @@ public abstract class DecoradorMedicoPosgrado implements IMedico, Serializable {
 
 	}
 
-	/**
-	 * representa el medico con su contratacion indicada.
-	 * 
-	 * @aggregation composite
-	 */
+	
 	protected DecoradorMedicoContratacion encapsulado;
 
 	/**
