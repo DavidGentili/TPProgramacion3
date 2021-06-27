@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.TreeSet;
 
 import ambulancia.Ambulancia;
+import ambulancia.Operario;
 import asociado.Asociado;
 import exceptions.AsociadoNoEncontrado;
 import exceptions.AsociadoYaExistente;
@@ -34,8 +35,6 @@ import medicos.Medico;
 import medicos.MedicoFactory;
 import pacientes.Paciente;
 import pacientes.PacienteFactory;
-import pedidos.Pedido;
-import pedidos.PedidoReparacion;
 import pedidos.Temporizador;
 import personas.Domicilio;
 import prestaciones.Consulta;
@@ -55,6 +54,7 @@ public class Clinica {
 	private String ciudad;
 	private Ambulancia ambulancia;
 	private Temporizador temporizador;
+	private Operario operario = new Operario();
 
 	private HashMap<Integer, IMedico> medicos = new HashMap<Integer, IMedico>();
 	private HashMap<Integer, Paciente> pacientesHist = new HashMap<Integer, Paciente>();
@@ -982,6 +982,10 @@ public class Clinica {
 			asociado.SolicitarTraslado();
 		} else
 			throw new AsociadoNoEncontrado("El asociado ingresado no se encuentra registrado");
+	}
+
+	public void realizarPedidoDeReparacion() {
+		this.operario.SolicitarReparacion();
 	}
 
 }
