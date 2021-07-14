@@ -309,7 +309,7 @@ public class Clinica {
 		IMedico medico;
 		if (!medicos.containsKey(matricula)) {
 			medico = MedicoFactory.getInstancia(nombre, apellido, dni, telefono, domicilio, ciudad, matricula,
-					especialidad, posgrado, contratacion);
+					especialidad, contratacion, posgrado);
 			medicos.put(matricula, medico);
 		} else
 			throw new MedicoYaAgregadoException("El medico que desea agregar ya existe");
@@ -341,7 +341,7 @@ public class Clinica {
 			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
 		IMedico medico;
 		if (!medicos.containsKey(matricula)) {
-			medico = MedicoFactory.getInstancia(nombre, apellido, dni, matricula, especialidad, posgrado, contratacion);
+			medico = MedicoFactory.getInstancia(nombre, apellido, dni, matricula, especialidad, contratacion, posgrado);
 			medicos.put(matricula, medico);
 		} else
 			throw new MedicoYaAgregadoException("El medico que desea agregar ya existe");

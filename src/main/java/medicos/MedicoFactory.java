@@ -24,8 +24,8 @@ public class MedicoFactory {
 	 * @param dni          DNI del medico
 	 * @param matricula    Matricula del medico
 	 * @param especialidad Especialidad del medico
-	 * @param posgrado     Posgrado del Medico
 	 * @param contratacion Contratacion del Medico
+	 * @param posgrado     Posgrado del Medico
 	 * @return una instancia del medico, con sus respectivas especialidades,
 	 *         posgrados y atributos indicada
 	 * @throws ContratacionNoRegistradaExceptions si la contratacion no esta
@@ -36,7 +36,7 @@ public class MedicoFactory {
 	 * @throws EspecialidadNoIndicadaException    si no se indico la especialidad
 	 */
 	public static IMedico getInstancia(String nombre, String apellido, int dni, int matricula, String especialidad,
-			String posgrado, String contratacion) throws ContratacionNoRegistradaExceptions,
+			String contratacion, String posgrado) throws ContratacionNoRegistradaExceptions,
 			EspecialidadNoRegistradaExceptions, PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
 		IMedico respuesta = null;
 		if (especialidad != null) {
@@ -65,8 +65,8 @@ public class MedicoFactory {
 	 * @param ciudad       Ciudad del medico
 	 * @param matricula    Matricula del medico
 	 * @param especialidad Especialidad del medico
-	 * @param posgrado     Posgrado del Medico
 	 * @param contratacion Contratacion del Medico
+	 * @param posgrado     Posgrado del Medico
 	 * @return una instancia del medico, con sus respectivas especialidades,
 	 *         posgrados y atributos indicada
 	 * @throws ContratacionNoRegistradaExceptions si la contratacion no esta
@@ -78,7 +78,7 @@ public class MedicoFactory {
 	 *                                            encuentra
 	 */
 	public static IMedico getInstancia(String nombre, String apellido, int dni, String telefono, Domicilio domicilio,
-			String ciudad, int matricula, String especialidad, String posgrado, String contratacion)
+			String ciudad, int matricula, String especialidad, String contratacion, String posgrado)
 			throws ContratacionNoRegistradaExceptions, EspecialidadNoRegistradaExceptions,
 			PosgradoNoRegistradoExceptions, EspecialidadNoIndicadaException {
 		IMedico respuesta = null;

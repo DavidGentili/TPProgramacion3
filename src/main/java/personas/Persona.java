@@ -85,6 +85,7 @@ public class Persona implements Serializable {
 		this.dni = dni;
 		this.telefono = telefono;
 		this.domicilio = domicilio;
+		this.ciudad = null;
 	}
 
 	/**
