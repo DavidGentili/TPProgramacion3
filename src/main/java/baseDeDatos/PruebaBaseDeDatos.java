@@ -15,10 +15,8 @@ public class PruebaBaseDeDatos {
 		Domicilio dom = new Domicilio("Colon",531);
 		IMedico m = MedicoFactory.getInstancia("Mario","Lopez",12351541,"2236141414", dom,"Mar del Plata",12345,"Cirujano","Temporario","Doctorado");
 		OperacionesBDMedicos.creaTablaMedicos();
+		OperacionesBDMedicos.agregaMedico(m);
 	}
 	
-	public static void agregaMedico(IMedico medico) {
-		
-	}
 
 }

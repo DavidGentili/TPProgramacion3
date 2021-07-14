@@ -55,7 +55,6 @@ public class BaseDeDatos {
 			sql += parametrosSQL[i];
 		}
 		sql += ")";
-		System.out.println(sql);
 		sentencia.execute(sql);
 		desconectar();
 	}
@@ -88,7 +87,7 @@ public class BaseDeDatos {
 		return respuesta;
 	}
 
-	public void agregar(String sql) {
+	public void agregar(String sql) throws SQLException {
 		try {
 			conectar();
 			sentencia = conexion.createStatement();
