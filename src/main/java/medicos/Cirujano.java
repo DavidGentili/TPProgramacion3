@@ -67,5 +67,29 @@ public class Cirujano extends Medico {
 		return super.toString() + " Cirujano";
 	}
 
+	/**
+	 * Retorna la especialidad del medico;
+	 */
+	@Override
+	public String getEspecialidad() {
+		return "Cirujano";
+	}
+
+	/**
+	 * Al ser un medico no especializado, retorna un valor nulo
+	 */
+	@Override
+	public String getContratacion() {
+		return null;
+	}
+
+	/**
+	 * Al ser un medico sin posgrado retorna el valor nulo;
+	 */
+	@Override
+	public String getPosgrado() {
+		return null;
+	}
+
 	
 }

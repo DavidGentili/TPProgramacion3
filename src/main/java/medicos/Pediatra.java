@@ -67,5 +67,29 @@ public class Pediatra extends Medico {
 	public String toString() {
 		return super.toString() + " Pediatra";
 	}
+	
+	/**
+	 * Retorna la especialidad del medico;
+	 */
+	@Override
+	public String getEspecialidad() {
+		return "Pediatra";
+	}
+
+	/**
+	 * Al ser un medico no especializado, retorna un valor nulo
+	 */
+	@Override
+	public String getContratacion() {
+		return null;
+	}
+
+	/**
+	 * Al ser un medico sin posgrado retorna el valor nulo;
+	 */
+	@Override
+	public String getPosgrado() {
+		return null;
+	}
 
 }

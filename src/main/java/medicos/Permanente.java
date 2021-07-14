@@ -41,5 +41,13 @@ public class Permanente extends DecoradorMedicoContratacion {
 	public String toString() {
 		return encapsulado.toString() + " Permanente";
 	}
+	
+	/**
+	 * Retorna la contratacion del medico
+	 */
+	@Override
+	public String getContratacion() {
+		return "Permanente";
+	}
 
 }

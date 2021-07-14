@@ -34,4 +34,12 @@ public class Magister extends DecoradorMedicoPosgrado {
 		return encapsulado.toString() + " Magister";
 	}
 
+	/**
+	 * Retorna el posgrado del medico
+	 */
+	@Override
+	public String getPosgrado() {
+		return "Magister";
+	}
+	
 }

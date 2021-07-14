@@ -73,4 +73,25 @@ public interface IMedico {
 	 */
 	String toString();
 
+	/**
+	 * Retorna la especialidad del medico
+	 * 
+	 * @return Especialidad del medico
+	 */
+	String getEspecialidad();
+
+	/**
+	 * Retorna la contratacion del medico
+	 * 
+	 * @return Contratacion del medico
+	 */
+	String getContratacion();
+
+	/**
+	 * Retorna el posgrado del medico
+	 * 
+	 * @return Posgrado del medico
+	 */
+	String getPosgrado();
+
 }

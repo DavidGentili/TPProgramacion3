@@ -116,5 +116,21 @@ public abstract class DecoradorMedicoPosgrado implements IMedico, Serializable {
 	public void setEncapsulado(DecoradorMedicoContratacion encapsulado) {
 		this.encapsulado = encapsulado;
 	}
+	
+	/**
+	 * Retorna la especialidad del medico;
+	 */
+	@Override
+	public String getEspecialidad() {
+		return encapsulado.getEspecialidad();
+	}
+	
+	/**
+	 * Retorna la contratacion del medico;
+	 */
+	@Override
+	public String getContratacion() {
+		return encapsulado.getContratacion();
+	}
 
 }

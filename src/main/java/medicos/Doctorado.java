@@ -36,4 +36,12 @@ public class Doctorado extends DecoradorMedicoPosgrado {
 		return encapsulado.toString() + " Doctorado";
 	}
 
+	/**
+	 * Retorna el posgrado del medico
+	 */
+	@Override
+	public String getPosgrado() {
+		return "Doctorado";
+	}
+
 }
