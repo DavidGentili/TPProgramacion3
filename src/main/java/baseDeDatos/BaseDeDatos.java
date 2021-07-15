@@ -1,8 +1,14 @@
 package baseDeDatos;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import exceptions.DomicilioInvalido;
+import medicos.IMedico;
+import persistencia.MedicoDAO;
+import personas.Domicilio;
 
 public class BaseDeDatos {
 	private static BaseDeDatos instancia = null;
@@ -50,7 +56,7 @@ public class BaseDeDatos {
 		sentencia = conexion.createStatement();
 		String sql = "create table " + tabla + "(";
 		for (int i = 0; i < parametrosSQL.length; i++) {
-			if(i!=0)
+			if (i != 0)
 				sql += ", ";
 			sql += parametrosSQL[i];
 		}
@@ -87,16 +93,6 @@ public class BaseDeDatos {
 		return respuesta;
 	}
 
-	public void agregar(String sql) throws SQLException {
-		try {
-			conectar();
-			sentencia = conexion.createStatement();
-			sentencia.execute(sql);
-		} catch (SQLException e) {
-
-		}
-	}
-
 	@SuppressWarnings("finally")
 	public ResultSet consultar(String sql) {
 		ResultSet respuesta = null;
@@ -110,6 +106,67 @@ public class BaseDeDatos {
 			desconectar();
 			return respuesta;
 		}
+	}
+
+	public void creaTablaMedicos() {
+		String sentenciasSQL[] = { "Nombre VARCHAR(15) NOT NULL", "Apellido VARCHAR(15) NOT NULL",
+				"documento INT NOT NULL", "telefono VARCHAR(10)", "Calle VARCHAR(20)", "altura INT",
+				"Ciudad VARCHAR(20)", "Matricula INT NOT NULL", "Especialidad VARCHAR(15) NOT NULL",
+				"Contratacion VARCHAR(15)", "Posgrado VARCHAR(15)", "PRIMARY KEY(Matricula)" };
+		if (!this.existeTabla("Medicos")) {
+			try {
+				this.creaTabla("Medicos", sentenciasSQL);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void agregaMedico(IMedico medico) {
+		String sql = "insert into Medicos VALUES (";
+		sql += "'" + medico.getNombre() + "', '" + medico.getApellido() + "', " + medico.getDni() + ", '"
+				+ medico.getTelefono() + "', '" + medico.getDomicilio().getCalle() + "', "
+				+ medico.getDomicilio().getNumero() + ", '" + medico.getCiudad() + "'," + medico.getMatricula() + ", '"
+				+ medico.getEspecialidad() + "', '" + medico.getContratacion() + "', '" + medico.getPosgrado() + "')";
+
+		if (existeTabla("Medicos")) {
+			try {
+				conectar();
+				sentencia = conexion.createStatement();
+				sentencia.execute(sql);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static ArrayList<IMedico> getListaMedicos() throws SQLException {
+		ArrayList<IMedico> lista = new ArrayList<IMedico>();
+		MedicoDAO aux = null;
+		IMedico medico = null;
+		String sql = "select * from Medicos";
+		ResultSet res = BaseDeDatos.getInstance().consultar(sql);
+		while (res.next()) {
+			aux = new MedicoDAO();
+			aux.setNombre(res.getString("Nombre"));
+			aux.setApellido(res.getString("Apellido"));
+			aux.setDni(res.getInt("Documento"));
+			aux.setTelefono(res.getString("Telefono"));
+			try {
+				aux.setDomicilio(new Domicilio(res.getString("Calle"), res.getInt("Altura")));
+			} catch (NumberFormatException | DomicilioInvalido | SQLException e) {
+				aux.setDomicilio(null);
+			}
+			aux.setCiudad(res.getString("Ciudad"));
+			aux.setMatricula(res.getInt("Matricula"));
+			aux.setEspecialidad(res.getString("Especialidad"));
+			aux.setContratacion(res.getString("Contratacion"));
+			aux.setPosgrado(res.getString("Posgrado"));
+			lista.add(aux.getMedico());
+		}
+		BaseDeDatos.getInstance().desconectar();
+
+		return lista;
 	}
 
 }
